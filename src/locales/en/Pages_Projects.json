@@ -1,0 +1,19 @@
+{
+  "tab": {
+    "title": "Amtalek | Projects",
+    "description": "AMTALEK | Rent - Sell Properties in Egypt"
+  },
+
+  "heading": "ALL PROJECTS",
+  "ErrorMessage": "Something wrong has happened, please try again later!",
+  "NoItemsMessage": "There are no Projects!",
+  "ProjectCard": { "CTA_txt": "View Project" },
+  "Pagination": {
+    "Previous": "Previous",
+    "Next": "Next"
+  },
+  "start": "Starting",
+  "units_one": "Unit",
+  "units_other": "Units",
+  "placeholder": "Search about Projects"
+}

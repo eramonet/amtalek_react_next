@@ -1,0 +1,19 @@
+{
+  "tab": {
+    "title": "امتلك.كوم | المدن  ",
+    "description": "AMTALEK | إيجار - بيع العقارات في مصر",
+    "canonical": "cities"
+  },
+  "heading": "جميع المدن",
+  "ErrorMessage": "لقد حدث خطأ ما، يرجى المحاولة مرة أخرى في وقت لاحق!",
+  "NoItemsMessage": "لا توجد مدن!",
+
+  "CityCard": {
+    "Properties": "ملكيات",
+    "CTA_txt": "عرض خصائص",
+    "total_count_formatted": "{{count, number}} عقارات",
+    "rent_count_formatted": "{{count, number}} عقارات للإيجار",
+    "sale_count_formatted": "{{count, number}} عقارات للبيع"
+  },
+  "placeholder": "ابحث عن اسم المدينة"
+}
