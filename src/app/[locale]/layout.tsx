@@ -7,6 +7,7 @@ import { Cairo, Roboto } from "next/font/google";
 import initTranslations from "../i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
 import i18nConfig from "../../../i18nConfig";
+// import ClientWrapper from "./ClientWrapper";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });

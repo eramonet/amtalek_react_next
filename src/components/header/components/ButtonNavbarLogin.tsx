@@ -1,4 +1,6 @@
+"use client";
 import { Box, IconButton, Menu, Tooltip } from "@mui/material";
+
 import Link from "next/link";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";

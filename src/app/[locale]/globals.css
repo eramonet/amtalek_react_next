@@ -709,3 +709,8 @@ input[type="number"] {
 .pagination__next {
   display: none !important;
 }
+/*  */
+.bg-login-patter2 {
+  background: linear-gradient(135deg, #9bf8f4 0%, #6f7bf7 100%);
+}
+/*  */
