@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Autoplay } from "swiper/modules";
+import Link from "next/link";
 
 export default function ADSHome({ data }: any) {
   return (
@@ -23,7 +24,7 @@ export default function ADSHome({ data }: any) {
           >
             {data.map((ad: any) => (
               <SwiperSlide key={ad["id"]} className="">
-                <a
+                <Link
                   href={ad["url"]}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -36,7 +37,7 @@ export default function ADSHome({ data }: any) {
                     height={1000}
                     className="w-full h-full object-cover"
                   />
-                </a>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

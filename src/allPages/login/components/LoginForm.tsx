@@ -5,15 +5,16 @@ import arlogoImg from "@/images/navArLogo.png";
 import logoImg from "@/images/navEnLogo.png";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { usePostData } from "@/Hooks/uesAxios";
+import { usePostData } from "@/Hooks/useAxios";
 import { setShowLoginPopUp, setUserData, userData } from "@/Store/Features/AuthenticationSlice";
 import { useForm } from "react-hook-form";
-// import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import ReCaptcha from "@/components/ReCaptcha";
 
 export default function LoginForm({ loginDispatch }: any) {
   const { t, i18n } = useTranslation("Pages_Login");
   const user = useSelector(userData);
+  // console.log(user);
 
   const [emaile, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +47,7 @@ export default function LoginForm({ loginDispatch }: any) {
     defaultValues: {
       email: "",
       password: "",
-      not_ropot: "yes",
+      not_ropot: "no",
       created_from: "web",
       // operation_type: "forget_password",
     },
@@ -67,7 +68,7 @@ export default function LoginForm({ loginDispatch }: any) {
       localStorage.setItem("userData", JSON.stringify(data?.data));
       dispatchRedux(setUserData(data?.data));
       recaptchaRef.current.reset();
-      setValue("not_ropot", "yes");
+      setValue("not_ropot", "no");
       reset();
 
       dispatchRedux(setShowLoginPopUp(false));
@@ -81,7 +82,7 @@ export default function LoginForm({ loginDispatch }: any) {
           api: process.env.NEXT_PUBLIC_SEND_CODE_TO_EMAIL,
           data: {
             email: email,
-            not_ropot: "yes",
+            not_ropot: "no",
             created_from: "web",
             operation_type: "verify_code",
           },
@@ -112,10 +113,20 @@ export default function LoginForm({ loginDispatch }: any) {
     [postLoginData]
   );
   // console.log(email);
+  const onChange = useCallback(
+    (value: any) => {
+      if (value) {
+        setValue("not_ropot", "yes");
+      } else {
+        setValue("not_ropot", "no");
+      }
+    },
+    [setValue]
+  );
 
   return (
     <form
-      method="post"
+      method="POST"
       onSubmit={handleSubmit(onSubmit)}
       className="register--form ss:my-auto w-full px-8 h-full flex flex-col items-start justify-start gap-6 py-2 overflow-y-auto overflow-x-hidden"
     >
@@ -177,10 +188,25 @@ export default function LoginForm({ loginDispatch }: any) {
         />
       </div>
 
+      {/*  */}
+      <ReCaptcha
+        t={t}
+        refs={recaptchaRef}
+        onChange={onChange}
+        error={submitted && not_ropot === "no"}
+        ServerError={
+          ServerErrors?.response?.data?.errors?.not_ropot &&
+          ServerErrors?.response?.data?.errors?.not_ropot[0]
+            ? ServerErrors?.response?.data?.errors?.not_ropot[0]
+            : null
+        }
+      />
+      {/*  */}
       <button
         // disabled={not_ropot === "no" || isLoading}
+        disabled={!isValid || not_ropot === "no" || isLoading}
         type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+        className="light-bg-submit mt-6  w-full"
       >
         تسجيل الدخول
       </button>

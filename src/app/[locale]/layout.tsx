@@ -7,7 +7,7 @@ import { Cairo, Roboto } from "next/font/google";
 import initTranslations from "../i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
 import i18nConfig from "../../../i18nConfig";
-// import ClientWrapper from "./ClientWrapper";
+import LayoutProvider from "./LayoutProvider";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
@@ -36,12 +36,16 @@ export default async function RootLayout({
       <head></head>
       <body className={fontClass}>
         <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
-          {/* <ClientWrapper> */}
-          <TopHeader locale={locale} t={t} />
-          <Header t={t} locale={locale} />
+          <LayoutProvider>
+            <TopHeader locale={locale} t={t} />
+            <Header t={t} locale={locale} />
+          </LayoutProvider>
+
           {children}
-          <Footer locale={locale} t={t} />
-          {/* </ClientWrapper> */}
+
+          <LayoutProvider>
+            <Footer locale={locale} t={t} />
+          </LayoutProvider>
         </TranslationsProvider>
       </body>
     </html>

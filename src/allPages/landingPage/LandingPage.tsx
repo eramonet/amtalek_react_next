@@ -14,11 +14,10 @@ import LatestProperties from "./latestProperties/LatestProperties";
 import initTranslations from "@/app/i18n";
 
 export default async function LandingPage({ locale }: any) {
-  const i18nNamespaces = ["Pages_LandingPage"];
-
   const countries = await getData("web/countries", locale);
   const AllCountries = countries.data[0] || [];
 
+  const i18nNamespaces = ["Pages_LandingPage"];
   const { t } = await initTranslations(locale, i18nNamespaces);
   try {
     const data = await getData("web/home", locale);

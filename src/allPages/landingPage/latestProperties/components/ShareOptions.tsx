@@ -1,4 +1,3 @@
-// مكون عميل: مشاركة الشبكات الاجتماعية
 "use client";
 import { WhatsappShareButton, TwitterShareButton } from "react-share";
 import { FaFacebook, FaXTwitter, FaShareNodes } from "react-icons/fa6";

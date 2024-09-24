@@ -26,8 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/header/a"
-    // "i18nConfig.js"
+    "src/components/header/a",
+    "src/allPages/PropertyDetails/components/PropertyLocation" // "i18nConfig.js"
   ],
   "exclude": ["node_modules"]
 }

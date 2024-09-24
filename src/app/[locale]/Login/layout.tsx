@@ -2,6 +2,7 @@ import initTranslations from "@/app/i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
 import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
+import { headers } from "next/headers";
 
 export default async function LoginLayout({
   children,
@@ -12,7 +13,8 @@ export default async function LoginLayout({
 }) {
   const i18nNamespaces = ["Pages_Login"];
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
-  console.log(locale);
+
+  // const csrfToken = headers().get("X-CSRF-Token") || "no_token";
 
   return (
     <main className="min-h-[calc(100vh-136px)]">

@@ -1,15 +1,21 @@
-// "use client";
-import { useMutation } from "@tanstack/react-query";
+"use client";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userData } from "@/Store/Features/AuthenticationSlice";
-// import { useRouter } from "next/router";
 
 const axiosInstance = axios.create({
   baseURL: "https://amtalek.com/amtalekadmin/public/api/web/",
-  withCredentials: true, // تأكد من تضمين الكوكيز في الطلبات
+
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+  },
+  withCredentials: true,
+  withXSRFToken: true,
 });
 
 interface PosterFunctionArgs {

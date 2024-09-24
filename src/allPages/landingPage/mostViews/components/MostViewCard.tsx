@@ -1,14 +1,22 @@
+// "use client";
 import Image from "next/image";
 import { FaBoltLightning, FaMaximize } from "react-icons/fa6";
 import { FaBath, FaBed, FaCamera } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 export default function MostViewCard({ card, t }: any) {
+  // const { t } = useTranslation("Pages_LandingPage");
+
   return (
     <div className="overflow-hidden">
       <div className="bg-white group   relative  overflow- shadow-md bg-bg h-fit col-span-1 bg-  hover-translate-y-2  transition-all duration-500 ease-in-out">
         {/* **************************************************************************** */}
-        <div className="relative border-t-bg border-x-bg border-2 w-full h-[250px] max-w-full rounded group">
+        <div
+          className="relative border-t-bg border-x-bg border-2 w-full h-[250px] max-w-full rounded group"
+          // onClick={() => localStorage.setItem("propertyId", card.listing_number)}
+        >
           <div className="">
             <h3 className="absolute top-0 right-3 text-custome-white bg-custome-blue py-3 px-2">
               <FaBoltLightning size={22} />
@@ -19,13 +27,15 @@ export default function MostViewCard({ card, t }: any) {
               <FaCamera />
             </div>
           </div>
-          <Image
-            src={card.primary_image}
-            alt={card.primary_image}
-            width={1000}
-            height={1000}
-            className="w-full h-full object-cover  cursor-pointer group-hover:scale-110 transition-all duration-300 ease-in-out"
-          />
+          <Link href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}`}>
+            <Image
+              src={card.primary_image}
+              alt={card.primary_image}
+              width={1000}
+              height={1000}
+              className="w-full h-full object-cover  cursor-pointer group-hover:scale-110 transition-all duration-300 ease-in-out"
+            />
+          </Link>
         </div>
         {/* **************************************************************************** */}
         <div className="py-2 px-3 bg-custome-white  h-fit  w-full text-custome-blue">

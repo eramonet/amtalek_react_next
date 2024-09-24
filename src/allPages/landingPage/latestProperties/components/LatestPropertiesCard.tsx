@@ -1,3 +1,4 @@
+// "use client";
 import Image from "next/image";
 import Link from "next/link";
 import { FaBath, FaBed, FaCamera, FaEye, FaFacebook } from "react-icons/fa";
@@ -7,10 +8,12 @@ import { FaRegHeart } from "react-icons/fa";
 import initTranslations from "@/app/i18n";
 import { FaMaximize, FaShareNodes, FaXTwitter } from "react-icons/fa6";
 import ShareOptions from "./ShareOptions";
+import { useTranslation } from "react-i18next";
 
-export default async function LatestPropertiesCard({ card, locale, t }: any) {
+export default function LatestPropertiesCard({ card, locale, t }: any) {
   // const i18nNamespaces = ["Pages_LandingPage"];
   // const { t } = await initTranslations(locale, i18nNamespaces);
+  // const { t } = useTranslation("Pages_LandingPage");
 
   return (
     <div className="bg-custome-white text-custome-blue rounded ">
@@ -33,7 +36,10 @@ export default async function LatestPropertiesCard({ card, locale, t }: any) {
           height={1000}
           className="w-full"
         /> */}
-        <Link href={``} className="group">
+        <Link        
+          className="group"
+          href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
+        >
           {/* *********************************************************************************************************************** */}
 
           {/* start image */}
@@ -83,7 +89,7 @@ export default async function LatestPropertiesCard({ card, locale, t }: any) {
 
         <div className="">
           <Link
-            href={``}
+            href={`properties/${card.title.replace(/\s+/g, "-")}`}
             className="broker__details px-3 pb-3 pt-1 flex justify-start items-center  h-fit gap-3 w-fit"
           >
             <Image

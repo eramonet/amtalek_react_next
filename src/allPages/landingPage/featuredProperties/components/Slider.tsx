@@ -64,6 +64,7 @@ export default function Slider({ data, locale, countrie }: any) {
       >
         {data?.cards[0].map((slide: any) => (
           <SwiperSlide
+            // onClick={() => localStorage.setItem("propertyId", slide.listing_number)}
             key={slide.id}
             className="relative text-custome-blue h-[450px] max-xl:h-[450px] max-lg:h-[440px] max-md:h-[450px]"
           >
@@ -91,7 +92,10 @@ export default function Slider({ data, locale, countrie }: any) {
                 </span>
               </div>
             </div>
-            <Link href={``} className="group">
+            <Link
+              href={`properties/${slide.listing_number + "/" + slide.title.replace(/\s+/g, "-")}`}
+              className="group"
+            >
               <div className="overflow-hidden relative">
                 <Image
                   src={slide.primary_image}

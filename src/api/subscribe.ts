@@ -11,7 +11,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // نفذ أي عملية مثل تخزين البيانات
-    console.log("Received email:", email);
+    // console.log("Received email:", email);
 
     return res.status(200).json({ message: "Email submitted successfully" });
   } else {

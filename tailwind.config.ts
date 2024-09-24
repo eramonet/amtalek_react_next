@@ -21,6 +21,8 @@ const config: Config = {
         "transparent-blue": "#00587961",
         "custome-yellow": "#ffd119",
         "custome-gray": "#ced4d6",
+        "custome-red": "#ff6665",
+        primary: "#01425a",
       },
       container: {
         center: true,

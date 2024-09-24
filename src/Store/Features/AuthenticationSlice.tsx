@@ -1,3 +1,4 @@
+import { TUser } from "@/Types/AppTypes";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -18,7 +19,7 @@ const initialState = {
   })(),
   showLoginPopUp: false,
   registrationUserType: "",
-  userProfileData: {} as any | null,
+  userProfileData: {} as TUser | null,
 };
 const AuthorizedSlice = createSlice({
   name: "Authorized",
