@@ -23,7 +23,7 @@ function PasswordComponent({
   confirmFor,
   disabled,
   t,
-}) {
+}: any) {
   const [hide, setHide] = useState(false);
   const { i18n } = useTranslation();
   return (
@@ -51,9 +51,7 @@ function PasswordComponent({
             dir={dir}
             className={` ${
               Bgcolor === "dark" ? "dark-bg-inputs" : "light-bg-inputs"
-            } w-full ${inputStyle} ${
-              disabled && "opacity-50 cursor-not-allowed"
-            }`}
+            } w-full ${inputStyle} ${disabled && "opacity-50 cursor-not-allowed"}`}
             type={`${hide ? "text" : "password"}`}
             id={name}
             placeholder={placeholder}
@@ -86,10 +84,8 @@ function PasswordComponent({
         {/**no confirmFor until now`) */}
         {errors[name] && (
           <p className="pt-2 text-xs text-red-500">
-            {errors[name].type === "required" &&
-              t(`validations.${name}.required`)}
-            {errors[name].type === "minLength" &&
-              t(`validations.${name}.minLength`)}
+            {errors[name].type === "required" && t(`validations.${name}.required`)}
+            {errors[name].type === "minLength" && t(`validations.${name}.minLength`)}
             {errors[name].type === "validate" &&
               t(`validations.${name}.validate`, { context: confirmFor })}
             {/* {errors[name].type === "validate" &&
@@ -102,19 +98,16 @@ function PasswordComponent({
         )}
         {
           //!--- server errors --------
-          ServerErrors?.response?.data?.errors &&
-            ServerErrors?.response?.data?.errors[name] && (
-              <p className="pt-2 text-xs text-red-500">
-                {ServerErrors?.response?.data?.errors &&
-                  ServerErrors?.response?.data?.errors[name][0]}
-              </p>
-            )
+          ServerErrors?.response?.data?.errors && ServerErrors?.response?.data?.errors[name] && (
+            <p className="pt-2 text-xs text-red-500">
+              {ServerErrors?.response?.data?.errors &&
+                ServerErrors?.response?.data?.errors[name][0]}
+            </p>
+          )
         }
         {name === "confirm_password" && (
           <div className="w-full mt-2">
-            {i18n.language === "ar"
-              ? " يجب ان يكون متطابق لكلمة السر"
-              : "Must be same as Password"}
+            {i18n.language === "ar" ? " يجب ان يكون متطابق لكلمة السر" : "Must be same as Password"}
           </div>
         )}
       </div>

@@ -34,21 +34,38 @@ export default function PropertyOwner({ data, locale }: any) {
     data: CallData,
     isSuccess: CallSuccess,
     error: CallError,
-  } = usePostData(false, () => {});
-  useEffect(() => {
-    if (CallSuccess) {
-      showModal();
+  } = usePostData(
+    false, // showToasts
+    () => {
+      // onSuccess callback
+      console.log("Request succeeded!");
+    },
+    true, // authorizedAPI (تأكد مما إذا كنت تحتاج لهذا أن يكون true أو false)
+    (error: any) => {
+      // onError callback
+      console.error("An error occurred:", error);
     }
-  }, [CallSuccess]);
+  );
+
   const {
     mutate: EmailMutate,
     data: EmailData,
     isSuccess: EmailSuccess,
     error: EmailError,
-  } = usePostData(false, () => {});
+  } = usePostData(
+    false, // showToasts
+    () => {
+      console.log("Email sent successfully!");
+    },
+    true, // authorizedAPI (حدد هنا إذا كان الـ API يتطلب توثيقًا)
+    (error: any) => {
+      console.error("Error occurred while sending email:", error);
+    }
+  );
+
   useEffect(() => {
     if (EmailSuccess) {
-      window.open(`mailto:${data?.broker_details[0]?.email}`);
+      window.open(`mailto:${EmailData?.broker_details[0]?.email}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [EmailSuccess]);
@@ -58,11 +75,21 @@ export default function PropertyOwner({ data, locale }: any) {
     data: WhatsappData,
     isSuccess: WhatsappSuccess,
     error: WhatsappError,
-  } = usePostData(false, () => {});
+  } = usePostData(
+    false, // showToasts: تعطيل إشعارات الـ toasts.
+    () => {
+      console.log("WhatsApp message sent successfully!");
+    },
+    true, // authorizedAPI: true إذا كانت الـ API تتطلب توثيقًا (قم بتغييره إلى false إذا لم يكن التوثيق مطلوبًا).
+    (error: any) => {
+      console.error("Error occurred while sending WhatsApp message:", error);
+    }
+  );
+
   useEffect(() => {
     if (WhatsappSuccess) {
       window.open(
-        `https://web.whatsapp.com/send?phone=+2${data?.broker_details[0]?.phone}&text=${t(
+        `https://web.whatsapp.com/send?phone=+2${WhatsappData?.broker_details[0]?.phone}&text=${t(
           "message",
           { link: window.location.href }
         )}`

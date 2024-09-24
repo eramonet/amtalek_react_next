@@ -26,7 +26,10 @@ import { useTranslation } from "react-i18next";
 function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
 
-  const recaptchaRef = useRef(null);
+  type ReCAPTCHAInstance = {
+    reset: () => void;
+  };
+  const recaptchaRef = useRef<ReCAPTCHAInstance | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const user = useSelector(userData);
   // const userProfile = useSelector(userProfileData) as TUser | null;
@@ -62,24 +65,25 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
     isLoading,
     error: ServerErrors,
     isSuccess,
-  }: any = usePostData(true, () => {
-    recaptchaRef.current.reset();
-    reset();
-    setValue("not_ropot", "no");
-    setSubmitted(false);
-    if (type === "offer") {
-      refetch();
-    }
-  });
-  const onChange = useCallback(
-    (value: any) => {
-      if (value) {
-        setValue("not_ropot", "yes");
-      } else {
-        setValue("not_ropot", "no");
+  }: any = usePostData(
+    true, // showToasts
+    () => {
+      // onSuccess callback
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+      reset();
+      setValue("not_ropot", "no");
+      setSubmitted(false);
+      if (type === "offer") {
+        refetch();
       }
     },
-    [setValue]
+    true, // authorizedAPI - حدد ما إذا كنت بحاجة إلى API مصرح
+    (error: any) => {
+      // onError callback
+      console.error("Error occurred:", error);
+    }
   );
 
   const onSubmit = useCallback(
@@ -209,21 +213,21 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
           ""
         )} */}
         <NumberComponent
-              register={register}
-              errors={errors}
-              ServerErrors={ServerErrors}
-              name="offer"
-              placeholder={t("AsideForm.offer.placeholder")}
-              width="w-full"
-              withIcon
-              Bgcolor={Bgcolor}
-              icon={"offer"}
-              t={t}
-            />
-            
+          register={register}
+          errors={errors}
+          ServerErrors={ServerErrors}
+          name="offer"
+          placeholder={t("AsideForm.offer.placeholder")}
+          width="w-full"
+          withIcon
+          Bgcolor={Bgcolor}
+          icon={"offer"}
+          t={t}
+        />
+
         <ReCaptcha
           refs={recaptchaRef}
-          onChange={onChange}
+          onChange={onchange}
           error={submitted && not_ropot === "no"}
           ServerError={
             ServerErrors?.response?.data?.errors?.not_ropot &&

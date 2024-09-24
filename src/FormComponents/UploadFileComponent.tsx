@@ -1,9 +1,6 @@
-import {
-  faArrowUpFromBracket,
-  faImage,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpFromBracket, faImage, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 function UploadFileComponent({
@@ -23,10 +20,10 @@ function UploadFileComponent({
   serverFileSrc,
   fileFor,
   primarySubmit,
-}) {
-  const [uploadedFileSrc, setUploadedFileSrc] = useState(null);
+}: any) {
+  const [uploadedFileSrc, setUploadedFileSrc] = useState<any>(null);
   useEffect(() => {
-    const subscription = watch((input) => {
+    const subscription = watch((input: any) => {
       if (input?.[name]?.[0]?.name?.length > 0) {
         let imageUrl = URL.createObjectURL(input?.[name]?.[0]);
         setUploadedFileSrc(imageUrl);
@@ -74,27 +71,19 @@ function UploadFileComponent({
             </button>
           )}
           {serverFileSrc || uploadedFileSrc ? (
-            <img
-              className={`w-full  h-full ${
-                required ? "object-fill" : "object-cover"
-              }  ${
-                fileFor === "user" || fileFor === "user_register"
-                  ? "rounded-full"
-                  : ""
+            <Image
+              width={1000}
+              height={1000}
+              className={`w-full  h-full ${required ? "object-fill" : "object-cover"}  ${
+                fileFor === "user" || fileFor === "user_register" ? "rounded-full" : ""
               }`}
               src={uploadedFileSrc || serverFileSrc}
               alt="da"
             />
           ) : (
             <FontAwesomeIcon
-              className={`${
-                fileFor === "user_register" ? "text-6xl " : "text-8xl "
-              } opacity-50`}
-              icon={
-                fileFor === "user" || fileFor === "user_register"
-                  ? faUser
-                  : faImage
-              }
+              className={`${fileFor === "user_register" ? "text-6xl " : "text-8xl "} opacity-50`}
+              icon={fileFor === "user" || fileFor === "user_register" ? faUser : faImage}
             />
           )}
         </label>
@@ -119,7 +108,7 @@ function UploadFileComponent({
             accept="image/jpg, image/jpeg, image/png, image/webp"
             {...register(`${name}`, {
               required: required,
-              validate: (value) => value && !(value[0]?.size > 6000000),
+              validate: (value: any) => value && !(value[0]?.size > 6000000),
             })}
           />
           <div
@@ -143,21 +132,18 @@ function UploadFileComponent({
                 : ""
             } `}
           >
-            {errors[name].type === "required" &&
-              t(`validations.${name}.required`)}
+            {errors[name].type === "required" && t(`validations.${name}.required`)}
 
-            {errors[name].type === "validate" &&
-              t(`validations.${name}.validate`)}
+            {errors[name].type === "validate" && t(`validations.${name}.validate`)}
           </p>
         )}
         {
           //!--- server errors --------
-          ServerErrors?.response?.data?.errors &&
-            ServerErrors?.response?.data?.errors[name] && (
-              <p className="pt-2 text-xs text-red-500">
-                {ServerErrors?.response?.data?.errors[name][0]}
-              </p>
-            )
+          ServerErrors?.response?.data?.errors && ServerErrors?.response?.data?.errors[name] && (
+            <p className="pt-2 text-xs text-red-500">
+              {ServerErrors?.response?.data?.errors[name][0]}
+            </p>
+          )
         }
       </label>
     </>

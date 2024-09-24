@@ -26,10 +26,10 @@ function AmenitiesSelect({ t, amenitiesData, getValues, setValue }: any) {
           onChange={handleChange}
           style={{ width: "100%", color: "var(--primary-color)" }}
           options={options}
-          filterOption={(input, option) =>
+          filterOption={(input: any, option: any) =>
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
-          filterSort={(optionA, optionB) =>
+          filterSort={(optionA: any, optionB: any) =>
             (optionA?.label ?? "").toLowerCase().localeCompare((optionB?.label ?? "").toLowerCase())
           }
         />

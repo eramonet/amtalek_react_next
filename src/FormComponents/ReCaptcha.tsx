@@ -1,6 +1,6 @@
 import ReCAPTCHA from "react-google-recaptcha";
 
-function ReCaptcha({ refs, onChange, error, ServerError, t }) {
+function ReCaptcha({ refs, onChange, error, ServerError, t }: any) {
   return (
     <div className=" overflow-hidden min-h-[80px]">
       <ReCAPTCHA
@@ -9,11 +9,7 @@ function ReCaptcha({ refs, onChange, error, ServerError, t }) {
         sitekey="6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr"
         onChange={onChange}
       />{" "}
-      {error && (
-        <p className="pt-4 text-xs text-red-500">
-          {t(`validations.ReCAPTCHA.required`)}
-        </p>
-      )}
+      {error && <p className="pt-4 text-xs text-red-500">{t(`validations.ReCAPTCHA.required`)}</p>}
       {ServerError && (
         <p className="pt-2 text-xs text-red-500">
           {
