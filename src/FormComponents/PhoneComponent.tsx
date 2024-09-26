@@ -49,9 +49,11 @@ function PhoneComponent({
         <input
           dir={dir}
           disabled={disabled}
-          className={`w-full ${
+          className={`w-full 
+            ${
             withIcon && "pl-9 focus:pl-[37.5px] rtl:pl-0 rtl:pr-9 rtl:focus:pr-[37.5px]"
-          }  ${Bgcolor === "dark" ? "dark-bg-inputs" : "light-bg-inputs"}`}
+            }  ${Bgcolor === "dark" ? "dark-bg-inputs" : "light-bg-inputs"}
+            `}
           type="text"
           inputMode="numeric"
           id={name}

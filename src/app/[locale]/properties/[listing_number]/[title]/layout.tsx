@@ -10,10 +10,13 @@ export default async function PropertyDetailsLayout({
   children: React.ReactNode;
   params: { locale: string; listing_number: string };
 }) {
-  const i18nNamespaces = ["Pages_PropertyDetails", "MainComponents_SearchForm"];
+  const i18nNamespaces = [
+    "Pages_PropertyDetails",
+    "MainComponents_SearchForm",
+    "Pages_LandingPage",
+    "Pages_AllProperties",
+  ];
   const { t, resources, i18n } = await initTranslations(locale, i18nNamespaces);
-
-  // console.log(listing_number);
 
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>

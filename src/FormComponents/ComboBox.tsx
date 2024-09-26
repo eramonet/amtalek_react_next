@@ -3,7 +3,6 @@ import { useCombobox } from "downshift";
 import { useState, useEffect } from "react";
 
 export default function ComboBox({
-  width = "w-full",
   setValue,
   setSearchParams,
   stateName,
@@ -11,13 +10,14 @@ export default function ComboBox({
   data = [],
   light,
   NotFoundMessage = "No data found",
+  callBcFn,
   getDefaultValueFromURL,
   searchParams,
   selectBox,
   isSuccess,
-  callBcFn,
   company_name,
   company_logo,
+  // width = "w-full",
 }: any) {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [inputValue, setInputValue] = useState("");

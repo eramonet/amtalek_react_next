@@ -1,14 +1,36 @@
 "use client";
 import ShareOptions from "@/allPages/landingPage/latestProperties/components/ShareOptions";
+import { usePostData } from "@/Hooks/usePostData";
+import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { FaBath, FaBed, FaCalendarAlt, FaCamera, FaEye, FaRegHeart } from "react-icons/fa";
 import { FaBoltLightning, FaMaximize } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import "./style.css";
+// import Lottie from "lottie-react";
+// import animationData from "@/assets/heart.json";
 
 export default function PropertyCard({ card, locale }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
+  const dispatchRedux = useDispatch();
+  const user = useSelector(userData);
+  const { mutate }: any = usePostData(
+    true,
+    () => {
+      console.log("Request succeeded!");
+    },
+    true,
+    (error: any) => {
+      console.error("An error occurred:", error);
+
+      //like from all properties doesn't have onSuccuss and favorites page can only unlike the property, so it has onSuccess
+      // props?.onSuccess ? props?.onSuccess(props.slide?.id) : "";
+    }
+  );
+  // console.log(card?.rent_duration);
 
   return (
     <div
@@ -67,7 +89,7 @@ export default function PropertyCard({ card, locale }: any) {
             sale_price: card?.sale_price,
             rent_price: card?.rent_price,
             curr: card?.currency,
-            duration: card?.rent_duration,
+            duration: t(`PropertyCard.${card?.rent_duration}`),
           })}
         </div>
       </div>
@@ -80,7 +102,7 @@ export default function PropertyCard({ card, locale }: any) {
           <p className="truncate text-sm">{card.address}</p>
           <div className="flex justify-start items-center gap-1">
             <IoLocationOutline />
-            <span className="truncate ">
+            <span className="truncate">
               {card.city} | {card.region} | {card.sub_region}
             </span>
           </div>
@@ -142,7 +164,83 @@ export default function PropertyCard({ card, locale }: any) {
           </div>
           {/* ********************************************************************************************* */}
           <div className="flex items-center gap-3">
-            <FaRegHeart color="red" size={24} />
+            {/* // <Lottie
+            // animationData={animationData} */}
+            {/* <FaRegHeart
+              color="red"
+              className="cursor-pointer"
+              size={24}
+              onClick={
+                !user?.token
+                  ? () => dispatchRedux(setShowLoginPopUp(true))
+                  : () =>
+                      mutate({
+                        api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                        data: { property_id: card?.id },
+                        file: undefined,
+                      })
+              }
+            /> */}
+            <div
+              className="property__love cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3"
+              // onClick={
+              //   !user?.token
+              //     ? () => dispatchRedux(setShowLoginPopUp(true))
+              //     : () =>
+              //         mutate({
+              //           api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+              //           data: { property_id: card?.id },
+              //           file: undefined,
+              //         })
+              // }
+            >
+              <div className="heart-container" title="Like">
+                {user?.token && (
+                  <input
+                    defaultChecked={Number(card?.is_fav) === 1 ? true : false}
+                    type="checkbox"
+                    className="heart-checkbox"
+                    id={card?.id}
+                    onChange={() => {
+                      mutate({
+                        api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                        data: { property_id: card?.id },
+                        file: undefined,
+                      });
+                    }}
+                  />
+                )}
+                <div className="svg-container">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="svg-outline"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                  </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="svg-filled"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                  </svg>
+                  <svg
+                    className="svg-celebrate"
+                    width="100"
+                    height="100"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polygon points="10,10 20,20"></polygon>
+                    <polygon points="10,50 20,50"></polygon>
+                    <polygon points="20,80 30,70"></polygon>
+                    <polygon points="90,10 80,20"></polygon>
+                    <polygon points="90,50 80,50"></polygon>
+                    <polygon points="80,80 70,70"></polygon>
+                  </svg>
+                </div>
+              </div>
+            </div>
             {/* <div className="flex justify-end gap- items-center mt-"> */}
             {/* <FaShareAlt size={24} /> */}
 

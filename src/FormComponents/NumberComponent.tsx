@@ -32,7 +32,7 @@ function NumberComponent({
       {withIcon && icon === "offer" && (
         <FontAwesomeIcon
           className=".input__icon w-4  absolute left-3 rtl:left-auto rtl:right-3 top-[13px] opacity-50"
-          icon={faCommentDollar} // تأكد من أنك تعطي أيقونة صالحة هنا
+          icon={faCommentDollar}
         />
       )}
 

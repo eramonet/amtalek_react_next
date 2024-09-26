@@ -47,7 +47,6 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(LocationsData);
 
   function reducer(state: any, action: any) {
     switch (action.type) {
@@ -123,7 +122,6 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
     // navigate,
     [isValid, lang, searchParams, t]
   );
-  // console.log(state.toggleAmentiasOptions);
 
   return (
     <form

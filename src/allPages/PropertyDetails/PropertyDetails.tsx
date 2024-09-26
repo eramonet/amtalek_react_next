@@ -14,6 +14,7 @@ import PropertyVideo from "./components/PropertyVideo";
 import PropertyLocation from "./components/PropertyLocation";
 import SimilarProperty from "./components/SimilarProperty";
 import Loader from "@/components/loader/Loader";
+import SendMessage from "./components/SendMessage";
 
 export default async function PropertyDetails({ locale, listing_number }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -49,6 +50,8 @@ export default async function PropertyDetails({ locale, listing_number }: any) {
           <PropertyVideo data={allData[0]} locale={locale} />
 
           <SimilarProperty data={allData[0]} locale={locale} />
+
+          <SendMessage data={allData[0]} locale={locale} t={t} />
         </div>
       )}
     </section>

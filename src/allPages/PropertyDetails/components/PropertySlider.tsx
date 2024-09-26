@@ -33,16 +33,19 @@ function PropertySlider({ data, style, fullWidth }: any) {
         {sliders?.length > 3 && (
           <button
             onClick={() => mainSwiper.slidePrev()}
-            className="prev-slider-btn absolute !bg-bg left-2 top-1/2 -translate-y-1/2 bg-transparent text-custome-blue border-2 hover:scale-105 border-custome-blue flex justify-center items-center round transition-all duration-300 ease-in-out active:scale-90 h-9 w-9 min-h-[36px] min-w-[36px] cursor-pointer z-10 asm:hidden"
+            className="prev-slider-btn absolute !bg-custome-white left-2 top-1/2 -translate-y-1/2 bg-transparent text-custome-blue border-2 hover:scale-105 border-custome-blue flex justify-center items-center rounded transition-all duration-300 ease-in-out active:scale-90 h-9 w-9 min-h-9 min-w-9 cursor-pointer z-10 asm:hidden"
           >
             <FontAwesomeIcon className="rotate-180 text-lg font-bold" icon={faChevronRight} />
           </button>
         )}
         <Swiper
-          className={`ItemSlider__top--slider w-full bg- min-h-fit md:w-full mb-9`}
+          className={`ItemSlider__top--slider w-full bg-custome-white min-h-fit md:w-full mb-9`}
           navigation
-          loop
-          autoplay
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false, // استمر في التشغيل حتى بعد التفاعل
+          }}
           modules={[Navigation, Thumbs, Autoplay]}
           thumbs={{ swiper: thumbsSwiper }}
           onSwiper={setMainSwiper}
@@ -70,38 +73,37 @@ function PropertySlider({ data, style, fullWidth }: any) {
         {sliders?.length > 3 && (
           <button
             onClick={() => mainSwiper.slideNext()}
-            className="next-slider-btn absolute right-2 top-1/2 -translate-y-1/2 bg-custome-blue text-grey border-2 border-custome-blue hover:scale-105 flex justify-center items-center round transition-all duration-300 ease-in-out active:scale-90 h-9 w-9 min-h-[36px] min-w-[36px] cursor-pointer z-10 asm:hidden"
+            className="next-slider-btn absolute right-2 top-1/2 -translate-y-1/2 bg-custome-blue text-custome-venice border-2 border-custome-blue hover:scale-105 flex justify-center items-center rounded transition-all duration-300 ease-in-out active:scale-90 h-9 w-9 min-h-9 min-w-9 cursor-pointer z-10 asm:hidden"
           >
             <FontAwesomeIcon className="text-lg font-bold" icon={faChevronRight} />
           </button>
         )}
       </div>
-      <div className="bottom-slider bg- relative">
+      <div className="bottom-slider bg-custome-white relative">
         {sliders?.length > 0 && (
           <Swiper
             className="ItemSlider__bottom-slider"
             modules={[Thumbs]}
-            loop
-            slidesPerView={4} // لضمان عرض 3 صور مصغرة على الأقل
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false, // استمر في التشغيل حتى بعد التفاعل
+            }}
+            slidesPerView={4}
             spaceBetween={10}
             centeredSlides={true}
             onSwiper={setThumbsSwiper}
-            // watchSlidesProgress={true} // لتتبع الصورة النشطة
+            watchSlidesProgress={true}
           >
-            {/*  ${
-                    thumbsSwiper && index === thumbsSwiper.activeIndex ? "translate-y-[-10px]" : ""
-                    } */}
             {sliders?.map((slide, index) => (
               <SwiperSlide key={slide?.id}>
                 <div
-                  className={`slide__img--wrapper !w-full aspect-square border-custome-blue round !h-full max-h-[250px] max-w-[220px] asm:h-auto cursor-pointer transition-transform duration-300 
-                   
-                    `}
+                  className={`slide__img--wrapper !w-full aspect-square border-custome-blue rounded !h-full max-h-64 max-w-56 asm:h-auto cursor-pointer transition-transform duration-300`}
                 >
                   <Image
                     width={1000}
                     height={1000}
-                    className="w-full !h-full object-cover round"
+                    className="w-full !h-full object-cover rounded"
                     src={slide?.src}
                     alt={slide?.id}
                   />

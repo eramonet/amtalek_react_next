@@ -66,9 +66,8 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
     error: ServerErrors,
     isSuccess,
   }: any = usePostData(
-    true, // showToasts
+    true,
     () => {
-      // onSuccess callback
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
       }
@@ -79,9 +78,8 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
         refetch();
       }
     },
-    true, // authorizedAPI - حدد ما إذا كنت بحاجة إلى API مصرح
+    true,
     (error: any) => {
-      // onError callback
       console.error("Error occurred:", error);
     }
   );
@@ -89,23 +87,36 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
   const onSubmit = useCallback(
     (data: any) => {
       setSubmitted(true);
+      const { message, ...rest } = data;
       if (not_ropot !== "no") {
         if (for_what !== "for_both") {
           mutate({
             api: api,
-            data: { ...data, ...params, offer_type: for_what },
+            data: { ...rest, ...params, offer_type: for_what },
             file: undefined,
           });
         } else {
           mutate({
             api: api,
-            data: { ...data, ...params },
+            data: { ...rest, ...params },
             file: undefined,
           });
         }
       }
     },
     [api, for_what, mutate, not_ropot, params]
+  );
+
+  //
+  const onChange = useCallback(
+    (value: any) => {
+      if (value) {
+        setValue("not_ropot", "yes");
+      } else {
+        setValue("not_ropot", "no");
+      }
+    },
+    [setValue]
   );
 
   return (
@@ -227,7 +238,7 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
 
         <ReCaptcha
           refs={recaptchaRef}
-          onChange={onchange}
+          onChange={onChange}
           error={submitted && not_ropot === "no"}
           ServerError={
             ServerErrors?.response?.data?.errors?.not_ropot &&
@@ -237,6 +248,30 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
           }
           t={t}
         />
+
+        {for_what === "for_both" && (
+          <div className="flex w-full flex-col items-start text-lg justify-center gap-2">
+            <ComboBox
+              setValue={setValue}
+              data={offerOptions}
+              placeholder={t("AsideForm.offer_type.placeholder")}
+              stateName={"offer_type"}
+              isSuccess={isSuccess}
+            />
+            {submitted && offer_type === "" && (
+              <p className="pt-2 text-xs text-red-500">{t("AsideForm.offer_type.err_msg")}</p>
+            )}
+            {
+              //!--- server errors --------
+              ServerErrors?.response?.data?.errors?.offer_type && (
+                <p className="pt-2 text-xs text-red-500">
+                  {ServerErrors?.response?.data?.errors?.offer_type[0]}
+                </p>
+              )
+            }
+          </div>
+        )}
+
         {/** Submit Button */}
         <SubmitBtnComponent
           disabled={

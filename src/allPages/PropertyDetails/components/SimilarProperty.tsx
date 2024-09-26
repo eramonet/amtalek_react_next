@@ -10,22 +10,24 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useRef } from "react";
 import Heading from "@/components/Heading";
+import { useDispatch } from "react-redux";
 
 export default function SimilarProperty({ data, locale }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
   const swiperRef = useRef(null);
-
+  // const dispatchRedux = useDispatch();
+  
   return (
     <div>
       {data?.similar_properties?.length > 0 && (
         <div className="Property__SIMILAR--PROPERTIES">
           <div className="flex justify-between items-center asm:justify- ">
             <Heading>
-            {t("headings.SIMILAR_PROPERTIES", {
-              defaultValue: t("headings.SIMILAR_PROPERTIES", {
-                lng: locale === "en" ? "en" : "",
-              }),
-            })}{" "}
+              {t("headings.SIMILAR_PROPERTIES", {
+                defaultValue: t("headings.SIMILAR_PROPERTIES", {
+                  lng: locale === "en" ? "en" : "",
+                }),
+              })}{" "}
             </Heading>
             <div className="featured__slider--arrows flex justify-end gap-5 items-center asm:hidden">
               <button
@@ -78,6 +80,7 @@ export default function SimilarProperty({ data, locale }: any) {
               },
             }}
             dir={locale === "ar" ? "rtl" : "ltr"}
+            className="h-[640px]"
           >
             {data?.similar_properties?.map((property: any, i: number) => (
               <SwiperSlide key={i}>

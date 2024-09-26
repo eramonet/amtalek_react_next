@@ -37,7 +37,7 @@ export default function FeaturedPropertiesAside() {
 
   return (
     <div className="w-full FeaturedProperties__slider--container relative">
-      <div className="FeaturedProperties__title--arrows mb-5 flex  justify-between items-center">
+      <div className="FeaturedProperties__title--arrows mb-5 flex justify-between items-center">
         <h3 className="font-medium text-xl ">{t("FeaturedPropertiesAside.title")}</h3>
         {data?.length > 1 && (
           <div className="FeaturedProperties__slider--arrows flex justify-end gap-5 items-center ">
@@ -87,7 +87,7 @@ export default function FeaturedPropertiesAside() {
                     <Image
                       width={1000}
                       height={1000}
-                      className="w-full h-full object-cove  cursor-pointer group-hover:scale-110 trns"
+                      className="w-full h-full object-cove cursor-pointer ease-in duration-300 group-hover:scale-110 trns"
                       src={slide?.primary_image}
                       alt={slide?.title}
                     />
@@ -111,7 +111,7 @@ export default function FeaturedPropertiesAside() {
                       sale_price: slide?.sale_price,
                       rent_price: slide?.rent_price,
                       curr: slide?.currency,
-                      duration: slide?.rent_duration,
+                      duration: t(`PropertyCard.${slide?.rent_duration}`),
                     })}
                   </p>
                   <p className="absolute  text-sm round top-3 left-3 rtl:right-auto rtl:left-3 px-2 py-1 bg-custome-yellow text-secondary z-40">

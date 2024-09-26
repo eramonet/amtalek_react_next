@@ -22,8 +22,6 @@ function TextComponent({
   disabled = false,
   loc,
 }: any) {
-  console.log(disabled);
-
   const { i18n } = useTranslation();
   return (
     <label

@@ -13,7 +13,7 @@ function MessageComponent({
 }: any) {
   return (
     <label
-      className={`flex ${width} flex-col items-start justify-center gap-2 relative `}
+      className={`flex ${width} flex-col items-start justify-center gap-2 relative`}
       htmlFor="message"
     >
       <FontAwesomeIcon
@@ -23,8 +23,8 @@ function MessageComponent({
 
       <textarea
         placeholder={placeholder}
-        className={`resize-none placeholder:text-secondary placeholder:opacity-50 placeholder:text-[0.9rem]  py-[0.5rem] px-9 focus:pl-[37.5px] rtl:focus:pr-[37.5px] ${
-          Bgcolor === "dark" ? "bg-bg focus:bg-bg focus:shadow-none" : ""
+        className={`resize-none placeholder:text-custome-blue placeholder:opacity-50 placeholder:text-[0.9rem] py-[0.5rem] px-9 focus:pl-[37.5px] rtl:focus:pr-[37.5px] ${
+          Bgcolor === "dark" ? "bg-custome-white focus:bg-custome-white focus:shadow-none" : ""
         }`}
         {...register("message", {
           required: true,

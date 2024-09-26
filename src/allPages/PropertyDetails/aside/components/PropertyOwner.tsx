@@ -1,6 +1,6 @@
 "use client";
 import { usePostData } from "@/Hooks/usePostData";
-import { userData } from "@/Store/Features/AuthenticationSlice";
+import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
 import { Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,12 +8,13 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function PropertyOwner({ data, locale }: any) {
   const { t } = useTranslation("Pages_PropertyDetails");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatchRedux = useDispatch();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -23,18 +24,19 @@ export default function PropertyOwner({ data, locale }: any) {
     setIsModalOpen(false);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCancel = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const user = useSelector(userData);
+  // console.log(data.broker_details[0]?.phone);
 
   const {
     mutate: CallMutate,
     data: CallData,
     isSuccess: CallSuccess,
     error: CallError,
-  } = usePostData(
+  }: any = usePostData(
     false, // showToasts
     () => {
       // onSuccess callback
@@ -46,13 +48,18 @@ export default function PropertyOwner({ data, locale }: any) {
       console.error("An error occurred:", error);
     }
   );
+  useEffect(() => {
+    if (CallSuccess) {
+      showModal();
+    }
+  }, [CallSuccess]);
 
   const {
     mutate: EmailMutate,
     data: EmailData,
     isSuccess: EmailSuccess,
     error: EmailError,
-  } = usePostData(
+  }: any = usePostData(
     false, // showToasts
     () => {
       console.log("Email sent successfully!");
@@ -62,20 +69,26 @@ export default function PropertyOwner({ data, locale }: any) {
       console.error("Error occurred while sending email:", error);
     }
   );
-
   useEffect(() => {
     if (EmailSuccess) {
-      window.open(`mailto:${EmailData?.broker_details[0]?.email}`);
+      window.open(`mailto:${data?.broker_details[0]?.email}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [EmailSuccess]);
+
+  // useEffect(() => {
+  //   if (EmailSuccess) {
+  //     window.open(`mailto:${EmailData?.broker_details[0]?.email}`);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [EmailSuccess]);
 
   const {
     mutate: WhatsappMutate,
     data: WhatsappData,
     isSuccess: WhatsappSuccess,
     error: WhatsappError,
-  } = usePostData(
+  }: any = usePostData(
     false, // showToasts: تعطيل إشعارات الـ toasts.
     () => {
       console.log("WhatsApp message sent successfully!");
@@ -88,15 +101,36 @@ export default function PropertyOwner({ data, locale }: any) {
 
   useEffect(() => {
     if (WhatsappSuccess) {
+      const phone = data.broker_details[0]?.phone;
+      const message = t("message", { link: window.location.href });
+      const encodedMessage = encodeURIComponent(message);
+
       window.open(
-        `https://web.whatsapp.com/send?phone=+2${WhatsappData?.broker_details[0]?.phone}&text=${t(
-          "message",
-          { link: window.location.href }
-        )}`
+        `https://web.whatsapp.com/send?phone=+2${phone}&text=${encodedMessage}`,
+        "_blank" // فتح الرابط في نافذة جديدة
       );
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [WhatsappSuccess]);
+
+  // console.log(CallError?.response?.status);
+
+  useEffect(() => {
+    if (
+      CallError?.response?.status === 401 ||
+      EmailError?.response?.status === 401 ||
+      WhatsappError?.response?.status === 401
+    ) {
+      console.log(WhatsappSuccess, "don");
+
+      dispatchRedux(setShowLoginPopUp(true));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [CallError?.response?.status, EmailError?.response?.status, WhatsappError?.response?.status]);
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <section className="PROPERTY__OWNER border border-custome-blue bg-custome-venice p-6 rounded flex flex-col items-center gap-9 w-full">
@@ -134,9 +168,9 @@ export default function PropertyOwner({ data, locale }: any) {
             // className="w-[98px] rtl:w-[160px] overflow-hidden bg- h-fit flex w-full"
             className="rtl:w-[160px] overflow-hidden bg- h-fit flex w-full"
           >
-            <h3 className="text-lg font-medium relative w-full ownerName">
+            <h3 className="text-lg font-medium relative w-full ownerName group">
               {data?.broker_details?.[0]?.name}
-              <span className="absolute -bottom-0 rtl:right-0 ltr:left-0 w-1/4 bg-[#005879] h-1 rounded"></span>
+              <span className="absolute -bottom-0 rtl:right-0 ltr:left-0 w-1/4 bg-custome-blue h-1 rounded ease-in duration-300 group-hover:w-1/2"></span>
             </h3>
           </Link>
 
