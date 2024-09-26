@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 
 import { TwitterShareButton, WhatsappShareButton } from "react-share";
 
-function Share({ type, style, data, t }) {
+function Share({ type, style, data, t }: any) {
   // const title = "test";
 
   return (

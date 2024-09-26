@@ -1,5 +1,5 @@
 import { memo } from "react";
-const Loader = memo(function Loader({ h }) {
+const Loader = memo(function Loader({ h }: any) {
   return (
     <section
       className={`w-full h-screen  ${
