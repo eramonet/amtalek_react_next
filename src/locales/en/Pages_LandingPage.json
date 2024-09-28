@@ -68,6 +68,9 @@
     "area_formatted": "{{area, number, area}}",
     "Bedrooms": "{{count, number}} Bedrooms",
     "Bathrooms": "{{count, number}} Bathrooms",
+    "yearly": "Yearly",
+    "monthly": "Monthly",
+    "daily": "Daily",
     "Month": "Month",
     "share_options": {
       "Facebook": "Facebook",

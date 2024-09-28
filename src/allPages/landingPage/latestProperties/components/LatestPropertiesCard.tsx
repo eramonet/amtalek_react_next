@@ -1,22 +1,19 @@
-// "use client";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBath, FaBed, FaCamera, FaEye, FaFacebook } from "react-icons/fa";
+import ShareOptions from "./ShareOptions";
+import FavoriteButton from "@/components/FavoriteButton";
+import { FaBath, FaBed, FaCamera, FaEye } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaCalendarAlt } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
-import initTranslations from "@/app/i18n";
-import { FaMaximize, FaShareNodes, FaXTwitter } from "react-icons/fa6";
-import ShareOptions from "./ShareOptions";
+import { FaBoltLightning, FaMaximize } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 
-export default function LatestPropertiesCard({ card, locale, t }: any) {
-  // const i18nNamespaces = ["Pages_LandingPage"];
-  // const { t } = await initTranslations(locale, i18nNamespaces);
-  // const { t } = useTranslation("Pages_LandingPage");
+export default function LatestPropertiesCard({ card, locale }: any) {
+  const { t } = useTranslation("Pages_LandingPage");
 
   return (
-    <div className="bg-custome-white text-custome-blue rounded ">
+    <div className="bg-custome-white text-custome-blue rounded">
       <div className="relative">
         <div className="">
           <div className="absolute top-2 right-3 py-1 px-2 rounded flex items-center justify-center gap-1 bg-custome-white text-custome-blue truncate">
@@ -36,39 +33,57 @@ export default function LatestPropertiesCard({ card, locale, t }: any) {
           height={1000}
           className="w-full"
         /> */}
-        <Link        
-          className="group"
-          href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
-        >
-          {/* *********************************************************************************************************************** */}
+        <div className="relative">
+          <div className="">
+            {/* <h3 className="absolute top-0 left-3 text-custome-white bg-custome-blue py-3 px-2 z-20">
+              <FaBoltLightning size={22} />
+            </h3> */}
+            <span className="absolute left-3 top-1 bg-custome-yellow text-secondary px-2 py-1 rounded z-20">
+              {t("PropertyCard.for_what", {
+                context: card?.for_what,
+              })}
+            </span>
 
-          {/* start image */}
-          <div className="overflow-hidden relative">
-            <Image
-              src={card.primary_image}
-              alt=""
-              // className="h-[450px] max-xl:h-[450px] max-lg:h-[440px] max-md:h-[450px] rounded transform transition-transform duration-500 group-hover:scale-105"
-              className="w-full h-60 transform transition-transform duration-500 group-hover:scale-105 "
-              width={1000}
-              height={1000}
-            />
-
-            {/* start hover and show eye */}
-            <div className="absolute bg-transparent-blue w-full h-full top-0 rounded -z-10 transition-opacity duration-300 opacity-0 group-hover:z-10 group-hover:opacity-100">
-              <FaEye className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-6xl" />
+            <div className="absolute top-2 right-3 py-1 px-2 rounded flex items-center justify-center gap-1 bg-custome-white text-custome-blue z-20">
+              <h3>{card.images_count}</h3>
+              <FaCamera />
             </div>
-            {/* end hover and show eye */}
           </div>
-          {/* end image */}
-        </Link>
+
+          <Link
+            className="group"
+            href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
+          >
+            {/* *********************************************************************************************************************** */}
+
+            {/* start image */}
+            <div className="overflow-hidden relative">
+              <Image
+                src={card.primary_image}
+                alt=""
+                // className="h-[450px] max-xl:h-[450px] max-lg:h-[440px] max-md:h-[450px] rounded transform transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-60 transform transition-transform duration-500 group-hover:scale-105 "
+                width={1000}
+                height={1000}
+              />
+
+              {/* start hover and show eye */}
+              <div className="absolute bg-transparent-blue w-full h-full top-0 rounded -z-10 transition-opacity duration-300 opacity-0 group-hover:z-10 group-hover:opacity-100">
+                <FaEye className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-6xl" />
+              </div>
+              {/* end hover and show eye */}
+            </div>
+            {/* end image */}
+          </Link>
+        </div>
         {/* *********************************************************************************************************************** */}
-        <div className="absolute bg-custome-blue text-custome-white bottom-0 right-0 rounded px-2 py-1">
+        <div className="absolute bg-custome-blue text-custome-white bottom-0 right-0 rounded px-2 py-1 z-20">
           {t("PropertyCard.price_formatted", {
             context: card?.for_what,
             sale_price: card?.sale_price,
             rent_price: card?.rent_price,
             curr: card?.currency,
-            duration: card?.rent_duration,
+            duration: t(`PropertyCard.${card?.rent_duration}`),
           })}
         </div>
       </div>
@@ -143,10 +158,11 @@ export default function LatestPropertiesCard({ card, locale, t }: any) {
           </div>
           {/* ********************************************************************************************* */}
           <div className="flex items-center gap-3">
-            <FaRegHeart color="red" size={24} />
-            {/* <div className="flex justify-end gap- items-center mt-"> */}
-            {/* <FaShareAlt size={24} /> */}
-
+            <FavoriteButton
+              id={card?.id}
+              is_fav={card?.is_fav}
+              className={`cursor-pointer borderx-[1px] borderx-secondary20 py-6 mr-4 rtl:mr-0 rtl:ml-4 px3`}
+            />
             <div className="group w-fit h-auto relative">
               {/* <FaShareNodes /> */}
               <ShareOptions card={card} locale={locale} />

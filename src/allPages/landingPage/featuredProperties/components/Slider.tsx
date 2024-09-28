@@ -10,9 +10,28 @@ import { FaBath, FaBed, FaCamera, FaRegHeart } from "react-icons/fa";
 import HeaderSection from "@/components/headerSection/HeaderSection";
 import { useTranslation } from "react-i18next";
 import { FaMaximize } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
+import { usePostData } from "@/Hooks/usePostData";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function Slider({ data, locale, countrie }: any) {
   const { t } = useTranslation("Pages_LandingPage");
+  const user = useSelector(userData);
+  const { mutate }: any = usePostData(
+    true,
+    () => {
+      console.log("Request succeeded!");
+    },
+    true,
+    (error: any) => {
+      console.error("An error occurred:", error);
+
+      //like from all properties doesn't have onSuccuss and favorites page can only unlike the property, so it has onSuccess
+      // onSuccess ? onSuccess(props.slide?.id) : "";
+    }
+  );
+  const dispatchRedux = useDispatch();
 
   return (
     <>
@@ -113,8 +132,73 @@ export default function Slider({ data, locale, countrie }: any) {
               <div className="border-2 border-custome-blue rounded">
                 <div className="border-y border-custome-blue py-2 pr-3 pl-6 relative transition duration-300 ease-linear hover:text-custome-white group">
                   <div className="w-0 h-full absolute top-0 right-0 bg-custome-blue group-hover:w-full transition duration-300 ease-linear z-10"></div>
-                  <span className="absolute bg-custome-yellow rtl:left-0 ltr:right-0 top-0 p-2 block z-30">
-                    <FaRegHeart size={25} color="red" />
+                  <span className="absolute bg-custome-yellow rtl:left-0 ltr:right-0 top-0 p-2 block z-30 w-11 h-11">
+                    {/* {user?.actor_type !== "broker" && (
+                      <div
+                        className="property__love cursor-pointer bg-accent absolute top-0 right-0 rtl:right-auto rtl:left-0 p-2"
+                        onClick={
+                          !user?.token
+                            ? () => dispatchRedux(setShowLoginPopUp(true))
+                            : () =>
+                                mutate({
+                                  api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                                  data: { property_id: slide?.id },
+                                  file: undefined,
+                                })
+                        }
+                      >
+                        <div className="heart-container" title="Like">
+                          {user?.token && (
+                            <input
+                              defaultChecked={Number(slide?.is_fav) === 1 ? true : false}
+                              type="checkbox"
+                              className="heart-checkbox"
+                              id={slide?.id}
+                              onChange={() =>
+                                mutate({
+                                  api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                                  data: { property_id: slide?.id },
+                                })
+                              }
+                            />
+                          )}
+                          <div className="svg-container">
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="svg-outline"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                            </svg>
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="svg-filled"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                            </svg>
+                            <svg
+                              className="svg-celebrate"
+                              width="100"
+                              height="100"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polygon points="10,10 20,20"></polygon>
+                              <polygon points="10,50 20,50"></polygon>
+                              <polygon points="20,80 30,70"></polygon>
+                              <polygon points="90,10 80,20"></polygon>
+                              <polygon points="90,50 80,50"></polygon>
+                              <polygon points="80,80 70,70"></polygon>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    )} */}
+                    <FavoriteButton
+                      id={slide?.id}
+                      is_fav={slide?.is_fav}
+                      className={`cursor-pointer bg-accent absolute top-0 right-0 rtl:right-auto rtl:left-0 p-2 bg-custome-yellow ltr:right-0 block z-30 w-11 h-11`}
+                    />
                   </span>
                   <h3 className="truncate text-2xl relative z-20 rtl:pl-4 ltr:pr-4">
                     {slide.title}
@@ -124,13 +208,31 @@ export default function Slider({ data, locale, countrie }: any) {
                 <div className="flex items-center justify-between border-y border-custome-blue py-2 px-3">
                   <h3 className="flex items-center justify-center gap-2 truncate">
                     <FaMaximize />
-                    {slide.land_area}
+                    {/* {slide.land_area} */}
+                    {t("FeaturedPropertyCard.area_formatted", {
+                      area: slide?.land_area,
+                    })}
                   </h3>
                   <h3 className="flex items-center justify-center gap-2 truncate">
-                    <FaBed /> {slide.bed_rooms_no}
+                    <FaBed />
+                    {/* {slide.bed_rooms_no} */}
+                    {t("FeaturedPropertyCard.Bedrooms", {
+                      count: slide?.bed_rooms_no,
+                    })}
+                    {/* {t("PropertyCard.price_formatted", {
+                context: slide?.for_what,
+                sale_price: slide?.sale_price,
+                rent_price: slide?.rent_price,
+                curr: slide?.currency,
+                duration: t(`PropertyCard.${slide?.rent_duration}`),
+              })}} */}
                   </h3>
                   <h3 className="flex items-center justify-center gap-2">
-                    <FaBath /> {slide.bath_room_no}
+                    <FaBath />
+                    {/* {slide.bath_room_no} */}
+                    {t("FeaturedPropertyCard.Bathrooms", {
+                      count: slide?.bath_room_no,
+                    })}
                   </h3>
                 </div>
                 <p className="py-2 px-3 border-y border-custome-blue truncate">
@@ -138,12 +240,26 @@ export default function Slider({ data, locale, countrie }: any) {
                 </p>
                 {slide.sale_price && (
                   <p className="py-2 px-3 border-y border-custome-blue truncate">
-                    {slide.sale_price} {slide.currency}
+                    {/* {slide.sale_price} {slide.currency} */}
+                    {t("PropertyCard.price_formatted", {
+                      context: slide?.for_what,
+                      sale_price: slide?.sale_price,
+                      rent_price: slide?.rent_price,
+                      curr: slide?.currency,
+                      duration: t(`PropertyCard.${slide?.rent_duration}`),
+                    })}
                   </p>
                 )}
                 {slide.rent_price && (
                   <p className="py-2 px-3 border-y border-custome-blue truncate">
-                    {slide.rent_price} {slide.currency} / {slide.rent_duration}
+                    {/* {slide.rent_price} {slide.currency} / `{slide.rent_duration}` */}
+                    {t("PropertyCard.price_formatted", {
+                      context: slide?.for_what,
+                      sale_price: slide?.sale_price,
+                      rent_price: slide?.rent_price,
+                      curr: slide?.currency,
+                      duration: t(`PropertyCard.${slide?.rent_duration}`),
+                    })}
                   </p>
                 )}
               </div>

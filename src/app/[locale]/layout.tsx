@@ -2,12 +2,15 @@ import { dir } from "i18next";
 import TopHeader from "@/components/topHeader/TopHeader";
 import Header from "@/components/header/Header";
 import "./globals.css";
+import "./heart-animation.css";
 import Footer from "@/components/footer/Footer";
 import { Cairo, Roboto } from "next/font/google";
 import initTranslations from "../i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
 import i18nConfig from "../../../i18nConfig";
 import LayoutProvider from "./LayoutProvider";
+import QueryProvider from "./QueryProvider";
+import ClientWrapper from "./ClientWrapper";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
@@ -36,16 +39,20 @@ export default async function RootLayout({
       <head></head>
       <body className={fontClass}>
         <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
-          <LayoutProvider>
-            <TopHeader locale={locale} t={t} />
-            <Header t={t} locale={locale} />
-          </LayoutProvider>
+          <ClientWrapper>
+            <QueryProvider>
+              <LayoutProvider>
+                <TopHeader locale={locale} t={t} />
+                <Header t={t} locale={locale} />
+              </LayoutProvider>
 
-          {children}
+              {children}
 
-          <LayoutProvider>
-            <Footer locale={locale} t={t} />
-          </LayoutProvider>
+              <LayoutProvider>
+                <Footer locale={locale} t={t} />
+              </LayoutProvider>
+            </QueryProvider>
+          </ClientWrapper>
         </TranslationsProvider>
       </body>
     </html>

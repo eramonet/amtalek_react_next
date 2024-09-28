@@ -9,12 +9,14 @@ import { FaBath, FaBed, FaCalendarAlt, FaCamera, FaEye, FaRegHeart } from "react
 import { FaBoltLightning, FaMaximize } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import "./style.css";
+// import "./style.css";
 // import Lottie from "lottie-react";
 // import animationData from "@/assets/heart.json";
+import { useRouter } from "next/navigation";
 
 export default function PropertyCard({ card, locale }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
+  const router = useRouter();
   const dispatchRedux = useDispatch();
   const user = useSelector(userData);
   const { mutate }: any = usePostData(
@@ -31,7 +33,15 @@ export default function PropertyCard({ card, locale }: any) {
     }
   );
   // console.log(card?.rent_duration);
+  const handleButtonClick = () => {
+    const currentUrl = window.location.pathname;
+    const newPart = `${currentUrl}`;
+    // إنشاء URL جديد بإضافة الجزء الجديد
+    const updatedUrl = `${card.listing_number}/${card.title.replace(/\s+/g, "-")}`;
 
+    // تحديث الـ URL بدون إعادة تحميل الصفحة
+    window.history.pushState({}, newPart, updatedUrl);
+  };
   return (
     <div
       className={`text-custome-blue rounded ${
@@ -59,7 +69,7 @@ export default function PropertyCard({ card, locale }: any) {
         /> */}
         <Link
           className="group"
-          href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
+          href={`/properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
         >
           {/* *********************************************************************************************************************** */}
 
@@ -181,19 +191,7 @@ export default function PropertyCard({ card, locale }: any) {
                       })
               }
             /> */}
-            <div
-              className="property__love cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3"
-              // onClick={
-              //   !user?.token
-              //     ? () => dispatchRedux(setShowLoginPopUp(true))
-              //     : () =>
-              //         mutate({
-              //           api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
-              //           data: { property_id: card?.id },
-              //           file: undefined,
-              //         })
-              // }
-            >
+            <div className="property__love cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3">
               <div className="heart-container" title="Like">
                 {user?.token && (
                   <input

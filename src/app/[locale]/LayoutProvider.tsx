@@ -6,5 +6,5 @@ import { usePathname } from "next/navigation";
 export default function LayoutProvider({ children }: any) {
   const pathname = usePathname();
 
-  return <>{!pathname.includes("/Login") && <>{children}</>}</>;
+  return <>{!pathname.includes("/login") && <>{children}</>}</>;
 }

@@ -6,7 +6,7 @@ export default function LatestPropertiesAllCards({ data, t }: any) {
       <div className="w-full grid grid-cols-3 gap-4 max-lg:grid-cols-2 clg:grid-cols-1">
         {data?.cards?.map((card: any, index: number) => (
           <div key={card.id}>
-            <LatestPropertiesCard card={card} t={t} />
+            <LatestPropertiesCard card={card}  />
           </div>
         ))}
       </div>

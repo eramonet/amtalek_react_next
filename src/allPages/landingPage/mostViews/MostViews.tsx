@@ -20,13 +20,13 @@ export default function MostViews({ data, t, locale, countrie }: any) {
         <div className="w-full grid grid-cols-4 clg:grid-cols-1 gap-5 my-10">
           <div className="col-span-2 bg-red- flex flex-col gap-7">
             {data?.main_cards[0]?.map((card: any, ind: number) => {
-              return <MostViewCard key={ind} card={card} t={t} />;
+              return <MostViewCard key={ind} card={card} locale={locale} />;
             })}
           </div>
 
           <div className="col-span-2 ss:grid-cols-1 grid grid-cols-2 gap-4  min-h-[500px]">
             {data?.other_cards[0]?.map((card: any, ind: number) => (
-              <MostViewCard key={ind} card={card} t={t} />
+              <MostViewCard key={ind} card={card} />
             ))}
           </div>
         </div>

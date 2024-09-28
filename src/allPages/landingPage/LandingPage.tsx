@@ -12,6 +12,7 @@ import VideoSection from "./videoSection/VideoSection";
 import MostViews from "./mostViews/MostViews";
 import LatestProperties from "./latestProperties/LatestProperties";
 import initTranslations from "@/app/i18n";
+import LoginPopUp from "../login/LoginPopUp";
 
 export default async function LandingPage({ locale }: any) {
   const countries = await getData("web/countries", locale);
@@ -36,6 +37,8 @@ export default async function LandingPage({ locale }: any) {
 
     return (
       <>
+        <LoginPopUp />
+        
         <Hero data={allData?.sliders} />
 
         <ImagesSection data={allDataImage} />
