@@ -2,6 +2,7 @@
 
 import { usePostData } from "@/Hooks/usePostData";
 import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function FavoriteButton({ className, is_fav, id }: any) {
@@ -26,6 +27,7 @@ export default function FavoriteButton({ className, is_fav, id }: any) {
       {user?.actor_type !== "broker" && (
         <div
           className={`property__love ${className}`}
+          // defaultChecked={Number(is_fav) === 1 ? true : false}
           onClick={
             !user?.token
               ? () => dispatchRedux(setShowLoginPopUp(true))
@@ -40,16 +42,17 @@ export default function FavoriteButton({ className, is_fav, id }: any) {
           <div className="heart-container" title="Like">
             {user?.token && (
               <input
-                defaultChecked={Number(is_fav) === 1 ? true : false}
+                defaultChecked={Number(is_fav) === 1}
+                // defaultChecked={Number(is_fav) === 1 ? true : false}
                 type="checkbox"
                 className="heart-checkbox"
                 id={id}
-                onChange={() =>
-                  mutate({
-                    api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
-                    data: { property_id: id },
-                  })
-                }
+                // onChange={() =>
+                //   mutate({
+                //     api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                //     data: { property_id: id },
+                //   })
+                // }
               />
             )}
             <div className="svg-container">

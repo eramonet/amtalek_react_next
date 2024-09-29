@@ -1,4 +1,5 @@
 import ButtonNavbar from "./components/ButtonNavbar";
+// import LoginButton from "./components/LoginButton";
 import Logo from "./components/Logo";
 import Navbar from "./components/Navbar";
 
@@ -12,6 +13,7 @@ export default function Header({ t, locale }: any) {
         <Navbar t={t} />
         {/* ********************************************************* */}
         <ButtonNavbar />
+        {/* <LoginButton /> */}
       </div>
     </header>
   );

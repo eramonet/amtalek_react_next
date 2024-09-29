@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import Lottie from "lottie-react";
 // import animationData from "@/assets/heart.json";
 import { useRouter } from "next/navigation";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function PropertyCard({ card, locale }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
@@ -191,7 +192,7 @@ export default function PropertyCard({ card, locale }: any) {
                       })
               }
             /> */}
-            <div className="property__love cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3">
+            {/* <div className="property__love cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3">
               <div className="heart-container" title="Like">
                 {user?.token && (
                   <input
@@ -238,7 +239,12 @@ export default function PropertyCard({ card, locale }: any) {
                   </svg>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <FavoriteButton
+              id={card?.id}
+              is_fav={card?.is_fav}
+              className={`cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3`}
+            />
             {/* <div className="flex justify-end gap- items-center mt-"> */}
             {/* <FaShareAlt size={24} /> */}
 

@@ -17,8 +17,8 @@ export default function ComboBox({
   isSuccess,
   company_name,
   company_logo,
-  // width = "w-full",
-}: any) {
+}: // width = "w-full",
+any) {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [filteredData, setFilteredData] = useState(data);
@@ -26,7 +26,7 @@ export default function ComboBox({
 
   useEffect(() => {
     setFilteredData(
-      data.filter((item: any) => item.title.toLowerCase().includes(inputValue.toLowerCase()))
+      data.filter((item: any) => item?.title.toLowerCase().includes(inputValue.toLowerCase()))
     );
   }, [inputValue, data]);
 
