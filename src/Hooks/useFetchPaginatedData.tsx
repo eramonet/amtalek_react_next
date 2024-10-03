@@ -38,7 +38,6 @@
 //         });
 //       }
 //       if (authorizedAPI && error?.response?.status === 401) {
-//         // router.push(`${i18n.language.startsWith("ar") ? "" : "/en"}/login`, { replace: true });
 //         logOut();
 //       }
 //     },
@@ -55,12 +54,46 @@
 //     keepPreviousData: true,
 //   });
 // };
-// function fetcherFunction(arg0: {
+
+// async function fetcherFunction({
+//   api,
+//   authorizedAPI,
+//   user,
+//   lang,
+//   addToken,
+// }: {
 //   api: string;
 //   authorizedAPI: boolean;
 //   user: any;
 //   lang: string;
 //   addToken: any;
-// }): any {
-//   throw new Error("Function not implemented.");
+// }): Promise<any> {
+//   try {
+//     const headers: HeadersInit = {
+//       "Content-Type": "application/json",
+//       "Accept-Language": lang,
+//     };
+
+//     if (authorizedAPI && user?.token) {
+//       headers["Authorization"] = `Bearer ${user.token}`;
+//     }
+
+//     if (addToken) {
+//       headers["Add-Token"] = addToken;
+//     }
+
+//     const response = await fetch(api, {
+//       method: "GET",
+//       headers,
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Error: ${response.statusText}`);
+//     }
+
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     throw error;
+//   }
 // }

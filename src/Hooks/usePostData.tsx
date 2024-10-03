@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userData } from "@/Store/Features/AuthenticationSlice";
 
 const axiosInstance = axios.create({
-  baseURL: "https://amtalek.com/amtalekadmin/public/api/web/",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}`,
 
   headers: {
     "X-Requested-With": "XMLHttpRequest",

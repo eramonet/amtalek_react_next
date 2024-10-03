@@ -186,7 +186,7 @@ export default function PropertyCard({ card, locale }: any) {
                   ? () => dispatchRedux(setShowLoginPopUp(true))
                   : () =>
                       mutate({
-                        api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                        api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
                         data: { property_id: card?.id },
                         file: undefined,
                       })
@@ -202,7 +202,7 @@ export default function PropertyCard({ card, locale }: any) {
                     id={card?.id}
                     onChange={() => {
                       mutate({
-                        api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                        api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
                         data: { property_id: card?.id },
                         file: undefined,
                       });

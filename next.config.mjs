@@ -2,30 +2,21 @@
 const nextConfig = {
   reactStrictMode: false,
 
-  async redirects() {
+  redirects: async () => {
     return [];
   },
 
   rewrites: async () => {
-    return {
-      fallback: [
-        {
-          source: "/api/:path*",
-          destination: "https://amtalek.com/:path*",
-        },
-      ],
-    };
-  },
-  images: {
-    domains: ["amtalek.com"], // أضف هنا النطاقات التي تريد السماح بتحميل الصور منها
-  },
-  async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "https://amtalek.com/amtalekadmin/public/api/web/:path*", // البروكسي إلى الخادم
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}:path*`, // البروكسي إلى الخادم
       },
     ];
+  },
+
+  images: {
+    domains: ["amtalek.com", "amtalek.amtalek.com", "firebasestorage.googleapis.com"], // أضف هنا النطاقات التي تريد السماح بتحميل الصور منها
   },
 };
 

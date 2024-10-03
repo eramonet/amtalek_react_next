@@ -31,6 +31,8 @@ import {
   UploadFileComponent,
 } from "@/FormComponents";
 import { useRouter } from "next/navigation";
+import getData from "@/api/getData";
+import ComboBoz from "@/FormComponents/ComboBoz";
 function Register() {
   const { t, i18n } = useTranslation("Pages_Register");
   const lng = useSelector(lang);
@@ -145,15 +147,32 @@ function Register() {
     { id: "individual", title: t("step_0.user_type.selections.individual") },
     { id: "company", title: t("step_0.user_type.selections.company") },
   ];
-  const { data: countriesData } = useFetchData(
-    "countries",
-    `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
+  const [countriesData, setData] = useState([]);
+  useEffect(() => {
+    const fetchAds = async () => {
+      try {
+        const response = await getData(
+          `web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
+          i18n.language
+        );
+        const result = await response?.data;
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching ads:", error);
+      }
+    };
+
+    fetchAds();
+  }, [i18n.language]);
+  // const { data: countriesData } = useFetchData(
+  //   "countries",
+  //   `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
   // const { data: citiesData, refetch: refetchCities } = useFetchData(
   //   "cities",
   //   `${process.env.VITE_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
@@ -180,19 +199,39 @@ function Register() {
     isSuccess,
     isLoading,
     error: ServerErrors,
-  }: any = usePostData(true, () => {
-    recaptchaRef.current.reset();
-    reset();
-    setValue("not_ropot", "no");
-    dispatch({ type: "setRegisterSuccess", payload: true });
-    setSubmitted(false);
-    if (iam === "company") {
-      router.push(`/login`);
-    } else if (iam === "individual") {
-      setShowVerificationCodeForm(true);
+  }: any = usePostData(
+    true,
+    () => {
+      recaptchaRef.current.reset();
+      reset();
+      setValue("not_ropot", "no");
+      dispatch({ type: "setRegisterSuccess", payload: true });
+      setSubmitted(false);
+      if (iam === "company") {
+        router.push(`/login`);
+      } else if (iam === "individual") {
+        setShowVerificationCodeForm(true);
+      }
+    },
+    true, // authorizedAPI
+    (error) => {
+      // Handle error here
+      console.error("Error occurred:", error);
     }
-  });
-  const { mutate: sendVerificationCode } = usePostData(true);
+  );
+
+  const { mutate: sendVerificationCode } = usePostData(
+    true, // showToasts
+    (data) => {
+      // onSuccess callback
+      console.log("Success:", data);
+    },
+    true, // authorizedAPI
+    (error) => {
+      // onError callback
+      console.error("Error:", error);
+    }
+  );
 
   //!-- request the code only after a successful register
 
@@ -376,18 +415,34 @@ function Register() {
                 >
                   {t("step_0.user_type.label")}
 
-                  <ComboBox
-                    setValue={setValue}
-                    data={userTypeData}
-                    placeholder={t("step_0.user_type.placeholder")}
-                    stateName={"offer_type"}
-                    isSuccess={isSuccess}
-                    company_name={"company_name"}
-                    company_logo={"company_logo"}
+                  {/* <ComboBox
                     // setValue={setValue}
                     // data={userTypeData}
                     // placeholder={t("step_0.user_type.placeholder")}
-                    // stateName={"iam"}
+                    // stateName={"offer_type"}
+                    // isSuccess={isSuccess}
+                    company_name={"company_name"}
+                    company_logo={"company_logo"}
+                    setValue={setValue}
+                    data={userTypeData}
+                    placeholder={t("step_0.user_type.placeholder")}
+                    stateName={"iam"}
+                    light
+                    selectBox
+                    callBcFn={(type: any) => dispatchRedux(setRegistrationUserType(type))}
+                  /> */}
+                  <ComboBoz
+                    // setValue={setValue}
+                    // data={userTypeData}
+                    // placeholder={t("step_0.user_type.placeholder")}
+                    // stateName={"offer_type"}
+                    // isSuccess={isSuccess}
+                    company_name={"company_name"}
+                    company_logo={"company_logo"}
+                    setValue={setValue}
+                    data={userTypeData}
+                    placeholder={t("step_0.user_type.placeholder")}
+                    stateName={"iam"}
                     light
                     selectBox
                     callBcFn={(type: any) => dispatchRedux(setRegistrationUserType(type))}
@@ -535,7 +590,15 @@ function Register() {
                     htmlFor="country"
                   >
                     {t("step_2.Country.label")}
-                    <ComboBox
+                    {/* <ComboBox
+                      setValue={setValue}
+                      data={countriesData}
+                      placeholder={t("step_2.Country.placeholder")}
+                      stateName={"country"}
+                      light
+                      NotFoundMessage={t("step_2.Country.NotFoundMessage")}
+                    /> */}
+                    <ComboBoz
                       setValue={setValue}
                       data={countriesData}
                       placeholder={t("step_2.Country.placeholder")}
@@ -622,7 +685,7 @@ function Register() {
                               {...register("gender", {
                                 required: true,
                               })}
-                              name="male"
+                              // name="male"
                             />
                             <label htmlFor="male"></label>
                             <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
@@ -665,7 +728,7 @@ function Register() {
                               {...register("gender", {
                                 required: true,
                               })}
-                              name="female"
+                              // name="female"
                             />
                             <label htmlFor="female"></label>
                             <svg width="15" height="14" viewBox="0 0 15 14" fill="none">

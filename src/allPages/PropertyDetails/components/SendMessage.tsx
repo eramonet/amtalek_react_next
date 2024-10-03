@@ -17,7 +17,7 @@ export default function SendMessage({ data, locale, t }: any) {
         params={{
           property_id: data?.id,
         }}
-        api={`https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_SINGLE_PROPERTY_LEAVE_COMMENT}`}
+        api={`${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_SINGLE_PROPERTY_LEAVE_COMMENT}`}
         type="PropertyDetails__Comment"
         // t={t}
         showRating

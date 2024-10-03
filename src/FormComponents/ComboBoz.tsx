@@ -1,15 +1,21 @@
-import { cn } from "@/Utilities/index";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./command";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
-  faCheck,
-  faChevronDown,
-  faMagnifyingGlassLocation,
-} from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { lang } from "@/Store/Features/MiscellaneousSlice";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlassLocation } from "@fortawesome/free-solid-svg-icons";
 
 export default function ComboBoz({
   width = "w-full",
@@ -30,6 +36,7 @@ export default function ComboBoz({
 }: any) {
   const [open, setOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<any>("");
+
   useEffect(() => {
     if (isSuccess) {
       setSelectedLocation("");
@@ -44,27 +51,26 @@ export default function ComboBoz({
       )?.title;
 
       if (title) {
-        //!to handle the case if the user enters in the url an id tat doesn't exist, so it prevents setting the value to undefined or ull
         setSelectedLocation(title.toLowerCase());
       } else setSelectedLocation(null);
     }
   }, [data, getDefaultValueFromURL, searchParams]);
-  console.log(selectedLocation);
 
-  const lng = useSelector(lang);
+  const { i18n } = useTranslation();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className={`${width} `} asChild>
-        <button
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
           className={`selected-location flex outline-none round justify-between w-full px-2 items-center gap-1 ${
             light ? "bg-grey" : "bg-bg"
-          }  w-full h-[42px]  cursor-pointer ${
-            selectedLocation ? "text-primary" : "text-secondary "
-          } `}
+          } w-full h-[42px] cursor-pointer ${selectedLocation ? "text-primary" : "text-secondary"}`}
         >
           <span
-            className={`  text-[0.9rem] text-secondary truncate ${
+            className={`text-[0.9rem] text-secondary truncate ${
               selectedLocation ? "opacity-100" : "opacity-50"
             }`}
           >
@@ -73,15 +79,14 @@ export default function ComboBoz({
                   ?.title
               : placeholder}
           </span>
-          <FontAwesomeIcon
+          <ChevronsUpDown
             className={`transition-all text-[0.9rem] duration-200 ease-in-out ${
               selectedLocation ? "opacity-100" : "opacity-50"
             } ${open ? "rotate-180" : "rotate-0"}`}
-            icon={faChevronDown}
           />
-        </button>
+        </Button>
       </PopoverTrigger>
-      <PopoverContent className="PopoverContent p-0">
+      <PopoverContent className="w-[200px] p-0">
         <Command className={` ${light ? "bg-grey border-grey" : "bg-bg border-bg"}`}>
           <div
             className={`search-wrapper ${
@@ -100,50 +105,46 @@ export default function ComboBoz({
               light ? "bg-grey" : "bg-bg"
             }`}
               autoFocus={light ? false : true}
-              placeholder={`${lng === "ar" ? "البحث في" : "Search"} ${placeholder}`}
+              placeholder={`${i18n.language === "ar" ? "البحث في" : "Search"} ${placeholder}`}
             />
           </div>
-          <CommandEmpty>{lng === "ar" ? "لا يوجد نتائج" : NotFoundMessage}</CommandEmpty>
-
-          <CommandGroup className="h-fit max-h-72 overflow-y-auto">
-            {data?.map((location: any) => (
-              <CommandItem
-                className={` cursor-pointer text-lg hover:bg-secondary aria-selected:bg-secondary/60 
+          <CommandList>
+            <CommandEmpty>
+              {i18n.language === "ar" ? "لا يوجد نتائج" : NotFoundMessage}
+            </CommandEmpty>
+            {/* <CommandEmpty>{NotFoundMessage}</CommandEmpty> */}
+            <CommandGroup>
+              {data.map((item: any) => (
+                <CommandItem
+                  className={` cursor-pointer text-lg hover:bg-secondary aria-selected:bg-secondary/60 
                 w-full truncate ${
                   light
                     ? "hover:text-grey aria-selected:text-grey"
                     : "hover:text-bg aria-selected:text-bg"
                 } ${
-                  selectedLocation === location?.title?.toLowerCase()
-                    ? "bg-secondary text-bg"
-                    : "pl-5 rtl:pl-0 rtl:pr-5"
-                } `}
-                key={location?.id}
-                value={location?.title}
-                onSelect={(currentValue: any) => {
-                  //!it converts to lower case by default
-                  setSelectedLocation(currentValue === selectedLocation ? "" : currentValue);
-                  setValue && setValue(stateName, location?.id);
-
-                  setSearchParams &&
-                    setSearchParams((params: any) => {
-                      params.set("srt", location?.id);
-                      return params;
-                    });
-                  callBcFn && callBcFn(location?.id);
-                  setOpen(false);
-                }}
-              >
-                {selectedLocation === location?.title?.toLowerCase() && (
-                  <FontAwesomeIcon
-                    className={cn("mr-2 rtl:mr-0 rtl:ml-2 h-4 w-4")}
-                    icon={faCheck}
+                    selectedLocation === item?.title?.toLowerCase()
+                      ? "bg-secondary text-bg"
+                      : "pl-8 rtl:pl-0 rtl:pr-8"
+                  } `}
+                  key={item.id}
+                  value={item.title}
+                  onSelect={(currentValue) => {
+                    setSelectedLocation(currentValue.toLowerCase());
+                    setValue(currentValue === selectedLocation ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedLocation === item.title.toLowerCase() ? "opacity-100" : "opacity-0"
+                    )}
                   />
-                )}
-                {location?.title}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+                  {item.title}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

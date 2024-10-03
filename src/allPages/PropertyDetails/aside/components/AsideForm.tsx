@@ -22,6 +22,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { TUser } from "@/Types/AppTypes";
 import { useTranslation } from "react-i18next";
+import React from "react";
+import ComboBoz from "@/FormComponents/ComboBoz";
 
 function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
@@ -172,7 +174,127 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
           t={t}
           disabled={user?.token}
         />
-        {/* {type == "message" ? (
+        {type == "message" ? (
+          <MessageComponent
+            register={register}
+            placeholder={t("AsideForm.message.placeholder")}
+            errors={errors}
+            ServerErrors={ServerErrors}
+            rows={7}
+            Bgcolor={Bgcolor}
+            t={t}
+          />
+        ) : type == "offer" ? (
+          <>
+            <NumberComponent
+              register={register}
+              errors={errors}
+              ServerErrors={ServerErrors}
+              name="offer"
+              placeholder={t("AsideForm.offer.placeholder")}
+              width="w-full"
+              withIcon
+              Bgcolor={Bgcolor}
+              icon={"offer"}
+              t={t}
+            />
+            {for_what === "for_both" && (
+              <div className="flex w-full flex-col items-start text-lg justify-center gap-2">
+                {/* <ComboBox
+                  selectBox
+                  setValue={setValue}
+                  data={offerOptions}
+                  placeholder={t("AsideForm.offer_type.placeholder")}
+                  stateName={"offer_type"}
+                  isSuccess={isSuccess}
+                /> */}
+                <ComboBoz
+                  selectBox
+                  setValue={setValue}
+                  data={offerOptions}
+                  placeholder={t("AsideForm.offer_type.placeholder")}
+                  stateName={"offer_type"}
+                  isSuccess={isSuccess}
+                />
+                {submitted && offer_type === "" && (
+                  <p className="pt-2 text-xs text-red-500">{t("AsideForm.offer_type.err_msg")}</p>
+                )}
+                {
+                  //!--- server errors --------
+                  ServerErrors?.response?.data?.errors?.offer_type && (
+                    <p className="pt-2 text-xs text-red-500">
+                      {ServerErrors?.response?.data?.errors?.offer_type[0]}
+                    </p>
+                  )
+                }
+              </div>
+            )}
+          </>
+        ) : (
+          ""
+        )}
+        <ReCaptcha
+          refs={recaptchaRef}
+          onChange={onChange}
+          error={submitted && not_ropot === "no"}
+          ServerError={
+            ServerErrors?.response?.data?.errors?.not_ropot &&
+            ServerErrors?.response?.data?.errors?.not_ropot[0]
+              ? ServerErrors?.response?.data?.errors?.not_ropot[0]
+              : null
+          }
+          t={t}
+        />
+        {/** Submit Button */}
+        <SubmitBtnComponent
+          disabled={
+            !isValid ||
+            not_ropot === "no" ||
+            (offer_type === "" && for_what === "for_both" && type == "offer") ||
+            isLoading
+          }
+          isLoading={isLoading}
+          value={t("AsideForm.SubmitBtnComponent.value", { context: type })}
+        />
+        {/**  Name  && Phone &&  Email*/}
+        {/**  Name  */}
+        {/* <TextComponent
+          register={register}
+          name="name"
+          placeholder={t("AsideForm.name.placeholder")}
+          errors={errors}
+          ServerErrors={ServerErrors}
+          Bgcolor={Bgcolor}
+          withIcon
+          width={"w-full"}
+          t={t}
+          disabled={user?.token}
+        /> */}
+        {/** Phone  */}
+        {/* <PhoneComponent
+          register={register}
+          placeholder={t("AsideForm.phone.placeholder")}
+          errors={errors}
+          ServerErrors={ServerErrors}
+          width="w-full"
+          Bgcolor={Bgcolor}
+          withIcon
+          t={t}
+          disabled={user?.token}
+        /> */}
+        {/** Email  */}
+        {/* <EmailComponent
+          register={register}
+          placeholder={t("AsideForm.email.placeholder")}
+          errors={errors}
+          ServerErrors={ServerErrors}
+          width="w-full"
+          Bgcolor={Bgcolor}
+          withIcon
+          t={t}
+          disabled={user?.token}
+        />
+        {type == "message" ? (
           <MessageComponent
             register={register}
             placeholder={t("AsideForm.message.placeholder")}
@@ -222,7 +344,7 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
           </>
         ) : (
           ""
-        )} */}
+        )}
         <NumberComponent
           register={register}
           errors={errors}
@@ -270,10 +392,10 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
               )
             }
           </div>
-        )}
+        )} */}
 
         {/** Submit Button */}
-        <SubmitBtnComponent
+        {/* <SubmitBtnComponent
           disabled={
             !isValid ||
             not_ropot === "no" ||
@@ -282,7 +404,7 @@ function AsideForm({ type, api, Bgcolor, params, for_what, propID, refetch }: an
           }
           isLoading={isLoading}
           value={t("AsideForm.SubmitBtnComponent.value", { context: type })}
-        />
+        /> */}
       </form>
     </section>
   );

@@ -9,6 +9,7 @@ import Loader from "@/components/loader/Loader";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 export default function AgenciesAll({ locale }: any) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -101,7 +102,7 @@ export default function AgenciesAll({ locale }: any) {
                 <button
                   disabled={currentPage === 1}
                   className="pl-2 rtl:pl-0 rtl:pr-2 w-20 h-9 md:w-9 md:pl-0 md:rtl:pr-0 md:justify-center flex justify-start items-center gap-2 active:scale-90 hover:gap-3 transition-all duration-300 ease-in-out border-2 border-custome-blue bg-custome-blue text-custome-white disabled:opacity-50 disabled:pointer-events-none"
-                  onClick={() => handlePageChange({ selected: currentPage - 2 })} 
+                  onClick={() => handlePageChange({ selected: currentPage - 2 })}
                 >
                   <FontAwesomeIcon className="rotate-180 rtl:rotate-0" icon={faArrowRight} />
                   <span className={`md:hidden `}>{t("Pagination.Previous")}</span>

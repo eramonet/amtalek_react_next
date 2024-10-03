@@ -15,6 +15,7 @@ import PropertyLocation from "./components/PropertyLocation";
 import SimilarProperty from "./components/SimilarProperty";
 import Loader from "@/components/loader/Loader";
 import SendMessage from "./components/SendMessage";
+import LoginPopUp from "@/allPages/login/LoginPopUp";
 
 export default async function PropertyDetails({ locale, listing_number }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -29,7 +30,11 @@ export default async function PropertyDetails({ locale, listing_number }: any) {
         <Loader />
       ) : (
         <div className="Property__general--info w-full flex flex-col gap-4">
-          <PropertyHeader data={allData[0]} t={t} i18n={i18n} />
+          {/* t={t} i18n={i18n} */}
+
+          <LoginPopUp />
+
+          <PropertyHeader data={allData[0]} />
 
           <PropertySlider data={allData[0]} style={"mt-10"} />
 

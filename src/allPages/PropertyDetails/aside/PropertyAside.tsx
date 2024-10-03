@@ -7,6 +7,7 @@ import LatestProperties from "./components/LatestProperties";
 import FeaturedPropertiesAside from "./components/FeaturedPropertiesAside";
 import Loader from "@/components/loader/Loader";
 import LoginPopUp from "@/allPages/login/LoginPopUp";
+import React from "react";
 
 export default async function PropertyAside({ listing_number, locale }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -25,7 +26,7 @@ export default async function PropertyAside({ listing_number, locale }: any) {
               vendor_id: allData[0]?.broker_details?.[0]?.id,
               broker_type: allData[0]?.broker_details[0]?.broker_type,
             }}
-            api={`https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_SEND_OFFER_TO_BROKER}`}
+            api={`${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_SEND_OFFER_TO_BROKER}`}
             type="offer"
             for_what={allData[0]?.for_what}
             Bgcolor="light"

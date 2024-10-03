@@ -1,0 +1,135 @@
+/* //!-- contact us ---- */
+.contact__pattern {
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.scaling__contact--animation {
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-name: scaling;
+  animation-delay: var(--delay);
+}
+
+@keyframes scaling {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.scaling__contact--animation--no--over--scale {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-name: scalingNoOver;
+  animation-delay: var(--delay);
+}
+
+@keyframes scalingNoOver {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.to__right--contact--animation {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-delay: var(--delay);
+}
+.to__right--contact--animation {
+  animation-name: ToRight;
+}
+
+@keyframes ToRight {
+  0% {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ToRight_RTL {
+  0% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html:lang(ar) {
+  .to__right--contact--animation {
+    animation-name: ToRight_RTL;
+  }
+}
+
+.to__left--contact--animation {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-delay: var(--delay);
+}
+.to__left--contact--animation {
+  animation-name: ToLeft;
+}
+html:lang(ar) {
+  .to__left--contact--animation {
+    animation-name: ToLeft_RTL;
+  }
+}
+
+@keyframes ToLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ToLeft_RTL {
+  0% {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bg-login-patter {
+  background: linear-gradient(180deg, #87e0ff 0%, #423687 100%);
+}
+
+.bg-login-patter2 {
+  background: linear-gradient(135deg, #9bf8f4 0%, #6f7bf7 100%);
+}

@@ -44,7 +44,7 @@
 //   //   refetch,
 //   // } = useFetchData(
 //   //   "notifications",
-//   //   `https://amtalek.com/amtalekadmin/public/api/web/my-notifications`,
+//   //   `${process.env.NEXT_PUBLIC_BASE_URL_FULL}my-notifications`,
 //   //   false,
 //   //   false,
 //   //   "",

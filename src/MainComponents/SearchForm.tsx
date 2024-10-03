@@ -10,6 +10,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import getData from "@/api/getData";
 import { useFetchData } from "../Hooks/useAxios";
 import AmenitiesSelect from "../FormComponents/AmenitiesSelect";
+import ComboboxDemo from "@/FormComponents/ComboboxDemo";
+import ComboBoz from "@/FormComponents/ComboBoz";
 // import { useNavigate, useSearchParams } from "react-router-dom";
 
 function SearchForm({ type, showOptions = false, home, locale }: any) {
@@ -127,7 +129,7 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
     <form
       method="post"
       onSubmit={handleSubmit(onSubmit)}
-      className={`hero__right--form ${
+      className={`hero__right--form h-full ${
         type === "bigForm" || home ? "h-fit" : type === "asideForm" ? "h-fit" : ""
       } w-full px-8  flex flex-col items-center justify-center gap-6 bg-custome-blue py-10 xl:h-[99.5%]`}
     >
@@ -163,7 +165,17 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             type === "bigForm" || home ? "w-1/2 ss:w-full" : type === "asideForm" ? "w-full" : ""
           } `}
         >
-          <ComboBox
+          {/* <ComboBox
+            searchParams={searchParams}
+            NotFoundMessage="No locations found"
+            data={LocationsData}
+            setValue={setValue}
+            placeholder={t("region.placeholder", "الموقع")}
+            stateName={"region"}
+            getDefaultValueFromURL="r"
+          /> */}
+
+          <ComboBoz
             searchParams={searchParams}
             NotFoundMessage="No locations found"
             data={LocationsData}
@@ -172,6 +184,16 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             stateName={"region"}
             getDefaultValueFromURL="r"
           />
+
+          {/* <ComboboxDemo
+            searchParams={searchParams}
+            NotFoundMessage="No locations found"
+            data={LocationsData}
+            setValue={setValue}
+            placeholder={t("region.placeholder", "الموقع")}
+            stateName={"region"}
+            getDefaultValueFromURL="r"
+          /> */}
         </div>
       </div>
       {/** Type & Status */}
@@ -186,7 +208,15 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             type === "bigForm" || home ? "w-1/2 ss:w-full" : type === "asideForm" ? "w-full" : ""
           } `}
         >
-          <ComboBox
+          {/* <ComboBox
+            searchParams={searchParams}
+            data={PropertyTypesData}
+            setValue={setValue}
+            placeholder={t("property_type.placeholder", "نوع العقار")}
+            stateName={"property_type"}
+            getDefaultValueFromURL="t"
+          /> */}
+          <ComboBoz
             searchParams={searchParams}
             data={PropertyTypesData}
             setValue={setValue}
@@ -202,7 +232,15 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             type === "bigForm" || home ? "w-1/2 ss:w-full" : type === "asideForm" ? "w-full" : ""
           } `}
         >
-          <ComboBox
+          {/* <ComboBox
+            searchParams={searchParams}
+            data={currenciesData}
+            setValue={setValue}
+            placeholder={t("currency.placeholder", "العملة")}
+            stateName={"currency"}
+            getDefaultValueFromURL="cur"
+          /> */}
+          <ComboBoz
             searchParams={searchParams}
             data={currenciesData}
             setValue={setValue}
@@ -218,7 +256,15 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             type === "bigForm" || home ? "w-1/2 ss:w-full" : type === "asideForm" ? "w-full" : ""
           } `}
         >
-          <ComboBox
+          {/* <ComboBox
+            searchParams={searchParams}
+            data={PropertyFinishingData}
+            setValue={setValue}
+            placeholder={t("finishing.placeholder", "تشطيب العقار")}
+            stateName={"finishing"}
+            getDefaultValueFromURL="f"
+          /> */}
+          <ComboBoz
             searchParams={searchParams}
             data={PropertyFinishingData}
             setValue={setValue}
@@ -296,7 +342,15 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
             type === "bigForm" || home ? "w-1/2 ss:w-full" : type === "asideForm" ? "w-full" : ""
           } `}
         >
-          <ComboBox
+          {/* <ComboBox
+            searchParams={searchParams}
+            data={PurposeData}
+            setValue={setValue}
+            placeholder={t("purpose.placeholder", "الغرض")}
+            stateName={"purpose"}
+            getDefaultValueFromURL="pr"
+          /> */}
+          <ComboBoz
             searchParams={searchParams}
             data={PurposeData}
             setValue={setValue}

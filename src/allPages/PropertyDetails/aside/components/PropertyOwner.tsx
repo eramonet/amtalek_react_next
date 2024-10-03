@@ -122,7 +122,7 @@ export default function PropertyOwner({ data, locale }: any) {
       EmailError?.response?.status === 401 ||
       WhatsappError?.response?.status === 401
     ) {
-      console.log(WhatsappSuccess, "don");
+      // console.log(WhatsappSuccess, "don");
 
       dispatchRedux(setShowLoginPopUp(true));
     }

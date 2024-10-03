@@ -25,9 +25,13 @@ any) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   useEffect(() => {
-    setFilteredData(
-      data.filter((item: any) => item?.title.toLowerCase().includes(inputValue.toLowerCase()))
-    );
+    if (Array.isArray(data)) {
+      setFilteredData(
+        data.filter((item: any) => item?.title.toLowerCase().includes(inputValue.toLowerCase()))
+      );
+    } else {
+      setFilteredData([]);
+    }
   }, [inputValue, data]);
 
   const { isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex } = useCombobox({

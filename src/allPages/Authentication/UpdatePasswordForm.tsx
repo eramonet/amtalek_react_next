@@ -34,24 +34,32 @@ function UpdatePasswordForm({ loginDispatch, email, code, t }: any) {
     mutate: postSetPasswordData,
     isLoading,
     error: ServerErrors,
-  }: any = usePostData(true, () => {
-    recaptchaRef.current.reset();
-    reset();
-    setValue("not_ropot", "no");
-    loginDispatch({
-      type: "setForgotPassword",
-      payload: false,
-    });
-    loginDispatch({
-      type: "setCodeSentSuccess",
-      payload: false,
-    });
-    loginDispatch({
-      type: "setCodeVerifiedSuccess",
-      payload: false,
-    });
-    setSubmitted(false);
-  });
+  }: any = usePostData(
+    true,
+    () => {
+      recaptchaRef.current.reset();
+      reset();
+      setValue("not_ropot", "no");
+      loginDispatch({
+        type: "setForgotPassword",
+        payload: false,
+      });
+      loginDispatch({
+        type: "setCodeSentSuccess",
+        payload: false,
+      });
+      loginDispatch({
+        type: "setCodeVerifiedSuccess",
+        payload: false,
+      });
+      setSubmitted(false);
+    },
+    true, // authorizedAPI (قم بتغييرها حسب الحاجة)
+    (error) => {
+      // هنا يمكنك التعامل مع الخطأ كما تريد
+      console.error("Error occurred:", error);
+    }
+  );
 
   const onSubmit = useCallback(
     (data: any) => {

@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
+// تعديل baseURL لاستخدام القيمة بشكل صحيح من env
 const axiosInstance = axios.create({
-  baseURL: "https://amtalek.com/amtalekadmin/public/api/web/",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL_FULL,
 });
 
 export const useFetchData = (
@@ -27,14 +28,14 @@ export const useFetchData = (
   const dispatchRedux = useDispatch();
   const user = useSelector(userData);
   const { i18n } = useTranslation();
-  const lang = i18n.language?.startsWith("ar") ? "ar" : "en";
+  const isArabic = i18n.language?.startsWith("ar") ? "ar" : "en";
   const [logOut] = useHandleLogOut();
 
   const options: UseQueryOptions<any, any> & { onSuccess: (data: any) => void } & {
     onError: (data: any) => void;
   } = {
     queryKey: [identifier, id],
-    queryFn: () => fetcherFunction({ api, authorizedAPI, user, lang, addToken }),
+    queryFn: () => fetcherFunction({ api, authorizedAPI, user, lang: isArabic, addToken }),
     onSuccess: (data: any) => {
       if (identifier === "userDataProf") {
         dispatchRedux(setUserProfileData(data));
@@ -52,10 +53,10 @@ export const useFetchData = (
       }
       console.error("Error from custom hook", identifier, error, api);
       if (error?.response?.status === 404) {
-        location.replace(`${i18n.language.startsWith("ar") ? "" : "/en"}/not-found`);
+        location.replace(`${isArabic === "ar" ? "" : "/en"}/not-found`);
       }
       if (authorizedAPI && error?.response?.status === 401) {
-        location.replace(`${i18n.language.startsWith("ar") ? "" : "/en"}`);
+        location.replace(`${isArabic === "ar" ? "" : "/en"}`);
         logOut();
       }
       if (onError) {
@@ -68,12 +69,11 @@ export const useFetchData = (
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     enabled,
-    // cacheTime: cacheTime, // تأكد من تضمينها هنا
-    staleTime: staleTime, // تأكد من تضمينها هنا
+    staleTime: staleTime,
     retry: 2,
   };
 
-  return useQuery(options);
+  return useQuery({ ...options });
 };
 
 async function fetcherFunction({
@@ -98,36 +98,13 @@ async function fetcherFunction({
       headers.Authorization = `Bearer ${user.token}`;
     }
 
-    const response = await fetch(api, {
-      method: "GET",
+    const response = await axiosInstance.get(api, {
       headers,
     });
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Fetcher function error:", error);
     throw error;
   }
 }
-
-// const fetcherFunction = async ({ api, authorizedAPI, user, lang, addToken }: any) => {
-//   const headers = user?.token
-//     ? {
-//         Authorization: `Bearer ${user?.token}`,
-//         "Content-Type": "application/json",
-//         lang: lang,
-//       }
-//     : {
-//         "Content-Type": "application/json",
-//         lang: lang,
-//       };
-//   const res = await axiosInstance.get(api, {
-//     headers: headers,
-//   });
-//   return res.data?.data;
-// };

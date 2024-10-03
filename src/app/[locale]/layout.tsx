@@ -11,6 +11,8 @@ import i18nConfig from "../../../i18nConfig";
 import LayoutProvider from "./LayoutProvider";
 import QueryProvider from "./QueryProvider";
 import ClientWrapper from "./ClientWrapper";
+import ScrollToTop from "../../components/header/ScrollToTop";
+// import Navbar from "@/components/header/Navbar";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
@@ -32,7 +34,7 @@ export default async function RootLayout({
   params: { locale: string };
 }) {
   const fontClass = locale === "ar" ? cairo.className : roboto.className;
-  const i18nNamespaces = ["LayoutComponents", "Pages_LandingPage"];
+  const i18nNamespaces = ["LayoutComponents", "Pages_LandingPage", "MainComponents_SearchForm"];
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <html lang={locale} dir={dir(locale)}>
@@ -44,12 +46,14 @@ export default async function RootLayout({
               <LayoutProvider>
                 <TopHeader locale={locale} t={t} />
                 <Header t={t} locale={locale} />
+                {/* <Navbar /> */}
               </LayoutProvider>
 
               {children}
 
               <LayoutProvider>
                 <Footer locale={locale} t={t} />
+                <ScrollToTop />
               </LayoutProvider>
             </QueryProvider>
           </ClientWrapper>

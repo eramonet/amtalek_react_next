@@ -33,7 +33,7 @@ export default function FavoriteButton({ className, is_fav, id }: any) {
               ? () => dispatchRedux(setShowLoginPopUp(true))
               : () =>
                   mutate({
-                    api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                    api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
                     data: { property_id: id },
                     file: undefined,
                   })
@@ -47,12 +47,12 @@ export default function FavoriteButton({ className, is_fav, id }: any) {
                 type="checkbox"
                 className="heart-checkbox"
                 id={id}
-                // onChange={() =>
-                //   mutate({
-                //     api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
-                //     data: { property_id: id },
-                //   })
-                // }
+                onChange={() =>
+                  mutate({
+                    api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                    data: { property_id: id },
+                  })
+                }
               />
             )}
             <div className="svg-container">

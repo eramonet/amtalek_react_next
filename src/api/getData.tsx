@@ -4,7 +4,8 @@ export default async function getData(point: string, locale: string) {
 
   try {
     // جلب البيانات من الـ API
-    const res = await fetch(`https://amtalek.com/amtalekadmin/public/api/${point}`, {
+    // https://amtalek.com/amtalekadmin/public/api/
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_GET_DATA}${point}`, {
       // const res = await fetch(`https://amtalek.amtalek.com/amtalekadmin/public/api/${point}`, {
       method: "GET",
       headers: {

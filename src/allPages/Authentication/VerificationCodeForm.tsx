@@ -1,9 +1,10 @@
 import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { ReCaptcha, SubmitBtnComponent, TextComponent } from "@/FormComponents";
 import { usePostData } from "@/Hooks/useAxios";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 function VerificationCodeForm({ loginDispatch, from, email, t, heading }: any) {
   const [submitted, setSubmitted] = useState(false);
@@ -11,7 +12,7 @@ function VerificationCodeForm({ loginDispatch, from, email, t, heading }: any) {
   const { i18n } = useTranslation("");
 
   const lang = i18n.language?.startsWith("ar") ? "" : "/en";
-  const navigate = useNavigate();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,38 +37,46 @@ function VerificationCodeForm({ loginDispatch, from, email, t, heading }: any) {
     mutate: postCheckCode,
     isLoading,
     error: ServerErrors,
-  }: any = usePostData(true, () => {
-    recaptchaRef.current.reset();
+  }: any = usePostData(
+    true, // showToasts
+    () => {
+      recaptchaRef.current.reset();
+      setValue("not_ropot", "no");
 
-    setValue("not_ropot", "no");
-    if (from === "register") {
-      navigate(`${lang}/login`, { replace: true });
-    } else if (from === "login") {
-      loginDispatch({
-        type: "setCodeNotVerified",
-        payload: false,
-      });
-      //navigate(`/${lang}/login`, { replace: true });
-    } else {
-      //!--this case for showing the update password form if the user enters a valid code
-      loginDispatch({
-        type: "setCodeVerifiedSuccess",
-        payload: true,
-      });
-      loginDispatch({
-        type: "setCode",
-        payload: getValues("code"),
-      });
+      if (from === "register") {
+        router.push(`${lang}/login`);
+      } else if (from === "login") {
+        loginDispatch({
+          type: "setCodeNotVerified",
+          payload: false,
+        });
+      } else {
+        //!--this case for showing the update password form if the user enters a valid code
+        loginDispatch({
+          type: "setCodeVerifiedSuccess",
+          payload: true,
+        });
+        loginDispatch({
+          type: "setCode",
+          payload: getValues("code"),
+        });
+      }
+
+      reset();
+      setSubmitted(false);
+    },
+    true, // authorizedAPI
+    (error) => {
+      // Handle the error if needed
+      console.error("Error:", error);
     }
-    reset();
-    setSubmitted(false);
-  });
+  );
 
   const onSubmit = useCallback(
     (data: any) => {
       setSubmitted(true);
       postCheckCode({
-        api: process.env.VITE_CHECK_CODE,
+        api: `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_CHECK_CODE}`,
         data: data,
       });
     },

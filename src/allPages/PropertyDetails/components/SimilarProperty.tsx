@@ -16,7 +16,7 @@ export default function SimilarProperty({ data, locale }: any) {
   const { t, i18n } = useTranslation("Pages_PropertyDetails");
   const swiperRef = useRef(null);
   // const dispatchRedux = useDispatch();
-  
+
   return (
     <div>
       {data?.similar_properties?.length > 0 && (
@@ -50,7 +50,7 @@ export default function SimilarProperty({ data, locale }: any) {
               </button>
             </div>
           </div>
-          <p className="Property__name text-base mt-1 asm:text-">
+          <p className="Property__name text-base mt-1 asm:text- mb-6">
             {t("headings.SIMILAR_PROPERTIES_DESCRIPTION", {
               defaultValue: t("headings.SIMILAR_PROPERTIES_DESCRIPTION", {
                 lng: locale === "en" ? "en" : "",

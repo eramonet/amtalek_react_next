@@ -1,7 +1,7 @@
 "use client";
 import Register from "./Register";
-import Login from "./Login";
-import Lottie from "react-lottie-player";
+// import Login from "./Login";
+// import Lottie from "react-lottie-player";
 // import Link from "@/Components/MainComponents/Link";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
@@ -69,7 +69,7 @@ function LogInRegister({ type }: any) {
         <LoginImage locale={i18n.language} />
         <div className="forms__wrapper w-1/2 clg:w-full h-full flex flex-col items-center bg-bg gap- pt-5">
           {/* {type === "register" ? <Register /> : <LoginForm />} */}
-          <Register  />
+          <Register />
         </div>
       </div>
     </section>

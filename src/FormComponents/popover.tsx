@@ -1,5 +1,5 @@
-import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
+import React from "react";
 
 import { cn } from "@/Utilities";
 
@@ -9,20 +9,39 @@ const PopoverTrigger = PopoverPrimitive.Trigger;
 
 const PopoverContent = React.forwardRef(
   ({ className, align = "center", sideOffset = 4, ...props }: any, ref) => (
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content
-        ref={ref}
-        align={align}
-        sideOffset={sideOffset}
-        className={cn(
-          "z-50  rounded-md abs ml- border  shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ",
-          className
-        )}
-        {...props}
-      />
-    </PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 rounded-md ml border shadow-md outline-none",
+        className
+      )}
+      {...props}
+    />
   )
 );
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+PopoverContent.displayName = "PopoverContent";
 
-export { Popover, PopoverTrigger, PopoverContent };
+// Example usage of Popover, PopoverTrigger, and PopoverContent
+const ExampleComponent = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={() => setOpen(!open)}
+        >
+          Open Popover
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="PopoverContent p-4">
+        <p>This is the popover content.</p>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+export { Popover, PopoverTrigger, PopoverContent, ExampleComponent };

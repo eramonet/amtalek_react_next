@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
 import { usePostData } from "@/Hooks/usePostData";
 import FavoriteButton from "@/components/FavoriteButton";
+import React from "react";
 
 export default function Slider({ data, locale, countrie }: any) {
   const { t } = useTranslation("Pages_LandingPage");
@@ -141,7 +142,7 @@ export default function Slider({ data, locale, countrie }: any) {
                             ? () => dispatchRedux(setShowLoginPopUp(true))
                             : () =>
                                 mutate({
-                                  api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                                  api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
                                   data: { property_id: slide?.id },
                                   file: undefined,
                                 })
@@ -156,7 +157,7 @@ export default function Slider({ data, locale, countrie }: any) {
                               id={slide?.id}
                               onChange={() =>
                                 mutate({
-                                  api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+                                  api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
                                   data: { property_id: slide?.id },
                                 })
                               }
