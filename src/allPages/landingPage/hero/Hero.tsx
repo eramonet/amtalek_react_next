@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import SearchForm from "@/MainComponents/SearchForm";
+import { Suspense } from "react";
 
 export default function Hero({ data, locale }: any) {
   const { t } = useTranslation("Pages_LandingPage");
@@ -51,7 +52,9 @@ export default function Hero({ data, locale }: any) {
       <div
         className={`hero__right--header-form  h-full w-[40vw] min-w-[610px] xxxl:min-w-[410px] md:min-w-[300px] alg:w-full alg:h-fit relative z-30 `}
       >
-        <SearchForm home type={"bigForm"} locale={locale} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchForm home type={"bigForm"} locale={locale} />
+        </Suspense>
       </div>
     </section>
   );
