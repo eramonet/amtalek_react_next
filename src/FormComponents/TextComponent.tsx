@@ -34,20 +34,20 @@ function TextComponent({
     >
       {withIcon && (
         <FontAwesomeIcon
-          className=".input__icon w-4 absolute left-3 rtl:left-auto rtl:right-3 top-3 opacity-50"
+          className=".input__icon w-4  absolute left-3 rtl:left-auto rtl:right-3 top-[13px] opacity-50"
           icon={faUser}
         />
       )}
       {label && (
         <h3
           className={`text-lg ${
-            alignment === "vertical" ? "min-w-fit" : "min-w-[210px] truncate"
+            alignment === "vertical" ? "min-w-fit " : "min-w-[210px] truncate"
           } `}
         >
           {label}
         </h3>
       )}
-      <div className="flex-col items-start justify-center gap-2 w-full">
+      <div className="flex-col items-start  justify-center gap-2 w-full ">
         <input
           dir={dir}
           disabled={disabled}

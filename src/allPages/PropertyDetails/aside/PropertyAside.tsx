@@ -29,7 +29,7 @@ export default async function PropertyAside({ listing_number, locale }: any) {
             api={`${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_SEND_OFFER_TO_BROKER}`}
             type="offer"
             for_what={allData[0]?.for_what}
-            Bgcolor="light"
+            Bgcolor="dark"
             // t={t}
             propID={allData[0]?.id}
           />

@@ -3,6 +3,7 @@ import TranslationsProvider from "@/components/TranslationsProvider";
 import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
 import { headers } from "next/headers";
+import ToasterProvider from "../ToasterProvider";
 
 export default async function LoginLayout({
   children,
@@ -20,6 +21,7 @@ export default async function LoginLayout({
     <main className="min-h-[calc(100vh-136px)]">
       <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
         <ClientWrapper>
+          <ToasterProvider />
           <QueryProvider>{children}</QueryProvider>
         </ClientWrapper>
       </TranslationsProvider>

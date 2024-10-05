@@ -16,13 +16,16 @@ import SimilarProperty from "./components/SimilarProperty";
 import Loader from "@/components/loader/Loader";
 import SendMessage from "./components/SendMessage";
 import LoginPopUp from "@/allPages/login/LoginPopUp";
+import Heading from "@/components/Heading";
+import { NoItemsMessage } from "@/SubComponents";
+import Comments from "@/MainComponents/Comments";
 
 export default async function PropertyDetails({ locale, listing_number }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
   const allData = data.data;
 
   const i18nNamespaces = ["Pages_PropertyDetails"];
-  const { t, i18n } = await initTranslations(locale, i18nNamespaces);
+  const { t } = await initTranslations(locale, i18nNamespaces);
 
   return (
     <section className="Property__Details--content w-[66%] flex flex-col gap-8 ss:gap-5 clg:w-full">
@@ -55,6 +58,17 @@ export default async function PropertyDetails({ locale, listing_number }: any) {
           <PropertyVideo data={allData[0]} locale={locale} />
 
           <SimilarProperty data={allData[0]} locale={locale} />
+
+          {allData[0]?.comments?.length > 0 && (
+            <div className="Property__COMMENTS -mt-14 mb-14">
+              <Heading>{t("headings.COMMENTS")}</Heading>
+              {allData[0]?.comments?.length === 0 ? (
+                ""
+              ) : (
+                <Comments data={allData[0]?.comments} locale={locale} />
+              )}
+            </div>
+          )}
 
           <SendMessage data={allData[0]} locale={locale} t={t} />
         </div>

@@ -2,6 +2,7 @@ import TranslationsProvider from "@/components/TranslationsProvider";
 import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
 import initTranslations from "@/app/i18n";
+import ToasterProvider from "../ToasterProvider";
 
 export default async function RegisterLayout({
   children,
@@ -16,6 +17,7 @@ export default async function RegisterLayout({
     <main className="min-h-[calc(100vh-136px)]">
       <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
         <ClientWrapper>
+          <ToasterProvider />
           <QueryProvider>{children}</QueryProvider>
         </ClientWrapper>
       </TranslationsProvider>

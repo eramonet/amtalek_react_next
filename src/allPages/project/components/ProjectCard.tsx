@@ -115,6 +115,7 @@ export default function ProjectCard({ broker, t }: any) {
             bmd:text-xs sm:text-[9px] flex items-center "
             >
               <span>{t("start")}</span>
+              {/* {parseInt(broker?.price_from).toLocaleString("en-US")} EGP */}
               {parseInt(broker?.price_from).toLocaleString("en-US")} EGP
               {/* <FontAwesomeIcon
                 className="mr-1 rtl:mr-0 rtl:ml-1"

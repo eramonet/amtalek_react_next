@@ -1,6 +1,7 @@
 import React from "react";
 import initTranslations from "@/app/i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
+import ToasterProvider from "../ToasterProvider";
 
 export default async function ProjectsLayout({
   children,
@@ -14,6 +15,7 @@ export default async function ProjectsLayout({
 
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
+      <ToasterProvider />
       {children}
     </TranslationsProvider>
   );

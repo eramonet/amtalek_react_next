@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import AgenciesCard from "./AgenciesCard";
 import getData from "@/api/getData";
 import { useTranslation } from "react-i18next";
@@ -41,6 +41,10 @@ export default function AgenciesAll({ locale }: any) {
     setIsLoading(false);
   };
 
+  const handleScrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   useEffect(() => {
     if (searchTerm === "") {
       fetchPageData();
@@ -63,6 +67,7 @@ export default function AgenciesAll({ locale }: any) {
   const handlePageChange = (selectedItem: any) => {
     const newPage = selectedItem.selected + 1;
     setCurrentPage(newPage);
+    handleScrollToTop();
   };
 
   // ****************************************************************************************************
@@ -101,7 +106,7 @@ export default function AgenciesAll({ locale }: any) {
               >
                 <button
                   disabled={currentPage === 1}
-                  className="pl-2 rtl:pl-0 rtl:pr-2 w-20 h-9 md:w-9 md:pl-0 md:rtl:pr-0 md:justify-center flex justify-start items-center gap-2 active:scale-90 hover:gap-3 transition-all duration-300 ease-in-out border-2 border-custome-blue bg-custome-blue text-custome-white disabled:opacity-50 disabled:pointer-events-none"
+                  className="w-full pl-2 rtl:pl-0 rtl:pr-2 h-9 md:w-9 md:pl-0 md:rtl:pr-0 md:justify-center flex justify-start items-center gap-2 active:scale-90 hover:gap-3 transition-all duration-300 ease-in-out border-2 border-custome-blue bg-custome-blue text-custome-white disabled:opacity-50 disabled:pointer-events-none"
                   onClick={() => handlePageChange({ selected: currentPage - 2 })}
                 >
                   <FontAwesomeIcon className="rotate-180 rtl:rotate-0" icon={faArrowRight} />
@@ -131,7 +136,7 @@ export default function AgenciesAll({ locale }: any) {
               >
                 <button
                   disabled={currentPage === totalPages}
-                  className="pl-[9px] rtl:pl-[0px] rtl:pr-[9px] w-[75px] h-9 md:w-9 md:pl-[0px] md:rtl:pr-[0px] md:justify-center flex justify-start items-center gap-2 active:scale-90 hover:gap-3 transition-all duration-300 ease-in-out border-2 border-custome-blue bg-custome-blue text-custome-white disabled:opacity-50 disabled:pointer-events-none"
+                  className="w-full pl-[9px] rtl:pl-[0px] rtl:pr-[9px] h-9 md:w-9 md:pl-[0px] md:rtl:pr-[0px] md:justify-center flex justify-start items-center gap-2 active:scale-90 hover:gap-3 transition-all duration-300 ease-in-out border-2 border-custome-blue bg-custome-blue text-custome-white disabled:opacity-50 disabled:pointer-events-none"
                   onClick={() => handlePageChange({ selected: currentPage })}
                 >
                   <span className="md:hidden">{t("Pagination.Next")}</span>

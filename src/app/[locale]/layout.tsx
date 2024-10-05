@@ -1,8 +1,10 @@
 import { dir } from "i18next";
 import TopHeader from "@/components/topHeader/TopHeader";
 import Header from "@/components/header/Header";
-import "./globals.css";
-import "./heart-animation.css";
+// import "./globals.css";
+// import "./heart-animation.css";
+import "./SASS/styles.scss";
+
 import Footer from "@/components/footer/Footer";
 import { Cairo, Roboto } from "next/font/google";
 import initTranslations from "../i18n";
@@ -12,6 +14,8 @@ import LayoutProvider from "./LayoutProvider";
 import QueryProvider from "./QueryProvider";
 import ClientWrapper from "./ClientWrapper";
 import ScrollToTop from "../../components/header/ScrollToTop";
+import ToasterProvider from "./ToasterProvider";
+import TooltipProviderComponents from "./TooltipProviderComponents";
 // import Navbar from "@/components/header/Navbar";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
@@ -42,20 +46,23 @@ export default async function RootLayout({
       <body className={fontClass}>
         <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
           <ClientWrapper>
-            <QueryProvider>
-              <LayoutProvider>
-                <TopHeader locale={locale} t={t} />
-                <Header t={t} locale={locale} />
-                {/* <Navbar /> */}
-              </LayoutProvider>
+            <TooltipProviderComponents>
+              <QueryProvider>
+                <ToasterProvider />
+                <LayoutProvider>
+                  <TopHeader locale={locale} t={t} />
+                  <Header t={t} locale={locale} />
+                  {/* <Navbar /> */}
+                </LayoutProvider>
 
-              {children}
+                {children}
 
-              <LayoutProvider>
-                <Footer locale={locale} t={t} />
-                <ScrollToTop />
-              </LayoutProvider>
-            </QueryProvider>
+                <LayoutProvider>
+                  <Footer locale={locale} t={t} />
+                  <ScrollToTop />
+                </LayoutProvider>
+              </QueryProvider>
+            </TooltipProviderComponents>
           </ClientWrapper>
         </TranslationsProvider>
       </body>

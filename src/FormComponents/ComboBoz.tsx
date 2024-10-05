@@ -114,7 +114,7 @@ export default function ComboBoz({
             </CommandEmpty>
             {/* <CommandEmpty>{NotFoundMessage}</CommandEmpty> */}
             <CommandGroup>
-              {data.map((item: any) => (
+              {data?.map((item: any) => (
                 <CommandItem
                   className={` cursor-pointer text-lg hover:bg-secondary aria-selected:bg-secondary/60 
                 w-full truncate ${

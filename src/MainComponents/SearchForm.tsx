@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+
 import { CheckBox, ComboBox } from "../FormComponents";
 import { useEffect, useReducer, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -487,7 +488,7 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
               })
             }
           >
-            <span className="text-2xl bg-custome-white text-custome-blue rounded-full w-7 h-7 flex justify-center items-center rtl:items-end">
+            <span className="text-2xl bg-custome-white text-custome-blue rounded-full w-8 h-7 flex justify-center items-center rtl:items-end">
               {state.toggleAmentiasOptions ? "-" : "+"}
             </span>
             {state.toggleAmentiasOptions
@@ -497,7 +498,7 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
 
           {/* Toggle Amentias Options */}
           <div
-            className={`amenities_options pr-2 rtl:pr-0 pl-2 w-full grid grid-cols-2 xl:grid-cols-1 clg:grid-cols-2 axs:grid-cols-1 overflow-hidden text-custome-white gap-x-6 gap-y-5 transition-all duration-300 ease-in-out 
+            className={`amenities_options pr-2 rtl:pr-0 pl-2 w-full grid grid-cols-2 xl:grid-cols-1 clg:grid-cols-2 axs:grid-cols-1 overflow-hidden text-custome-white gap-x-6 gap-y-5 transition-all duration-300 ease-in-out
       ${
         state.toggleAmentiasOptions
           ? "max-h-72 overflow-y-auto opacity-100 mt-5"
