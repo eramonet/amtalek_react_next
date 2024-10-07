@@ -62,7 +62,7 @@ export default function LastNews({ data, t, locale, countrie }: any) {
           </div>
         ))}
       </div>
-      <ButtonSections title={t("LatestNews.main_CTA")} className={"mt-6"} />
+      <ButtonSections to={`/news`} title={t("LatestNews.main_CTA")} className={"mt-6"} />
     </section>
   );
 }

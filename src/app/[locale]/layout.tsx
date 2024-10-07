@@ -16,6 +16,7 @@ import ClientWrapper from "./ClientWrapper";
 import ScrollToTop from "../../components/header/ScrollToTop";
 import ToasterProvider from "./ToasterProvider";
 import TooltipProviderComponents from "./TooltipProviderComponents";
+import AuthGuard from "./AuthGuard";
 // import Navbar from "@/components/header/Navbar";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
@@ -38,7 +39,12 @@ export default async function RootLayout({
   params: { locale: string };
 }) {
   const fontClass = locale === "ar" ? cairo.className : roboto.className;
-  const i18nNamespaces = ["LayoutComponents", "Pages_LandingPage", "MainComponents_SearchForm"];
+  const i18nNamespaces = [
+    "LayoutComponents",
+    "Pages_LandingPage",
+    "MainComponents_SearchForm",
+    "SettingsLayout",
+  ];
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <html lang={locale} dir={dir(locale)}>
@@ -49,18 +55,20 @@ export default async function RootLayout({
             <TooltipProviderComponents>
               <QueryProvider>
                 <ToasterProvider />
-                <LayoutProvider>
-                  <TopHeader locale={locale} t={t} />
-                  <Header t={t} locale={locale} />
-                  {/* <Navbar /> */}
-                </LayoutProvider>
+                <AuthGuard>
+                  <LayoutProvider>
+                    <TopHeader locale={locale} t={t} />
+                    <Header t={t} locale={locale} />
+                    {/* <Navbar /> */}
+                  </LayoutProvider>
 
-                {children}
+                  {children}
 
-                <LayoutProvider>
-                  <Footer locale={locale} t={t} />
-                  <ScrollToTop />
-                </LayoutProvider>
+                  <LayoutProvider>
+                    <Footer locale={locale} t={t} />
+                    <ScrollToTop />
+                  </LayoutProvider>
+                </AuthGuard>
               </QueryProvider>
             </TooltipProviderComponents>
           </ClientWrapper>

@@ -32,7 +32,7 @@ export default function PopularPlaces({ data, t, locale, countrie }: any) {
           </div>
         </div>
 
-        <ButtonSections title={t("PopularPlaces.main_CTA")} />
+        <ButtonSections to={`/cities`} title={t("PopularPlaces.main_CTA")} />
       </div>
     </section>
   );

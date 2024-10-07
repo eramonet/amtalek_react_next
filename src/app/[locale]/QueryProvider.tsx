@@ -1,7 +1,7 @@
-"use client"
+"use client";
 // _app.tsx or _app.js (depending on your setup)
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { AppProps } from "next/app";
+// import type { AppProps } from "next/app";
 
 // Create a client
 const queryClient = new QueryClient();

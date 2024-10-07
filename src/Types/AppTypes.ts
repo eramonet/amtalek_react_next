@@ -1,4 +1,7 @@
 export type TUser = {
+  favorite_list: any;
+  current_package_info: any;
+  logo: string | undefined;
   actor_type: string;
   bio: string;
   city: number;

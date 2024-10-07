@@ -5,24 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToggleLogOutPopUp } from "@/Store/Features/MiscellaneousSlice";
 import { Trans, useTranslation } from "react-i18next";
 import userImg from "@/assets/images/userImgNotLogin.png";
-import { userData, userProfileData } from "@/Store/Features/AuthenticationSlice";
-import { TUser } from "@/Types/AppTypes";
-import { Link } from "react-router-dom";
+import favIconSrc from "@/assets/images/fav-icon.png";
+// import { userData, userProfileData } from "@/Store/Features/AuthenticationSlice";
+// import { TUser } from "@/Types/AppTypes";
+// import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useState } from "react";
 import type { MenuProps } from "antd";
 import Image from "next/image";
-import Box from "@mui/material/Box";
-import Menu from "@mui/material/Menu";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+// import Box from "@mui/material/Box";
+// import Menu from "@mui/material/Menu";
+// import IconButton from "@mui/material/IconButton";
+// import Tooltip from "@mui/material/Tooltip";
 import { Button, Dropdown, Space } from "antd";
 import React from "react";
+import Link from "next/link";
 
-type TProps = {
-  ForRealEstate?: boolean;
-  user?: TUser;
-};
+// type TProps = {
+//   ForRealEstate?: boolean;
+//   user?: TUser;
+// };
 
 export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: any) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,8 +35,7 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // const user = useSelector(userData) as any;
-  // const userProfile = user.data;
+  // const userProfile = useSelector(userProfileData) as TUser;
   // const [open, setOpen] = useState(false);
   const dispatchRedux = useDispatch();
   const { t, i18n } = useTranslation("LayoutComponents");
@@ -53,14 +54,10 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
               <>
                 <div className="flex flex-col gap-7 mt-5 mb-3">
                   <Image
-                    width={1000}
-                    height={1000}
+                    width={100}
+                    height={100}
                     className="flex mx-auto w-20 h-20 rounded-full"
-                    src={
-                      userProfile?.actor_type === "broker"
-                        ? userProfile?.logo
-                        : "/assets/images/fav-icon.png"
-                    }
+                    src={userProfile?.actor_type === "broker" ? userProfile?.logo : favIconSrc}
                     alt="dsa"
                   />
 
@@ -70,7 +67,7 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
                         ? "_blank"
                         : "_self"
                     }
-                    to={`${
+                    href={`${
                       userProfile?.actor_type === "broker" && userProfile?.has_package === "yes"
                         ? userProfile?.dashboard_link
                         : userProfile?.actor_type === "broker" && userProfile?.has_package === "no"
@@ -114,12 +111,12 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
             ) : (
               <div className="w-full flex flex-col gap-4">
                 <Link
-                  to={`/${i18n.language.startsWith("en") ? "en" : "ar"}/Amtalek-Profile`}
+                  href={`/${i18n.language.startsWith("en") ? "en" : "ar"}/Amtalek-Profile`}
                   className="w-full flex gap-4 items-center p-3 hover:bg-grey rounded transition-[300]"
                 >
                   <Image
-                    width={1000}
-                    height={1000}
+                    width={100}
+                    height={100}
                     src={userProfile?.image ? userProfile?.image : userImg}
                     alt="user"
                     className="h-[32px] w-[32px] rounded-full"
@@ -127,12 +124,12 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
                   <span>{userProfile?.first_name}</span>
                 </Link>
                 <Link
-                  to=""
+                  href=""
                   className="w-full flex gap-4 items-center p-3 hover:bg-grey rounded transition-[300]"
                 >
                   <Image
-                    width={1000}
-                    height={1000}
+                    width={100}
+                    height={100}
                     src={userProfile?.image ? userProfile?.image : userImg}
                     alt="user"
                     className="h-[32px] w-[32px] rounded-full"
@@ -140,12 +137,12 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
                   <span>{userProfile?.first_name}</span>
                 </Link>
                 <Link
-                  to=""
+                  href=""
                   className="w-full flex gap-4 items-center p-3 hover:bg-grey rounded transition-[300]"
                 >
                   <Image
-                    width={1000}
-                    height={1000}
+                    width={100}
+                    height={100}
                     src={userProfile?.image ? userProfile?.image : userImg}
                     alt="user"
                     className="h-[32px] w-[32px] rounded-full"
@@ -179,8 +176,8 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
       >
         <button className="  h-14  aspect-square rounded-full border-2 border-secondary p-1 overflow-hidden">
           <Image
-            width={1000}
-            height={1000}
+            width={100}
+            height={100}
             className="w-full h-full object-cover rounded-full"
             src={
               userProfile?.actor_type === "broker"

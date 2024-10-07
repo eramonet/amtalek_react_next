@@ -11,7 +11,7 @@ export default function ImagesSection({ data }: any) {
           <Link
             key={card.id}
             className="bg-white relative flex items-center justify-center"
-            href=""
+            href={card?.link}
           >
             <Image
               src={card.image}

@@ -16,7 +16,12 @@ const nextConfig = {
   },
 
   images: {
-    domains: ["amtalek.com", "amtalek.amtalek.com", "firebasestorage.googleapis.com"], // أضف هنا النطاقات التي تريد السماح بتحميل الصور منها
+    domains: [
+      "amtalek.com",
+      "amtalek.amtalek.com",
+      "firebasestorage.googleapis.com",
+      "cdn.pixabay.com",
+    ], // أضف هنا النطاقات التي تريد السماح بتحميل الصور منها
   },
 };
 

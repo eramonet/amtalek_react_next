@@ -14,6 +14,7 @@ import LatestProperties from "./latestProperties/LatestProperties";
 import initTranslations from "@/app/i18n";
 import LoginPopUp from "../login/LoginPopUp";
 import React from "react";
+import LogOutPopUp from "@/MainComponents/LogOutPopUp";
 
 export default async function LandingPage({ locale }: any) {
   const countries = await getData("web/countries", locale);
@@ -39,6 +40,7 @@ export default async function LandingPage({ locale }: any) {
     return (
       <>
         <LoginPopUp />
+        <LogOutPopUp  />
 
         <Hero data={allData?.sliders} locale={locale} />
 

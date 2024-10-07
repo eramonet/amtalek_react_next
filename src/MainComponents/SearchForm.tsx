@@ -523,14 +523,14 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
           </div>
         </div>
       )}
-      {/* {home && (
+      {home && (
         <AmenitiesSelect
           getValues={getValues}
-          amenitiesData={amenitiesData?.data}
+          amenitiesData={amenitiesData}
           t={t}
           setValue={setValue}
         />
-      )} */}
+      )}
       {/** Submit Button */}
       <button
         disabled={!isValid}
