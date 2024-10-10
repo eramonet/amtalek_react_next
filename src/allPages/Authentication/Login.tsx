@@ -422,7 +422,6 @@
 //     email: "",
 //     code: "",
 //   });
-//   console.log(state.codeNotVerified);
 
 //   return (
 //     <>

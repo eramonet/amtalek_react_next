@@ -1,3 +1,4 @@
+"use client";
 import { useCallback } from "react";
 import { usePostData } from "@/Hooks/useAxios";
 import { useRef } from "react";
@@ -11,18 +12,25 @@ import {
 } from "@/Store/Features/MiscellaneousSlice";
 import { useSelector, useDispatch } from "react-redux";
 import SubmitBtnComponent from "../FormComponents/SubmitBtnComponent";
-function DeletePopUp({ api, params = {}, onSuccess, t }: any) {
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie"; // استيراد مكتبة js-cookie
+
+function DeletePopUp({ api, params = {}, onSuccess }: any) {
   const user = useSelector(userData);
   const toggleDeletePopUp = useSelector(toggleDeletePopUpREdux);
   const DeletedItem = useSelector(DeletedItemREdux);
   const DeleteOfferPopUpContent = useRef<any>(null);
   const dispatchRedux = useDispatch();
-
+  const { t } = useTranslation();
   const { mutate, isLoading }: any = usePostData(
     true,
     () => {
       dispatchRedux(setToggleDeletePopUp(false));
       dispatchRedux(setDeletedItem(null));
+
+      // مسح الـ cookies عند تسجيل الخروج
+      Cookies.remove("userData");
+      Cookies.remove("token");
 
       onSuccess && onSuccess();
     },
@@ -63,7 +71,7 @@ function DeletePopUp({ api, params = {}, onSuccess, t }: any) {
           ref={DeleteOfferPopUpContent}
           method="post"
           onSubmit={onSubmit}
-          className={`add__comment--form  w-1/2 asm:w-11/12 bg-grey flex flex-col justify-start  gap-6 ${
+          className={`add__comment--form  w-1/2 asm:w-11/12 bg-grey flex flex-col justify-start p-5  gap-6 ${
             toggleDeletePopUp ? "scale-100" : "scale-0"
           } trns origin-bottom shadow-lg p-9 round`}
         >

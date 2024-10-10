@@ -74,7 +74,6 @@ export default function ContactUs() {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(contactUsData?.location);
 
   // const {
   //   data: contactUsData,

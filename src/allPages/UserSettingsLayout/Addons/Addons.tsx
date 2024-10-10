@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useQuery } from "@tanstack/react-query";
 import { userData } from "@/Store/Features/AuthenticationSlice";
@@ -6,14 +7,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 // import { Loader } from "@/SubComponents";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Loader from "@/components/loader/Loader";
+import Link from "next/link";
 // import { HelmetTags } from "@/Components/MainComponents";
 
-export function Component() {
+export default function Addons({ user }:any) {
   const { i18n } = useTranslation("Pages_Packages");
   const [duration, setDuration] = useState("monthly");
-  const user = useSelector(userData);
+  // const user = useSelector(userData);
   const headers = {
     Authorization: `Bearer ${user?.token}`,
     "Content-Type": "application/json",
@@ -186,8 +188,8 @@ export function Component() {
         </span>
       </div>
       <Link
-        state={{ items, totalPrice, duration }}
-        to={`${i18n.language?.startsWith("ar") ? "" : "/en"}/addons-payment`}
+        // state={{ items, totalPrice, duration }}
+        href={`${i18n.language?.startsWith("ar") ? "" : "/en"}/addons-payment`}
         className={`bg-primary text-white w-fit p-3 rounded border border-primary hover:bg-transparent hover:text-primary transition duration-300 ${
           totalPrice === 0 && "border-none pointer-events-none !bg-gray-200"
         }`}

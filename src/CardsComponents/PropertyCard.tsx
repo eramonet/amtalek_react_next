@@ -1,6 +1,6 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 
 import {
@@ -13,7 +13,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 // import { setToggleDeletePopUp, setDeletedItem } from "../../Store/Features/MiscellaneousSlice.tsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePostData } from "@/Hooks/useAxios";
 import { faFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 // import LangLink from "../MainComponents/LangLink";
@@ -28,22 +28,64 @@ import Image from "next/image";
 import LangLink from "@/components/LangLink";
 import React from "react";
 import { setDeletedItem, setToggleDeletePopUp } from "@/Store/Features/MiscellaneousSlice";
+import { userData } from "@/Store/Features/AuthenticationSlice";
+import { useTranslation } from "react-i18next";
 
 const PropertyCard = memo(function PropertyCard(props: any) {
-  const [userProfileDataOutlet, refetch] = useOutletContext() as [TUser, () => void];
+  // const [userProfileDataOutlet, refetch] = useOutletContext() as [TUser, () => void];
+  const { t, i18n } = useTranslation("Pages_MyProperties");
+  const user = useSelector(userData);
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  // const [notifications, setNotifications] = useState([]);
+  // const [unseenCounter, setUnseenCounter] = useState(0);
 
-  const { mutate }: any = usePostData(true, () => {
-    //like or unlike the property from all pages doesn't have onSuccuss but favorites page can only unlike the property, so it has onSuccess
-    props?.onSuccess ? props?.onSuccess(props.property?.id) : "";
-    refetch();
-  },
-  true, // authorizedAPI: (يجب أن تحدد ما إذا كانت هذه القيمة true أو false بناءً على حاجتك)
-  (error) => {
-    // onError: معالجة الخطأ هنا
-    console.error("An error occurred:", error);
-  });
+  async function getUserProfile(token: string, language: string) {
+    try {
+      const response = await fetch(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": language,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const dataProfile = await response.json();
+
+      setUserProfileDataOutlet(dataProfile?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      getUserProfile(user?.token, i18n?.language);
+      // getNotifications(user?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
+
+  const { mutate }: any = usePostData(
+    true,
+    () => {
+      //like or unlike the property from all pages doesn't have onSuccuss but favorites page can only unlike the property, so it has onSuccess
+      props?.onSuccess ? props?.onSuccess(props.property?.id) : "";
+      // refetch();
+    },
+    true, // authorizedAPI: (يجب أن تحدد ما إذا كانت هذه القيمة true أو false بناءً على حاجتك)
+    (error) => {
+      // onError: معالجة الخطأ هنا
+      console.error("An error occurred:", error);
+    }
+  );
   const dispatchRedux = useDispatch();
-  console.log(props.property);
   return (
     <motion.div
       layout
@@ -91,7 +133,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
               </LangLink>
               {props?.property?.for_what && (
                 <span className="bg-[#ffe270] text-secondary p-1 rounded text-sm">
-                  {props?.t("PropertyCard.for_what", {
+                  {t("PropertyCard.for_what", {
                     context: props.property?.for_what,
                   })}
                 </span>
@@ -121,7 +163,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
         <div className="property__type absolute text-sm round top-3 right-3 rtl:right-auto rtl:left-3 rtl:rtl  gap-2 z-40 flex flex-col">
           {!props?.brokerDetails && props?.property?.for_what && (
             <span className="bg-accent text-secondary px-2 py-1 rounded">
-              {props?.t("PropertyCard.for_what", {
+              {t("PropertyCard.for_what", {
                 context: props.property?.for_what,
               })}
             </span>
@@ -142,29 +184,29 @@ const PropertyCard = memo(function PropertyCard(props: any) {
               props?.brokerDetails && "!bg-[#ffe270] text-secondary"
             }`}
           >
-            {props?.lng === "ar" ? "مميز" : "Featured"}
+            {i18n.language === "ar" ? "مميز" : "Featured"}
           </div>
         ) : (
           ""
         )}
         {!props?.brokerDetails && (
           <div className="property__price absolute rounded bottom-0 right-0 px-2 py-1 text-md bg-secondary text-bg z-40">
-            {props?.t("PropertyCard.price_formatted", {
+            {t("PropertyCard.price_formatted", {
               context: props.property?.for_what,
               sale_price: props.property?.sale_price,
               rent_price: props.property?.rent_price,
               curr: props.property?.currency,
-              duration: props.property?.rent_duration,
+              duration: t(`PropertyCard.${props.property?.rent_duration}`),
             })}
           </div>
         )}
         {props?.acceptedCheck && (
           <div
-            className={`property__price absolute rounded bottom-0 left-0 px-2 py-1 text-md ${
-              props?.property?.acceptance === 0 ? "bg-secondary" : "bg-green-500"
+            className={`property__price absolute rounded bottom-0 left-0 px-2 py-1 text-md bg-green-500 ${
+              props?.property?.acceptance === 0 ? "bg-secondary" : "0"
             } text-bg z-40`}
           >
-            {props?.t("PropertyCard.accepted", {
+            {t("PropertyCard.accepted", {
               count: props?.property?.acceptance,
             })}
           </div>
@@ -243,14 +285,16 @@ const PropertyCard = memo(function PropertyCard(props: any) {
           </div>
           {props?.brokerDetails && (
             <div className="property__price ss:w-fit  my-2 rounded bottom-0 right-0 px-2 py-1 text-base bg-secondary text-center text-bg z-40">
-              {props?.t("PropertyCard.price_formatted", {
+              {t("PropertyCard.price_formatted", {
                 context: props.property?.for_what,
                 sale_price: props.property?.sale_price,
                 rent_price: props.property?.rent_price,
                 curr: props?.brokerDetails
                   ? props.property?.property_currency
                   : props.property?.currency,
-                duration: props.property?.rent_duration,
+                duration: t(`PropertyCard.${props?.property?.rent_duration}`),
+
+                // duration: props.property?.rent_duration,
               })}
             </div>
           )}
@@ -279,7 +323,6 @@ const PropertyCard = memo(function PropertyCard(props: any) {
             <Image
               width={1000}
               height={1000}
-              loading="lazy"
               src={props.property?.broker_details?.[0]?.logo}
               alt={props.property?.broker_details?.[0]?.name}
               className="broker__img w-8 aspect-square cursor-pointer object-cover rounded-full border-[1px] border-secondary"
@@ -290,19 +333,19 @@ const PropertyCard = memo(function PropertyCard(props: any) {
         <div className="property__details--mid p-3 flex justify-between items-start h-fit w-full gap-1">
           <h5 className="property__size xxl:text-center text-xs font-medium axs:text-[10px]">
             <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faMaximize} />
-            {props?.t("PropertyCard.area_formatted", {
+            {t("PropertyCard.area_formatted", {
               area: props.property?.land_area,
             })}
           </h5>
           <h5 className="bedrooms__number xxl:text-center text-xs font-medium axs:text-[10px]">
             <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faBed} />{" "}
-            {props?.t("PropertyCard.Bedrooms", {
+            {t("PropertyCard.Bedrooms", {
               count: props.property?.bed_rooms_no,
             })}
           </h5>
           <h5 className="bathrooms__number xxl:text-center text-xs font-medium axs:text-[10px]">
             <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faBath} />{" "}
-            {props?.t("PropertyCard.Bathrooms", {
+            {t("PropertyCard.Bathrooms", {
               count: props.property?.bath_room_no,
             })}
           </h5>
@@ -310,11 +353,11 @@ const PropertyCard = memo(function PropertyCard(props: any) {
         {props?.offer ? (
           <div className="w-full flex px-5 justify-between items-center py-4 border-t-[2px] font-black border-secondary20">
             <div className="flex items-center gap-2">
-              <span className="font-medium">{props?.t("offer")}:</span>
+              <span className="font-medium">{t("offer")}:</span>
               <span className="text-sm">{props?.offer?.offer}</span>
             </div>
             <div className="flex items-center gap-2 font-black">
-              <span className="font-mediu">{props?.t("status")} : </span>
+              <span className="font-mediu">{t("status")} : </span>
               <span className="font-black text-[13px]">{props?.offer?.convert_to_lead}</span>
             </div>
           </div>
@@ -393,12 +436,12 @@ const PropertyCard = memo(function PropertyCard(props: any) {
                       href={props.property?.facebook}
                     >
                       <FontAwesomeIcon className="text-lg" icon={faFacebook} />
-                      {props?.t("PropertyCard.share_options.Facebook")}
+                      {t("PropertyCard.share_options.Facebook")}
                     </a>
                     <div className="w-full h-[0.05rem] bg-dark-gray"></div>
                     <WhatsappShareButton
                       url={`https://amtalek.com${
-                        props.i18n.language?.startsWith("ar") ? "" : "/en"
+                        i18n.language?.startsWith("ar") ? "" : "/en"
                       }/properties/${props?.property?.listing_number}/${
                         props?.brokerDetails
                           ? props.property?.property_title?.replace(/\s/g, "-")
@@ -407,7 +450,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
                       className="h-10 w-full !bg-grey hover:!text-bg hover:!bg-secondary trns flex justify-start !pl-5 rtl:pl-0 rtl:!pr-5 items-center cursor-pointer gap-3"
                     >
                       <IoLogoWhatsapp size={20} />
-                      <span>{props.i18n.language?.startsWith("ar") ? "واتساب" : "Whatsapp"}</span>
+                      <span>{i18n.language?.startsWith("ar") ? "واتساب" : "Whatsapp"}</span>
                     </WhatsappShareButton>
                     <div className="w-full h-[0.05rem] bg-dark-gray"></div>
 
@@ -416,7 +459,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
                       className="h-10 w-full !bg-grey hover:!text-bg hover:!bg-secondary trns flex justify-start !pl-5 rtl:pl-0 rtl:!pr-5 items-center cursor-pointer gap-3"
                     >
                       <FontAwesomeIcon className="text-lg" icon={faXTwitter} />
-                      {props?.t("PropertyCard.share_options.Twitter")}
+                      {t("PropertyCard.share_options.Twitter")}
                     </TwitterShareButton>
 
                     <div className="w-full h-[0.05rem] bg-dark-gray"></div>
@@ -437,7 +480,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
             }}
             className={`  group  rounded-md w-24 h-10 trns bg-delete text-bg  hover:bg-transparent border-delete border-2 hover:text-delete active:scale-90 flex items-center justify-center gap-2 `}
           >
-            {props?.t("PropertyCard.Actions.Delete")}
+            {t("PropertyCard.Actions.Delete")}
             <FontAwesomeIcon className=" text-lg  group-active:scale-" icon={faTrash} />
           </button>
         </div>

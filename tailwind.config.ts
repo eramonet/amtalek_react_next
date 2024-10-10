@@ -49,6 +49,7 @@ const config: Config = {
         "custome-yellow": "#ffd119",
         "custome-gray": "#ced4d6",
         "custome-red": "#ff6665",
+        accent: "#ffd119",
         grey: "#edf3f8",
         "dark-gray": "#ced4d6",
         edit: "#2dd4bf",
@@ -56,6 +57,9 @@ const config: Config = {
         bg: "#ffffff",
         secondary: "#005879",
         secondary20: "#bed4de",
+        red500: "#ef4444",
+        delete: "#f87171",
+        dark: "#1d1d1d",
       },
       container: {
         center: true,

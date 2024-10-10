@@ -19,6 +19,7 @@ import LoginPopUp from "@/allPages/login/LoginPopUp";
 import Heading from "@/components/Heading";
 import { NoItemsMessage } from "@/SubComponents";
 import Comments from "@/MainComponents/Comments";
+import Head from "next/head";
 
 export default async function PropertyDetails({ locale, listing_number }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -35,12 +36,25 @@ export default async function PropertyDetails({ locale, listing_number }: any) {
         <div className="Property__general--info w-full flex flex-col gap-4">
           {/* t={t} i18n={i18n} */}
 
+          <Head>
+            <title>{allData[0].name} - Broker Details</title>
+            <meta
+              name="description"
+              content={`View details about ${allData[0].name}, a broker in our system.`}
+            />
+            <meta property="og:title" content={allData[0].name} />
+            <meta
+              property="og:description"
+              content={`Check out properties and projects by ${allData[0].name}.`}
+            />
+            <meta property="og:image" content={allData[0].image_url} />
+          </Head>
+
           <LoginPopUp />
 
           <PropertyHeader data={allData[0]} />
 
-          <PropertySlider data={allData[0]} style={"mt-10"} />
-
+          {/* <PropertySlider data={allData[0]} style={"mt-10"} /> */}
           <UnderSlider data={allData[0]} locale={locale} t={t} />
 
           <Share data={allData[0]} type="property" style={"mt-8"} file={"Pages_PropertyDetails"} />

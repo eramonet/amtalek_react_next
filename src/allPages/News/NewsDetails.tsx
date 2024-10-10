@@ -31,7 +31,6 @@ export function Component() {
     newsID
   );
 
-  console.log(data);
 
   useEffect(() => {
     refetch();

@@ -12,10 +12,6 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPackageID }: any) {
-  // console.log(singlePackage);
-  // console.log(SubscriptionInProfile);
-  // console.log(CurrentPackageID);
-
   const { i18n } = useTranslation("LayoutComponents");
   const user = useSelector(userData);
 
@@ -48,7 +44,6 @@ function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPac
       console.error("Failed to fetch user profile:", error);
     }
   }
-  console.log(userProfileDataOutlet);
 
   useEffect(() => {
     if (user?.token && i18n.language) {
@@ -56,8 +51,6 @@ function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPac
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.token, i18n.language]);
-
-  console.log(userProfileDataOutlet);
 
   // const navigate = useNavigate();
 
@@ -83,10 +76,9 @@ function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPac
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, type]);
-  console.log(userProfileDataOutlet?.has_package);
   return (
     <div
-      className={` w-[90%] flex flex-col rounded-xl overflow-hidden relative bg-white gap-  pb-5 ${
+      className={` w-[90%] flex flex-col rounded-xl overflow-hidden relative bg-white gap-  py-5 ${
         singlePackage?.package_type === "featured" && "scale-110"
       }`}
     >

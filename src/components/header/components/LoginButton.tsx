@@ -15,7 +15,7 @@ import logoImg from "@/assets/images/navEnLogo.png";
 import arlogoImg from "@/assets/images/navArLogo.png";
 import { TbSocial } from "react-icons/tb";
 import type { MenuProps } from "antd";
-import { Dropdown, Badge } from "antd";
+import { Dropdown, Badge, Menu } from "antd";
 import { setShowLoginPopUp } from "@/Store/Features/AuthenticationSlice";
 import { QueryClient } from "@tanstack/react-query";
 import Image from "next/image.js";
@@ -86,7 +86,6 @@ const LoginButton = memo(function LoginButton() {
       }
 
       const data = await response.json();
-      console.log(data?.data);
       setNotifications(data?.data?.notifications);
       setUnseenCounter(data?.data?.unseen_counter);
     } catch (error) {
@@ -210,6 +209,13 @@ const LoginButton = memo(function LoginButton() {
     }
   }, [user, unseenCounter]);
 
+  // const menu = (
+  //   <Menu
+  //     items={items}
+  //     className="!h-96 overflow-auto" // هنا تضيف الـ className المطلوب للـ ul
+  //   />
+  // );
+  const menu = <Menu className="h-96 overflow-auto" items={items} />;
   return (
     <header className="w-full h-[88px] bg-bg z-40 relative">
       <nav className="h-[88px] flex justify-between items-center bg-bg relative z-50">
@@ -229,9 +235,17 @@ const LoginButton = memo(function LoginButton() {
         <div className="nav__CTAs flex items-center gap-10 ss:ltr:gap-3 ss:rtl:gap-2">
           {user?.data?.actor_type === "user" && (
             <span onClick={handleClick}>
-              <Dropdown trigger={user?.token ? ["click"] : []} menu={{ items }} placement="bottom">
+              <Dropdown
+                trigger={user?.token ? ["click"] : []}
+                overlay={menu}
+                // menu={{ items }}
+                placement="bottom"
+              >
                 <Badge
                   showZero
+                  classNames={{
+                    indicator: "!text-[14px] rtl:!left-2 !rounded-full !px-1",
+                  }}
                   className="cursor-pointer !text-[11px]"
                   size="default"
                   count={count}
@@ -257,7 +271,7 @@ const LoginButton = memo(function LoginButton() {
               <Dropdown
                 overlay={
                   <div className={`signin__menu w-72 h-96`}>
-                    <div className="flex flex-col justify-center items-center w-full h-full bg-grey p-7 gap-3 shadow-md rounded">
+                    <div className="flex flex-col justify-center items-center w-full h-full bg-grey gap-3 shadow-md rounded">
                       <Image
                         width={100}
                         height={100}

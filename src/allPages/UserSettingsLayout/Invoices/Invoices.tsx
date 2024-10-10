@@ -5,13 +5,13 @@
 import { useTranslation } from "react-i18next";
 import { TUser } from "@/Types/AppTypes";
 import InvoicesDetails from "./component/InvoicesDetails";
-import useUserProfile from "@/api/useUserProfile";
+// import useUserProfile from "@/api/useUserProfile";
 
-export function Invoices() {
+export function Invoices({ userProfileDataOutlet }: any) {
   const { t, i18n } = useTranslation("Pages_Invoices");
   // const userProfileDataOutlet = useOutletContext() as [TUser];
 
-  const userProfileDataOutlet: any = useUserProfile();
+  // const userProfileDataOutlet: any = useUserProfile();
 
   function CheckPackageValidation() {
     return (

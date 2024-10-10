@@ -17,6 +17,8 @@ import ScrollToTop from "../../components/header/ScrollToTop";
 import ToasterProvider from "./ToasterProvider";
 import TooltipProviderComponents from "./TooltipProviderComponents";
 import AuthGuard from "./AuthGuard";
+import HeaderTopMenu from "@/components/topHeader/HeaderTopMenu";
+import { useRouter } from "next/router";
 // import Navbar from "@/components/header/Navbar";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
@@ -45,6 +47,7 @@ export default async function RootLayout({
     "MainComponents_SearchForm",
     "SettingsLayout",
   ];
+
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <html lang={locale} dir={dir(locale)}>
@@ -57,6 +60,7 @@ export default async function RootLayout({
                 <ToasterProvider />
                 <AuthGuard>
                   <LayoutProvider>
+                    {/* <HeaderTopMenu t={t} /> */}
                     <TopHeader locale={locale} t={t} />
                     <Header t={t} locale={locale} />
                     {/* <Navbar /> */}

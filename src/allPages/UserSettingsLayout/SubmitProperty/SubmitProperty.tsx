@@ -281,7 +281,6 @@ export function Component() {
     30 * 60 * 1000,
     !!city
   );
-  console.log(regionsData);
 
   const { data: subregionsData, refetch: refetchsubRegions } = useFetchData(
     "subregions",

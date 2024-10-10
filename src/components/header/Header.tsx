@@ -3,6 +3,8 @@ import ButtonNavbar from "./components/ButtonNavbar";
 import LoginButton from "./components/LoginButton";
 import Logo from "./components/Logo";
 import Navbar from "./components/Navbar";
+import NavbarHeader from "./components/NavbarHeader";
+import ServerImg from "./components/ServerImg";
 // import HeaderTopMenu from "./HeaderTopMenu";
 
 export default function Header({ t, locale }: any) {
@@ -16,7 +18,9 @@ export default function Header({ t, locale }: any) {
           {/* <Navbar t={t} /> */}
           {/* ********************************************************* */}
           {/* <ButtonNavbar /> */}
-          <LoginButton />
+          <NavbarHeader locale={locale} />
+          {/* <ServerImg /> */}
+          {/* <LoginButton /> */}
         </div>
         {/* </div> */}
       </header>

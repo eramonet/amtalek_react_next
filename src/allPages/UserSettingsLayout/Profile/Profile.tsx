@@ -63,7 +63,6 @@ export function Component() {
       }
 
       const dataProfile = await response.json();
-      console.log(dataProfile);
 
       setUserProfileDataOutlet(dataProfile?.data);
     } catch (error) {

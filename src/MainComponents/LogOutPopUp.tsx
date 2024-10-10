@@ -1,7 +1,7 @@
 "use client";
 import { useCallback } from "react";
 import { useRef } from "react";
-
+import Cookies from "js-cookie";
 import {
   toggleLogOutPopUp as toggleLogOutPopUpREdux,
   setToggleLogOutPopUp,
@@ -25,6 +25,9 @@ function LogOutPopUp() {
   const onSubmit = useCallback(
     (e: any) => {
       e.preventDefault();
+
+      Cookies.remove("userData");
+
       logOut();
     },
     [logOut]
@@ -48,9 +51,9 @@ function LogOutPopUp() {
           ref={LogOutOfferPopUpContent}
           method="post"
           onSubmit={onSubmit}
-          className={`add__comment--form  w-1/2 asm:w-11/12 bg-grey flex flex-col justify-start  gap-6 ${
+          className={`add__comment--form  w-1/2 asm:w-11/12 bg-grey flex flex-col justify-start gap-6 ${
             toggleLogOutPopUp ? "scale-100" : "scale-0"
-          } trns origin-bottom shadow-lg p-9 round`}
+          } trns origin-bottom shadow-lg p-9 rounded`}
         >
           <h2 className="text-2xl font-medium w-full text-center">
             {t("LogOutPopUp.LogOutPopUpTitle")}

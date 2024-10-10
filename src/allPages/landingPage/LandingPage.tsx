@@ -16,6 +16,7 @@ import LoginPopUp from "../login/LoginPopUp";
 import React from "react";
 import LogOutPopUp from "@/MainComponents/LogOutPopUp";
 
+import UserProfile from "./UserProfile"
 export default async function LandingPage({ locale }: any) {
   const countries = await getData("web/countries", locale);
   const AllCountries = countries.data[0] || [];
@@ -41,6 +42,8 @@ export default async function LandingPage({ locale }: any) {
       <>
         <LoginPopUp />
         <LogOutPopUp  />
+
+        {/* <UserProfile/> */}
 
         <Hero data={allData?.sliders} locale={locale} />
 

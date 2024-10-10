@@ -1,25 +1,23 @@
+"use client";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { userData } from "../../Store/Features/AuthenticationSlice";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { lang, setSubscribed } from "../../Store/Features/MiscellaneousSlice";
+import { lang, setSubscribed } from "@/Store/Features/MiscellaneousSlice";
 import { Hourglass } from "react-loader-spinner";
-import { TUser } from "@/Types/AppTypes";
 import Heading from "@/components/Heading";
-// import { Heading, HelmetTags } from "@/Components/MainComponents";
+import { useParams, useRouter } from "next/navigation"; // استخدام useRouter بدلاً من useLocation و useParams
 
-export function Component() {
+export default function AddonsPayment({ userProfileDataOutlet, user }: any) {
   const dispatchRedux = useDispatch();
   const { t, i18n } = useTranslation("Pages_Packages");
   const [PaymentType, setPaymentType] = useState("visa");
   const [left, setLeft] = useState("");
   const lng = useSelector(lang);
-  const { packageID, duration } = useParams();
-  const user = useSelector(userData);
-  const { state } = useLocation();
+  const router = useRouter();
+
+  const { duration } = useParams();
   const queryClient = useQueryClient();
 
   const headers = {
@@ -27,54 +25,47 @@ export function Component() {
     "Content-Type": "application/json",
     lang: i18n.language?.startsWith("ar") ? "ar" : "en",
   };
-  const [userProfileDataOutlet, refetch] = useOutletContext() as [TUser, () => void];
-  const navigate = useNavigate();
 
   async function postAddons() {
     return await axios.post(
       `https://amtalek.com/amtalekadmin/public/api/subscribe-addons`,
       {
-        addons: state?.items?.map((item: any) => {
-          return {
-            id: item.id,
-            quantity: item.quantity,
-          };
-        }),
-        duration: state?.duration,
+        addons: userProfileDataOutlet?.items?.map((item: any) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
+        duration: duration,
       },
-      {
-        headers: headers,
-      }
+      { headers: headers }
     );
   }
 
   const { mutate, isLoading }: any = useMutation({
     mutationKey: ["postAddons"],
     mutationFn: postAddons,
-
     onSuccess: (data) => {
-      navigate(`${i18n.language?.startsWith("ar") ? "" : "/en"}/finish/visa`, { replace: true });
+      router.push(`/finish/visa`);
       dispatchRedux(setSubscribed(true));
     },
   });
 
   useEffect(() => {
-    if (PaymentType === "visa") {
-      setLeft(lng === "en" ? "left-0" : "left-1/2");
-    } else {
-      setLeft(lng === "en" ? "left-1/2" : "left-0");
-    }
+    setLeft(
+      PaymentType === "visa"
+        ? lng === "en"
+          ? "left-0"
+          : "left-1/2"
+        : lng === "en"
+        ? "left-1/2"
+        : "left-0"
+    );
   }, [lng, PaymentType]);
 
   return (
     <section className="site_container py-5 flex flex-col gap-5 pb-24 lg:pb-32">
-      {/* <HelmetTags
-        title={`${i18n.language?.startsWith("ar") ? "الاضافات" : "Addons-Payment"}`}
-        description={t("tab.description")}
-      /> */}
       <Heading style={"text-center"}>{t("HeaderDetails")}</Heading>
       <section className="w-full grid grid-cols-3 gap-2 ss:grid-cols-1">
-        <form className="col-span-1 flex flex-col gap-5  p-2 rounded-xl ss:col-span-1">
+        <form className="col-span-1 flex flex-col gap-5 p-2 rounded-xl">
           <legend className="text-2xl">{t("BillingDetails")}</legend>
           <div className="w-full grid grid-cols-2 gap-5">
             <div className="col-span-1 flex flex-col gap-2">
@@ -133,13 +124,11 @@ export function Component() {
             {i18n.language.startsWith("en") ? "Addons" : "الاضافات"}
           </span>
           <div className="w-full flex justify-between items-center">
-            {/* <span>{t("name")}</span> */}
             <div className="flex flex-col w-full">
               <div className="flex flex-col gap-3 w-full">
-                {state?.items
+                {userProfileDataOutlet?.items
                   ?.filter((item: any) => item?.quantity !== 0)
                   .map((add: any, ind: number) => (
-                    // eslint-disable-next-line react/jsx-key
                     <div key={ind} className="flex items-center justify-between gap-10">
                       <span>
                         {i18n.language?.startsWith("en")
@@ -161,7 +150,7 @@ export function Component() {
                       <span>
                         {add?.quantity}
                         {" X "}
-                        {state.duration === "monthly" ? add?.monthly_price : add?.yearly_price}{" "}
+                        {duration === "monthly" ? add?.monthly_price : add?.yearly_price}{" "}
                         {t("PackageCard.price_prefix")}
                       </span>
                     </div>
@@ -171,16 +160,15 @@ export function Component() {
           </div>
           <div className="w-full flex justify-between border-b pb-3 mt-3">
             <span>{t("duration")}</span>
-            <span className="capitalize"> {state?.duration}</span>
+            <span className="capitalize"> {duration}</span>
           </div>
-
           <div className="w-full flex justify-between pt-3">
             <span className="text-2xl font-bold ss:text-lg">{t("price")}</span>
             <span className="text-xl font-semibold ss:text-lg">
-              {state?.totalPrice} {t("PackageCard.price_prefix")}
+              {userProfileDataOutlet?.totalPrice} {t("PackageCard.price_prefix")}
             </span>
           </div>
-          <div className="w-full flex justify-between items-center  border-t pt-3">
+          <div className="w-full flex justify-between items-center border-t pt-3">
             <div className="flex flex-col gap-3">
               <span className="text-xl">{t("payment")}</span>
               <div className="flex gap-2">
@@ -199,7 +187,6 @@ export function Component() {
               className="w-fit ms-auto ss:mx-auto ss:mt-2 p-2 rounded bg-primary text-white flex justify-center items-center gap-3 ss:text-sm"
             >
               {t("confirm")}
-
               {isLoading && <Hourglass width={20} height={20} colors={["#ffffff", "#ffffff"]} />}
             </button>
           </div>

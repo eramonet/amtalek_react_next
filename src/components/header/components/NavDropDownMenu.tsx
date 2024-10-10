@@ -6,27 +6,28 @@ import { setToggleLogOutPopUp } from "@/Store/Features/MiscellaneousSlice";
 import { Trans, useTranslation } from "react-i18next";
 import userImg from "@/assets/images/userImgNotLogin.png";
 import favIconSrc from "@/assets/images/fav-icon.png";
-// import { userData, userProfileData } from "@/Store/Features/AuthenticationSlice";
-// import { TUser } from "@/Types/AppTypes";
-// import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useState } from "react";
 import type { MenuProps } from "antd";
 import Image from "next/image";
-// import Box from "@mui/material/Box";
-// import Menu from "@mui/material/Menu";
-// import IconButton from "@mui/material/IconButton";
-// import Tooltip from "@mui/material/Tooltip";
 import { Button, Dropdown, Space } from "antd";
 import React from "react";
 import Link from "next/link";
 
+// import { userData, userProfileData } from "@/Store/Features/AuthenticationSlice";
+// import { TUser } from "@/Types/AppTypes";
+// import { Link } from "react-router-dom";
+// import Box from "@mui/material/Box";
+// import Menu from "@mui/material/Menu";
+// import IconButton from "@mui/material/IconButton";
+// import Tooltip from "@mui/material/Tooltip";
 // type TProps = {
 //   ForRealEstate?: boolean;
 //   user?: TUser;
 // };
 
 export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: any) {
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
@@ -44,7 +45,7 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
     {
       key: "1",
       label: (
-        <div className={`  w-72 ${ForRealEstate && "h-96"}  `}>
+        <div className={`w-72 ${ForRealEstate && "h-96"}`}>
           <div
             className={`flex  flex-col ${
               ForRealEstate ? "justify-center items-center p-7" : "p-2"
@@ -167,6 +168,7 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
   ];
 
   return (
+    // <ServerImg items={items} />
     <div className="sigin__wrapper grou relative ">
       <Dropdown
         rootClassName="navbarDropDown"

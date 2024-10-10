@@ -40,7 +40,7 @@ export default function PropertyOwner({ data, locale }: any) {
     false, // showToasts
     () => {
       // onSuccess callback
-      console.log("Request succeeded!");
+      // console.log("Request succeeded!");
     },
     true, // authorizedAPI (تأكد مما إذا كنت تحتاج لهذا أن يكون true أو false)
     (error: any) => {
@@ -62,7 +62,7 @@ export default function PropertyOwner({ data, locale }: any) {
   }: any = usePostData(
     false, // showToasts
     () => {
-      console.log("Email sent successfully!");
+      // console.log("Email sent successfully!");
     },
     true, // authorizedAPI (حدد هنا إذا كان الـ API يتطلب توثيقًا)
     (error: any) => {
@@ -91,11 +91,9 @@ export default function PropertyOwner({ data, locale }: any) {
   }: any = usePostData(
     false, // showToasts: تعطيل إشعارات الـ toasts.
     () => {
-      console.log("WhatsApp message sent successfully!");
     },
     true, // authorizedAPI: true إذا كانت الـ API تتطلب توثيقًا (قم بتغييره إلى false إذا لم يكن التوثيق مطلوبًا).
     (error: any) => {
-      console.error("Error occurred while sending WhatsApp message:", error);
     }
   );
 

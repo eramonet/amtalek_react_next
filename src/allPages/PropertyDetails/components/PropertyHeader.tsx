@@ -26,7 +26,6 @@ export default function PropertyHeader({ data }: any) {
       // يمكنك إضافة أي إجراءات تتعلق بالخطأ هنا
     }
   );
-  console.log(Boolean(Number(data?.is_fav)));
 
   return (
     <div>
@@ -90,8 +89,8 @@ export default function PropertyHeader({ data }: any) {
                       })
               }
             >
-              <FavoriteButton is_fav={data?.is_fav} id={data?.id} />
-              {/* <div className="heart-container" title="Like">
+              {/* <FavoriteButton is_fav={data?.is_fav} id={data?.id} /> */}
+              <div className="heart-container" title="Like">
                 <input
                   checked={Boolean(Number(data?.is_fav))}
                   type="checkbox"
@@ -103,7 +102,7 @@ export default function PropertyHeader({ data }: any) {
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
                   </svg>
                 </div>
-              </div> */}
+              </div>
               <span>{t("save", { lng: i18n.language.startsWith("ar") ? "" : "en" })}</span>
             </div>
           </div>

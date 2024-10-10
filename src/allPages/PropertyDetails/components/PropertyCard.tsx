@@ -23,11 +23,11 @@ export default function PropertyCard({ card, locale }: any) {
   const { mutate }: any = usePostData(
     true,
     () => {
-      console.log("Request succeeded!");
+      // console.log("Request succeeded!");
     },
     true,
     (error: any) => {
-      console.error("An error occurred:", error);
+      // console.error("An error occurred:", error);
 
       //like from all properties doesn't have onSuccuss and favorites page can only unlike the property, so it has onSuccess
       // props?.onSuccess ? props?.onSuccess(props.slide?.id) : "";
@@ -38,7 +38,7 @@ export default function PropertyCard({ card, locale }: any) {
     const currentUrl = window.location.pathname;
     const newPart = `${currentUrl}`;
     // إنشاء URL جديد بإضافة الجزء الجديد
-    const updatedUrl = `${card.listing_number}/${card.title.replace(/\s+/g, "-")}`;
+    const updatedUrl = `${card?.listing_number}/${card?.title.replace(/\s+/g, "-")}`;
 
     // تحديث الـ URL بدون إعادة تحميل الصفحة
     window.history.pushState({}, newPart, updatedUrl);
@@ -46,38 +46,39 @@ export default function PropertyCard({ card, locale }: any) {
   return (
     <div
       className={`text-custome-blue rounded ${
-        card.priority === "featured" ? "bg-custome-yellow bg-opacity-40" : "bg-custome-venice"
+        card?.priority === "featured" ? "bg-custome-yellow bg-opacity-40" : "bg-custome-venice"
       }`}
     >
       <div className="relative">
         <div className="">
           <div className="absolute top-2 right-3 py-1 px-2 rounded flex items-center justify-center gap-1 bg-custome-white text-custome-blue truncate">
-            <h3>{card.images_count}</h3>
+            <h3>{card?.images_count}</h3>
             <FaCamera />
           </div>
 
           <h3 className="absolute top-2 left-3 py-1 px-2 rounded bg-custome-yellow text-custome-blue truncate">
-            {card.for_what}
+            {card?.for_what}
           </h3>
           {/* *********************************************************************************************************************** */}
         </div>
         {/* <Image
-          src={card.primary_image}
-          alt={card.title}
+          src={card?.primary_image}
+          alt={card?.title}
           width={1000}
           height={1000}
           className="w-full"
         /> */}
         <Link
           className="group"
-          href={`/properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}}`}
+          // href={``}
+          href={`/properties/${card?.listing_number}/${card?.title.replace(/\s+/g, "-")}}`}
         >
           {/* *********************************************************************************************************************** */}
 
           {/* start image */}
           <div className="overflow-hidden relative">
             <Image
-              src={card.primary_image}
+              src={card?.primary_image}
               alt=""
               // className="h-[450px] max-xl:h-[450px] max-lg:h-[440px] max-md:h-[450px] rounded transform transition-transform duration-500 group-hover:scale-105"
               className="w-full h-60 transform transition-transform duration-500 group-hover:scale-105 "
@@ -95,12 +96,12 @@ export default function PropertyCard({ card, locale }: any) {
         </Link>
         {/* *********************************************************************************************************************** */}
         <div className="absolute bg-custome-blue text-custome-white bottom-0 right-0 rounded px-2 py-1">
-          {t("PropertyCard.price_formatted", {
+          {t("PropertyCard?.price_formatted", {
             context: card?.for_what,
             sale_price: card?.sale_price,
             rent_price: card?.rent_price,
             curr: card?.currency,
-            duration: t(`PropertyCard.${card?.rent_duration}`),
+            duration: t(`PropertyCard?.${card?.rent_duration}`),
           })}
         </div>
       </div>
@@ -108,20 +109,21 @@ export default function PropertyCard({ card, locale }: any) {
       {/* ********************************************************************************************* */}
       <div className="">
         <div className="p-3">
-          <h3 className="truncate text-lg">{card.property_type}</h3>
-          <p className="truncate text-2xl">{card.title}</p>
-          <p className="truncate text-sm">{card.address}</p>
+          <h3 className="truncate text-lg">{card?.property_type}</h3>
+          <p className="truncate text-2xl">{card?.title}</p>
+          <p className="truncate text-sm">{card?.address}</p>
           <div className="flex justify-start items-center gap-1">
             <IoLocationOutline />
             <span className="truncate">
-              {card.city} | {card.region} | {card.sub_region}
+              {card?.city} | {card?.region} | {card?.sub_region}
             </span>
           </div>
         </div>
 
         <div className="">
           <Link
-            href={`properties/${card.title.replace(/\s+/g, "-")}`}
+            // href={``}
+            href={`properties/${card?.title.replace(/\s+/g, "-")}`}
             className="broker__details px-3 pb-3 pt-1 flex justify-start items-center  h-fit gap-3 w-fit"
           >
             <Image
@@ -136,31 +138,31 @@ export default function PropertyCard({ card, locale }: any) {
         </div>
         {/* *********************************************************************************************************************** */}
         {/* <div className="flex items-center justify-between py-2 px-3">
-          <h3 className="truncate">{card.land_area}</h3>
+          <h3 className="truncate">{card?.land_area}</h3>
           <h3 className="flex items-center justify-center gap-2 truncate">
-            <FaBed /> {card.bed_rooms_no}
+            <FaBed /> {card?.bed_rooms_no}
           </h3> */}
         {/* *********************************************************************************************************************** */}
         {/* <h3 className="flex items-center justify-center gap-2">
-            <FaBath /> {card.bath_room_no}
+            <FaBath /> {card?.bath_room_no}
           </h3>
         </div> */}
         <div className=" p-3 flex justify-between items-start h-fit w-full gap-1">
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaMaximize />
-            {t("PropertyCard.area_formatted", {
+            {t("PropertyCard?.area_formatted", {
               area: card?.land_area,
             })}
           </h5>
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaBed />{" "}
-            {t("PropertyCard.Bedrooms", {
+            {t("PropertyCard?.Bedrooms", {
               count: card?.bed_rooms_no,
             })}
           </h5>
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaBath />{" "}
-            {t("PropertyCard.Bathrooms", {
+            {t("PropertyCard?.Bathrooms", {
               count: card?.bath_room_no,
             })}
           </h5>
@@ -171,7 +173,7 @@ export default function PropertyCard({ card, locale }: any) {
         <div className="py-4 px-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <FaCalendarAlt />
-            {card.created_at}
+            {card?.created_at}
           </div>
           {/* ********************************************************************************************* */}
           <div className="flex items-center gap-3">

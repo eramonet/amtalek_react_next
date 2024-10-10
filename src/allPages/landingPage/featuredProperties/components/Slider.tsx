@@ -22,7 +22,6 @@ export default function Slider({ data, locale, countrie }: any) {
   const { mutate }: any = usePostData(
     true,
     () => {
-      console.log("Request succeeded!");
     },
     true,
     (error: any) => {

@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -9,10 +9,8 @@ import {
   setUserProfileData,
 } from "@/Store/Features/AuthenticationSlice";
 import { useTranslation } from "react-i18next";
-// import { useOutletContext } from "react-router-dom";
 import useHandleLogOut from "@/Utilities/useHandleLogOut";
 import { useQueryClient } from "@tanstack/react-query";
-import { TUser } from "@/Types/AppTypes";
 import { usePostData } from "@/Hooks/usePostData";
 import Heading from "@/components/Heading";
 import {
@@ -25,12 +23,14 @@ import {
   UploadFileComponent,
 } from "@/FormComponents";
 import useUserProfile from "@/api/useUserProfile";
-export default function Profile() {
+// import { useOutletContext } from "react-router-dom";
+import { TUser } from "@/Types/AppTypes";
+export default function Profile({ userProfileDataOutlet,user }:any) {
   const { t, i18n } = useTranslation("Pages_Profile");
   const queryClient: any = useQueryClient();
   const dispatch = useDispatch();
 
-  const user = useSelector(userDataStore);
+  // const user = useSelector(userDataStore);
 
   const recaptchaRef = useRef<any>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -38,9 +38,7 @@ export default function Profile() {
   const [reCAPTCHAServerError, setReCAPTCHAServerError] = useState("");
 
   // const userProfileDatat = useUserProfile();
-  // console.log(user);
 
-  // console.log(userProfileDatat);
 
   // const [userProfileDataOutlet, refetch, isLoading, isError, isPaused] = useOutletContext() as [
   //   TUser,
@@ -50,42 +48,42 @@ export default function Profile() {
   //   boolean
   // ];
 
-  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  // const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
   // const [notifications, setNotifications] = useState([]);
   // const [unseenCounter, setUnseenCounter] = useState(0);
 
-  async function getUserProfile(token: string, language: string) {
-    try {
-      const response = await fetch(
-        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Accept-Language": language,
-          },
-        }
-      );
+  // async function getUserProfile(token: string, language: string) {
+  //   try {
+  //     const response = await fetch(
+  //       `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Accept-Language": language,
+  //         },
+  //       }
+  //     );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
 
-      const dataProfile = await response.json();
-      console.log(dataProfile);
+  //     const dataProfile = await response.json();
+  //     // console.log(dataProfile);
 
-      setUserProfileDataOutlet(dataProfile?.data);
-    } catch (error) {
-      console.error("Failed to fetch user profile:", error);
-    }
-  }
+  //     setUserProfileDataOutlet(dataProfile?.data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch user profile:", error);
+  //   }
+  // }
 
-  useEffect(() => {
-    if (user?.token && i18n.language) {
-      getUserProfile(user?.token, i18n?.language);
-      // getNotifications(user?.token);
-    }
-  }, [user?.token, i18n.language]);
+  // useEffect(() => {
+  //   if (user?.token && i18n.language) {
+  //     getUserProfile(user?.token, i18n?.language);
+  //     // getNotifications(user?.token);
+  //   }
+  // }, [user?.token, i18n.language]);
 
   const [logOut] = useHandleLogOut();
 

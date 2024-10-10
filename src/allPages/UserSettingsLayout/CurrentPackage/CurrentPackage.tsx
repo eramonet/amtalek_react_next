@@ -1,11 +1,12 @@
+"use client";
 // import { HelmetTags } from "../../../../src/Components/MainComponents";
-import { TUser } from "@/Types/AppTypes";
+// import { TUser } from "@/Types/AppTypes";
 import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+// import { useOutletContext } from "react-router-dom";
 
-export function Component() {
+export default function CurrentPackage({ userProfileDataOutlet }: any) {
   const { t, i18n } = useTranslation("Pages_CurrentPackage");
-  const [userProfileDataOutlet] = useOutletContext() as [TUser];
+  // const [userProfileDataOutlet] = useOutletContext() as [TUser];
 
   return (
     <section className="site_container pb-44 ">

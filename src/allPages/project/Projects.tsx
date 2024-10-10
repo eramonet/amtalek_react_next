@@ -26,7 +26,6 @@ export default function Projects({ locale }: any) {
 
   const { t } = useTranslation("Pages_Projects");
   // const theCountry = useSelector(OwnCountry);
-  // console.log(theCountry);
 
   // const fetchAllBrokers = async () => {
   // setIsLoading(true);
@@ -35,7 +34,6 @@ export default function Projects({ locale }: any) {
   // setAllBrokers(brokersData);
   // setFilteredBrokers(brokersData);
   // setIsLoading(false);
-  // console.log(brokersData);
   // };
 
   const fetchPageData = async () => {
@@ -61,7 +59,6 @@ export default function Projects({ locale }: any) {
       );
       setFilteredBrokers(results);
     }
-    console.log(searchTerm?.toLowerCase());
   }, [searchTerm, allBrokers]);
 
   const handlePageChange = (selectedItem: any) => {

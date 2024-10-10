@@ -1,47 +1,41 @@
-// "use client";
-import { userData } from "@/Store/Features/AuthenticationSlice";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import initTranslations from "@/app/i18n";
+import { cookies } from "next/headers";
 
-export default async function useUserProfile() {
-  const { i18n } = useTranslation();
-  const user = useSelector(userData);
-  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState([]);
+export default async function useUserProfile({ locale }: any) {
+  const i18nNamespaces = ["SettingsLayout"];
+  const { i18n } = await initTranslations(locale, i18nNamespaces);
+  const cookieStore = cookies();
 
-  // async function getUserProfile() {
-  try {
-    const response = await fetch(
-      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-          "Accept-Language": i18n.language,
-        },
-      }
-    );
+  const userDatacookies = cookieStore.get("userData");
+  const token = cookieStore.get("token");
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+  const userDataValue: any = userDatacookies ? userDatacookies.value : null;
+  const tokenValue: any = token ? token.value : null;
+
+  const userData: any = JSON.parse(userDataValue);
+  const tokenValueJs: any = tokenValue;
+
+  // const userProfileDataOutlet = useUserProfile();
+  const userProfileDataOutletActor = userData?.data;
+
+  const response = await fetch(
+    `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutletActor?.actor_type}/${userProfileDataOutletActor?.id}`,
+    {
+      method: "GET",
+
+      headers: {
+        lang: i18n.language, //
+        Authorization: `Bearer ${tokenValueJs}`,
+      },
     }
+  );
 
-    const dataProfile = await response.json();
-    // console.log(dataProfile);
-
-    setUserProfileDataOutlet(dataProfile?.data);
-  } catch (error) {
-    console.error("Failed to fetch user profile:", error);
-  }
+  // if (!response.ok) {
+  //   throw new Error("Network response was not ok");
   // }
 
-  // useEffect(() => {
-  // if (user?.token && i18n.language) {
-  // getUserProfile();
-  // }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-  // }, [user?.token, i18n.language]);
+  const dataProfile = await response.json();
+  const userProfileDataOutlet = dataProfile?.data;
 
-  return userProfileDataOutlet;
+  return { userProfileDataOutlet, userData }; // Return the fetched data
 }

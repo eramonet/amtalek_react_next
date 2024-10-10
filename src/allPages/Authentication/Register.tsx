@@ -224,12 +224,10 @@ function Register() {
     true, // showToasts
     (data) => {
       // onSuccess callback
-      console.log("Success:", data);
     },
     true, // authorizedAPI
     (error) => {
       // onError callback
-      console.error("Error:", error);
     }
   );
 

@@ -1,27 +1,30 @@
+"use client";
 // import { Heading, HelmetTags } from "@/MainComponents";
-import { useOutletContext } from "react-router-dom";
-
+import { useState, useEffect } from "react";
 import { ErrorMessage, NoItemsMessage } from "@/SubComponents";
 // import { PropertyCard } from "@/CardsComponents";
 import { useTranslation } from "react-i18next";
-import { TUser } from "@/Types/AppTypes";
 // import { lang } from "@/Store/Features/MiscellaneousSlice";
-import { useSelector } from "react-redux";
-import { userData } from "@/Store/Features/AuthenticationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
 import Heading from "@/components/Heading";
-import PropertyCard from "@/allPages/PropertyDetails/components/PropertyCard";
+import PropertyCard from "@/CardsComponents/PropertyCard";
+// import PropertyCard from "@/allPages/PropertyDetails/components/PropertyCard";
 
-export function Component() {
+export default function MyOffers({ userProfileDataOutlet }: any) {
   const user = useSelector(userData);
   const { t, i18n } = useTranslation("Pages_MyProperties");
-  // const lng = useSelector(i18n.language);
-  const [userProfileDataOutlet, refetch, isLoading, isError, isPaused] = useOutletContext() as [
-    TUser,
-    () => void,
-    boolean,
-    boolean,
-    boolean
-  ];
+
+  // إضافة حالات التحميل والأخطاء
+  const [isError, setIsError] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    // يمكنك تخصيص حالات الخطأ أو التوقف بناءً على البيانات التي تستدعيها هنا
+    if (!userProfileDataOutlet) {
+      setIsError(true);
+    }
+  }, [userProfileDataOutlet]);
 
   return (
     <section className="pb-44 site_container">
@@ -57,7 +60,7 @@ export function Component() {
                 lng={i18n.language}
                 offer={offer?.offer_data}
                 i18n={i18n}
-                // ShowLoginPopUp={() => dispatchRedux(setShowLoginPopUp(true))}
+                ShowLoginPopUp={() => dispatchRedux(setShowLoginPopUp(true))}
               />
             );
           })

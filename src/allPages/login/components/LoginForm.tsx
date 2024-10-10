@@ -11,19 +11,20 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import ReCaptcha from "@/components/ReCaptcha";
 import { EmailComponent, PasswordComponent, SubmitBtnComponent } from "@/FormComponents";
+import { useRouter } from "next/navigation";
+// import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 
 export default function LoginForm({ loginDispatch }: any) {
   const { t, i18n } = useTranslation("Pages_Login");
   const user = useSelector(userData);
-  // console.log(user);
-
+  const router = useRouter();
   const [emaile, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loggedInSuccess, setLoggedInSuccess] = useState(false);
-
   const recaptchaRef: any = useRef(null);
   const dispatchRedux = useDispatch();
   const { mutate: requestNewCode }: any = usePostData(
@@ -53,7 +54,6 @@ export default function LoginForm({ loginDispatch }: any) {
       // operation_type: "forget_password",
     },
   });
-  // console.log(email);
   const not_ropot = watch("not_ropot");
   const email = watch("email");
   const {
@@ -64,9 +64,9 @@ export default function LoginForm({ loginDispatch }: any) {
   }: any = usePostData(
     true,
     (data) => {
-      data && data?.data?.data?.has_package === "no" && location.replace("/packages");
-
       localStorage.setItem("userData", JSON.stringify(data?.data));
+      Cookies.set("userData", JSON.stringify(data?.data), { expires: 7 });
+      Cookies.set("token", data?.data?.token, { expires: 7 });
       dispatchRedux(setUserData(data?.data));
       recaptchaRef.current.reset();
       setValue("not_ropot", "no");
@@ -75,6 +75,8 @@ export default function LoginForm({ loginDispatch }: any) {
       dispatchRedux(setShowLoginPopUp(false));
       setSubmitted(false);
       setLoggedInSuccess(true);
+      // data && data?.data?.data?.has_package === "no" && router.replace("/");
+      data && data?.data?.data?.has_package === "no" && window.location.replace("/");
     },
     false,
     (error) => {
@@ -100,7 +102,6 @@ export default function LoginForm({ loginDispatch }: any) {
       }
     }
   );
-  // console.log(handleSubmit(onSubmit));
 
   const onSubmit = useCallback(
     (data: any) => {
@@ -113,7 +114,6 @@ export default function LoginForm({ loginDispatch }: any) {
     },
     [postLoginData]
   );
-  // console.log(email);
   const onChange = useCallback(
     (value: any) => {
       if (value) {

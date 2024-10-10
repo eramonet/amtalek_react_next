@@ -36,7 +36,6 @@ export default function ProjectDetails({ listing_number, locale }: any) {
   const { t } = useTranslation("Pages_ProjectDetails");
 
   // const { projectNumber } = useParams();
-  // console.log(listing_number);
 
   // const {
   //   isLoading: loading,
@@ -56,7 +55,6 @@ export default function ProjectDetails({ listing_number, locale }: any) {
     const allData = data?.data[0];
     setData(allData);
   }
-  console.log(data, listing_number);
 
   useEffect(() => {
     fetchData();
@@ -68,12 +66,10 @@ export default function ProjectDetails({ listing_number, locale }: any) {
   //     </div>
   //   );
   // }
-  console.log(data?.broker_details?.[0]);
 
   if (!data) {
     return <Loader />;
   }
-  console.log(data?.broker_details?.[0]?.id);
 
   return (
     // ss:gap-8 pt-20 pb-44

@@ -1,5 +1,6 @@
+"use client"
 import { useTranslation } from "react-i18next";
-import { lang } from "@/Store/Features/MiscellaneousSlice";
+// import { lang } from "@/Store/Features/MiscellaneousSlice";
 // import { PackageCard } from "@/CardsComponents/index";
 import Loader from "@/SubComponents/Loader";
 import { useQuery } from "@tanstack/react-query";
@@ -14,21 +15,21 @@ import Heading from "@/components/Heading";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
 import PackageCard from "@/CardsComponents/PackageCard";
 
-export function Component() {
-  const [userProfileDataOutlet] = useOutletContext() as [TUser];
-  const user = useSelector(userData);
-  const lng = useSelector(lang);
+export default function Subscription({ userProfileDataOutlet, user }: any) {
+  // const [userProfileDataOutlet] = useOutletContext() as [TUser];
+  // const user = useSelector(userData);
+  // const lng = useSelector(lang);
   const { t, i18n } = useTranslation("Pages_Subscription");
   const [left, setLeft] = useState("");
   const [type, setType] = useState("monthly");
 
   useEffect(() => {
     if (type === "monthly") {
-      setLeft(lng === "en" ? "left-0" : "left-1/2");
+      setLeft(i18n.language === "en" ? "left-0" : "left-1/2");
     } else {
-      setLeft(lng === "en" ? "left-1/2" : "left-0");
+      setLeft(i18n.language === "en" ? "left-1/2" : "left-0");
     }
-  }, [lng, type]);
+  }, [i18n.language, type]);
 
   const headers = {
     Authorization: `Bearer ${user?.token}`,
@@ -79,7 +80,7 @@ export function Component() {
           ></div>
           <button
             onClick={() => {
-              setLeft(lng === "en" ? "left-0" : "left-1/2");
+              setLeft(i18n.language === "en" ? "left-0" : "left-1/2");
               setType("monthly");
             }}
             className={`w-1/2 h-full flex trns relative z-20 font-medium  justify-center items-center gap-2 hover:bg-secondary2  
@@ -90,7 +91,7 @@ export function Component() {
           </button>
           <button
             onClick={() => {
-              setLeft(lng === "en" ? "left-1/2" : "left-0");
+              setLeft(i18n.language === "en" ? "left-1/2" : "left-0");
               setType("yearly");
             }}
             className={`w-1/2 h-full flex trns relative z-20 font-medium  justify-center items-center gap-2 hover:bg-secondary2  ${

@@ -16,7 +16,7 @@
 //   enabled = true,
 //   authorizedAPI = false,
 //   addToken: any = null // افتراض وجود قيمة افتراضية
-// ) => {
+// ): any => {
 //   const user = useSelector(userData);
 //   const router = useRouter();
 //   const { i18n } = useTranslation("");

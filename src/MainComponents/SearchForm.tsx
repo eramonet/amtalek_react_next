@@ -134,7 +134,7 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
         type === "bigForm" || home ? "h-fit" : type === "asideForm" ? "h-fit" : ""
       } w-full px-8  flex flex-col items-center justify-center gap-6 bg-custome-blue py-10 xl:h-[99.5%]`}
     >
-      <h3 className="font-Condensed text-custome-white text-[32px] xl:text-xl truncate">
+      <h3 className="font-Condensed text-bg text-3xl xl:text-xl truncate">
         {type === "bigForm" || home
           ? t("title.bigForm", "ابحث عن العقارات")
           : type === "asideForm"

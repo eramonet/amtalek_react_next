@@ -49,7 +49,6 @@ export default function Notifications() {
       }
 
       const data = await response.json();
-      console.log(data?.data);
       setNotifications(data?.data?.notifications);
       setUnseenCounter(data?.data?.unseen_counter);
     } catch (error) {
@@ -78,7 +77,6 @@ export default function Notifications() {
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(10);
   const [data, setData] = useState<Notification[]>([]); // استخدام مصفوفة فارغة كقيمة أولية
-  console.log(clientquery);
 
   // استخدام useEffect لتحديث البيانات عند تحميل المكون
   useEffect(() => {

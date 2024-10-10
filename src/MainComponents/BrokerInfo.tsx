@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
 import { Modal } from "antd";
-import { usePostData } from "../Hooks/useAxios";
+import { usePostData } from "@/Hooks/useAxios";
 import Image from "next/image";
 // import { setShowLoginPopUp, userData } from "../../../Store/Features/AuthenticationSlice";
 function BrokerInfo({ data, t }: any) {
@@ -94,7 +94,6 @@ function BrokerInfo({ data, t }: any) {
       dispatchRedux(setShowLoginPopUp(true));
     }
   }, [CallError?.response?.status, EmailError?.response?.status, WhatsappError?.response?.status]);
-  console.log(CallError?.response?.status);
 
   return (
     <div className="broker__info flex justify-between items-start gap-16 bg-slate-100 py-10 px-2 ss:gap-8 md:flex-col md:items-center md:justify-start w-full rounded-xl">
@@ -103,7 +102,6 @@ function BrokerInfo({ data, t }: any) {
           width={1000}
           height={1000}
           className="broker__img object-cover w-auto h-auto max-h-80 max-w-full rounded-xl"
-          loading="lazy"
           src={data?.logo}
           alt={data?.name}
         />

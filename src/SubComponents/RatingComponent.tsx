@@ -22,7 +22,7 @@ function RatingComponent({
           unMutable ? (
             <FontAwesomeIcon
               className={`trns ${
-                defaultRating > index ? "text-custome-yellow" : "text-custome-blue"
+                defaultRating > index ? "text-custome-yellow" : "text-custome-venice"
               }`}
               key={index}
               icon={faStar}
@@ -30,7 +30,7 @@ function RatingComponent({
           ) : (
             <FontAwesomeIcon
               className={`trns cursor-pointer  ${
-                (hoverRating || currentRating) > index ? "text-custome-yellow" : "text-custome-blue"
+                (hoverRating || currentRating) > index ? "text-custome-yellow" : "text-custome-venice"
               }`}
               onClick={() => setValue(stateName, index + 1)}
               onMouseOver={() => setHoverRating(index + 1)}
