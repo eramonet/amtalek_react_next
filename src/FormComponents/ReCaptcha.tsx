@@ -6,7 +6,7 @@ function ReCaptcha({ refs, onChange, error, ServerError, t }: any) {
       <ReCAPTCHA
         size="normal"
         ref={refs}
-        sitekey="6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr"
+        sitekey="6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr" // 6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr
         onChange={onChange}
       />{" "}
       {error && <p className="pt-4 text-xs text-red-500">{t(`validations.ReCAPTCHA.required`)}</p>}

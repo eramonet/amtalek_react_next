@@ -29,11 +29,11 @@ const axiosInstance = axios.create({
   headers: {
     // "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
     "X-Requested-With": "XMLHttpRequest",
-    "Access-Control-Allow-Origin": "https://localhost:5173",
+    "Access-Control-Allow-Origin": "https://amtalek-react-next-f3rz-final.vercel.app",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type,Authorization, Accept",
     "Access-Control-Allow-Credentials": true,
-    origin: "https://localhost:5173",
+    origin: "https://amtalek-react-next-f3rz-final.vercel.app",
 
     // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
   },
