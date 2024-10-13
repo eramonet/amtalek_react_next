@@ -5,19 +5,45 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "@/Store/Features/AuthenticationSlice";
+import Cookies from "js-cookie";
+// import express
+// import express from "express";
+// import cors from "cors";
+
+// const app = express();
+
+// app.use(cors({ origin: "https://localhost:5173", credentials: true }));
+
+// function getCookie(name: any) {
+//   function escape(s: any) {
+//     return s.replace(/([.*+?\^${}()|\[\]\/\\])/g, "\\$1");
+//   }
+//   let cookeStore: any = Cookies.get("userData");
+//   var match =cookeStore? JSON.parse(cookeStore) : [];
+//   return match ? match[1] : null;
+// }
 
 const axiosInstance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}`,
 
   headers: {
+    // "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
     "X-Requested-With": "XMLHttpRequest",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    "Access-Control-Allow-Origin": "https://localhost:5173",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type,Authorization, Accept",
+    "Access-Control-Allow-Credentials": true,
+    origin: "https://localhost:5173",
+
+    // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
   },
   withCredentials: true,
-  withXSRFToken: true,
-});
+  xsrfCookieName: "XSRF-TOKEN",
 
+  // "Access-Control-Allow-Origin": "*",
+  // xsrfHeaderName: "X-XSRF-TOKEN",
+  // withXSRFToken: true,
+});
 interface PosterFunctionArgs {
   api: string;
   data: any;

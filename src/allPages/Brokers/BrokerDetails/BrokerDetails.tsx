@@ -14,16 +14,18 @@ import BrokerInfo from "@/MainComponents/BrokerInfo";
 import ProjectCard from "@/allPages/project/components/ProjectCard";
 import { userData } from "@/Store/Features/AuthenticationSlice";
 import Head from "next/head";
+import ReactPaginate from "react-paginate";
 
 export function BrokerDetails({ locale, actor_type, id }: any) {
   const { t, i18n } = useTranslation("Pages_BrokerDetails");
   const [tab, setTab] = useState("sale");
-  const { brokerName, brokerID, type } = useParams();
+  // const { brokerName, brokerID, type } = useParams();
   const user = useSelector(userData);
 
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [currentPage, setCurrentPage] = useState<any>(0);
 
   useEffect(() => {
     const fetchBrokerDetails = async () => {
@@ -55,7 +57,16 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
   if (loading) {
     return <Loader />;
   }
+  const itemsPerPage = 5; // عدد العناصر في كل صفحة
 
+  const handlePageClick = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem?.selected);
+  };
+
+  const paginatedData = data?.projects?.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
   return (
     <>
       <Head>
@@ -130,6 +141,7 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
                 </Heading>
               )}
             </div>
+
             {data?.properties_count > 0 && (
               <p className="my-2 ps-2">
                 {data && data?.name} {t("properties_count")}
@@ -157,6 +169,29 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
                   <ProjectCard type="BrokerDetails" project={project} t={t} key={project.id} />
                 ))}
               </motion.div>
+            )}
+
+            {tab === "projects" && data?.projects?.length > 0 ? (
+              <motion.div className="w-full flex flex-col gap-24 ss:gap-16">
+                {paginatedData.map((project: any) => (
+                  <ProjectCard type="BrokerDetails" project={project} t={t} key={project.id} />
+                ))}
+
+                {/* إضافة التصفح بين الصفحات */}
+                <ReactPaginate
+                  previousLabel={"← Previous"}
+                  nextLabel={"Next →"}
+                  pageCount={Math.ceil(data?.projects.length / itemsPerPage)}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination"}
+                  previousLinkClassName={"pagination__link"}
+                  nextLinkClassName={"pagination__link"}
+                  disabledClassName={"pagination__link--disabled"}
+                  activeClassName={"pagination__link--active"}
+                />
+              </motion.div>
+            ) : (
+              <NoItemsMessage message={t("BrokerProjects.NoItemsMessage")} />
             )}
           </div>
         </section>

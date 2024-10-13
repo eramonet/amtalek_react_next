@@ -94,17 +94,17 @@ const MemoizedHero = memo(function Hero({ data, locale }: any) {
                     </picture>
 
                     <div className="hero__left--text-CTA text-bg w-fit h-full pl-[3.3vw] alg:pl-[0vw] rtl:pl-[0vw] rtl:pr-[3.3vw] alg:pr-[0vw] !flex !flex-col justify-end items-start rtl:items-end alg:rtl:items-center max-w-[55%] alg:max-w-[90%] alg:items-center alg:justify-center alg:gap-2 alg:h-screen alg:mx-auto bg- relative z-40 ss:justify-start ss:pt-20">
-                      <h1 className="text-5xl asm:text-3xl text-start font-medium leading-[52.8px] alg:text-center rtl:rtl">
+                      <h1 className="text-5xl asm:text-3xl text-start rtl:ml-auto ltr:mr-auto alg:mx-auto font-medium leading-[52.8px] alg:text-center rtl:rtl">
                         {slide?.title} <br className="alg:hidden" /> {slide?.subtitle}
                       </h1>
-                      <h2 className="mb-9 mt-8 text-[17px] font-medium leading-tight alg:text-center alg:max-w-[70%] md:max-w-full rtl:ml-auto">
+                      <h2 className="mb-9 mt-8 text-[17px] font-medium leading-tight alg:text-center alg:max-w-[70%] md:max-w-full alg:mx-auto rtl:ml-auto">
                         {slide?.description.substring(0, 200)}
                         {slide?.description.length > 200 && "..."}
                       </h2>
 
                       <LangLink
                         onClick={() => window.sessionStorage.setItem("step", "1")}
-                        className="mb-[65px] w-[190px] h-[50px] min-h-[50px] text-sm font-medium flex justify-center bg-accent text-secondary hover:bg-transparent border-accent transition-all duration-300 items-center border-[1px] rounded-[4px] hover:text-accent hover:border-accent rtl:ml-auto"
+                        className="mb-[65px] w-[190px] h-[50px] min-h-[50px] text-sm font-medium flex justify-center alg:mx-auto bg-custome-yellow text-secondary hover:bg-transparent border-custome-yellow transition-all duration-300 items-center border-[1px] rounded-[4px] hover:text-custome-yellow hover:border-custome-yellow rtl:ml-auto"
                         to={``}
                       >
                         {t("Hero.CTA_Text")}

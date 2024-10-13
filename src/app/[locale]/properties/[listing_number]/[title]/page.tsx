@@ -1,7 +1,17 @@
 import PropertyAside from "@/allPages/PropertyDetails/aside/PropertyAside";
 import PropertyDetails from "@/allPages/PropertyDetails/PropertyDetails";
+import initTranslations from "@/app/i18n";
+import Head from "next/head";
 
-export default function PropertyDetailsPage({ params: { locale, listing_number } }: any) {
+export default async function PropertyDetailsPage({ params: { locale, listing_number } }: any) {
+  const i18nNamespaces = [
+    "Pages_PropertyDetails",
+    "MainComponents_SearchForm",
+    "Pages_LandingPage",
+    "Pages_AllProperties",
+  ];
+  const { t, resources, i18n } = await initTranslations(locale, i18nNamespaces);
+
   return (
     <>
       <main className="min-h-[calc(100vh-136px)]">

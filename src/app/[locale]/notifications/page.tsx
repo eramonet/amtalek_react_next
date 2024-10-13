@@ -1,12 +1,14 @@
 import Notifications from "@/allPages/UserSettingsLayout/Notifications/Notifications";
 import SettingsLayout from "@/allPages/UserSettingsLayout/SettingsLayout";
+import useUserProfile from "@/api/useUserProfile";
 
-export default function NotificationsPage({ params: { notifications } }: any) {
+export default async function NotificationsPage({ params: { locale } }: any) {
+  const { userProfileDataOutlet, userData } = await useUserProfile(locale);
   return (
     <>
-      <SettingsLayout />
+      <SettingsLayout userProfileDataOutlet={userProfileDataOutlet} />
       {/*  notifications={notifications} */}
-      <Notifications />
+      <Notifications user={userData} />
     </>
   );
 }

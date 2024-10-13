@@ -7,8 +7,8 @@ import ReactPaginate from "react-paginate";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { userData } from "@/Store/Features/AuthenticationSlice";
+// import { useSelector } from "react-redux";
+// import { userData } from "@/Store/Features/AuthenticationSlice";
 
 interface Notification {
   id: string;
@@ -24,13 +24,13 @@ interface NotificationsProps {
   notifications: Notification[];
 }
 
-export default function Notifications() {
+export default function Notifications({ user }: any) {
   const [notifications, setNotifications] = useState([]);
   const [unseenCounter, setUnseenCounter] = useState(0);
 
   const { i18n } = useTranslation();
 
-  const user = useSelector(userData);
+  // const user = useSelector(userData);
 
   async function getNotifications(token: string) {
     try {
@@ -76,7 +76,7 @@ export default function Notifications() {
 
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(10);
-  const [data, setData] = useState<Notification[]>([]); // استخدام مصفوفة فارغة كقيمة أولية
+  const [data, setData] = useState<any[]>([]); // استخدام مصفوفة فارغة كقيمة أولية
 
   // استخدام useEffect لتحديث البيانات عند تحميل المكون
   useEffect(() => {

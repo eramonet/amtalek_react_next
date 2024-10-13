@@ -4,7 +4,7 @@ import useUserProfile from "@/api/useUserProfile";
 import React from "react";
 
 export default async function CurrentPackagePage({ params: { locale } }: any) {
-  const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+  const { userProfileDataOutlet, userData } :any= await useUserProfile(locale);
   return (
     <>
       <SettingsLayout userProfileDataOutlet={userProfileDataOutlet} />

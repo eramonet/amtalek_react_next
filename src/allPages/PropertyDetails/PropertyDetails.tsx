@@ -20,6 +20,7 @@ import Heading from "@/components/Heading";
 import { NoItemsMessage } from "@/SubComponents";
 import Comments from "@/MainComponents/Comments";
 import Head from "next/head";
+import ItemSlider from "./components/ItemSlider";
 
 export default async function PropertyDetails({ locale, listing_number }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -29,64 +30,85 @@ export default async function PropertyDetails({ locale, listing_number }: any) {
   const { t } = await initTranslations(locale, i18nNamespaces);
 
   return (
-    <section className="Property__Details--content w-[66%] flex flex-col gap-8 ss:gap-5 clg:w-full">
-      {!allData[0] ? (
-        <Loader />
-      ) : (
-        <div className="Property__general--info w-full flex flex-col gap-4">
-          {/* t={t} i18n={i18n} */}
+    <>
+      {/* <Head>
+        <title>
+          {`${i18n.language.startsWith("ar") ? "امتلك |" : "Amtalek |"} ${allData?.title}`}
+        </title>
+        <meta
+          name="description"
+          content={t("tab.description", {
+            lng: i18n.language.startsWith("ar") ? "ar" : "en",
+          })}
+        />
+        {allData?.primary_image && <meta property="og:image" content={allData?.primary_image} />}
+      </Head> */}
 
-          <Head>
-            <title>{allData[0].name} - Broker Details</title>
-            <meta
-              name="description"
-              content={`View details about ${allData[0].name}, a broker in our system.`}
+      <section className="Property__Details--content w-[66%] flex flex-col gap-8 ss:gap-5 clg:w-full">
+        {!allData[0] ? (
+          <Loader />
+        ) : (
+          <div className="Property__general--info w-full flex flex-col gap-4">
+            {/* t={t} i18n={i18n} */}
+
+            <Head>
+              <title>{allData[0].name} - Broker Details</title>
+              <meta
+                name="description"
+                content={`View details about ${allData[0].name}, a broker in our system.`}
+              />
+              <meta property="og:title" content={allData[0].name} />
+              <meta
+                property="og:description"
+                content={`Check out properties and projects by ${allData[0].name}.`}
+              />
+              <meta property="og:image" content={allData[0].image_url} />
+            </Head>
+
+            <LoginPopUp />
+
+            <PropertyHeader data={allData[0]} />
+
+            {/* <ItemSlider data={allData[0]} style={"mt-10"} /> */}
+            <PropertySlider data={allData[0]} style={"mt-10"} />
+            <UnderSlider data={allData[0]} locale={locale} t={t} />
+
+            <Share
+              data={allData[0]}
+              type="property"
+              style={"mt-8"}
+              file={"Pages_PropertyDetails"}
             />
-            <meta property="og:title" content={allData[0].name} />
-            <meta
-              property="og:description"
-              content={`Check out properties and projects by ${allData[0].name}.`}
-            />
-            <meta property="og:image" content={allData[0].image_url} />
-          </Head>
 
-          <LoginPopUp />
+            <PropertyViews data={allData[0]} locale={locale} t={t} />
 
-          <PropertyHeader data={allData[0]} />
+            <PropertyDescription data={allData[0]} locale={locale} t={t} />
 
-          {/* <PropertySlider data={allData[0]} style={"mt-10"} /> */}
-          <UnderSlider data={allData[0]} locale={locale} t={t} />
+            <PropertyDetailsPoint data={allData[0]} locale={locale} t={t} />
 
-          <Share data={allData[0]} type="property" style={"mt-8"} file={"Pages_PropertyDetails"} />
+            <PropertyAminities data={allData[0]} locale={locale} t={t} />
 
-          <PropertyViews data={allData[0]} locale={locale} t={t} />
+            <PropertyLocation data={allData[0]} locale={locale} t={t} />
 
-          <PropertyDescription data={allData[0]} locale={locale} t={t} />
+            <PropertyVideo data={allData[0]} locale={locale} />
 
-          <PropertyDetailsPoint data={allData[0]} locale={locale} t={t} />
+            <SimilarProperty data={allData[0]} locale={locale} />
 
-          <PropertyAminities data={allData[0]} locale={locale} t={t} />
+            {allData[0]?.comments?.length > 0 && (
+              <div className="Property__COMMENTS -mt-14 mb-14">
+                <Heading>{t("headings.COMMENTS")}</Heading>
+                {allData[0]?.comments?.length === 0 ? (
+                  ""
+                ) : (
+                  <Comments data={allData[0]?.comments} locale={locale} />
+                )}
+              </div>
+            )}
 
-          <PropertyLocation data={allData[0]} locale={locale} t={t} />
-
-          <PropertyVideo data={allData[0]} locale={locale} />
-
-          <SimilarProperty data={allData[0]} locale={locale} />
-
-          {allData[0]?.comments?.length > 0 && (
-            <div className="Property__COMMENTS -mt-14 mb-14">
-              <Heading>{t("headings.COMMENTS")}</Heading>
-              {allData[0]?.comments?.length === 0 ? (
-                ""
-              ) : (
-                <Comments data={allData[0]?.comments} locale={locale} />
-              )}
-            </div>
-          )}
-
-          <SendMessage data={allData[0]} locale={locale} t={t} />
-        </div>
-      )}
-    </section>
+            <SendMessage data={allData[0]} locale={locale} t={t} />
+          </div>
+        )}
+      </section>
+    </>
   );
 }

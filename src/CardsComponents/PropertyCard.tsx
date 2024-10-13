@@ -23,7 +23,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { WhatsappShareButton, TwitterShareButton } from "react-share";
 import { IoLogoWhatsapp } from "react-icons/io";
 
-import { useOutletContext } from "react-router-dom";
+// import { useOutletContext } from "react-router-dom";
 import Image from "next/image";
 import LangLink from "@/components/LangLink";
 import React from "react";
@@ -86,6 +86,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
     }
   );
   const dispatchRedux = useDispatch();
+
   return (
     <motion.div
       layout
@@ -102,7 +103,7 @@ const PropertyCard = memo(function PropertyCard(props: any) {
           : props?.brokerDetails
           ? "w-full grid grid-cols-2 ss:grid-cols-1 shadow-lg border  "
           : "h-fit w-full  shadow-md"
-      }   bg- relative  `}
+      }   bg- relative`}
     >
       <div
         className={`img-card-wrapper relative ${
@@ -203,7 +204,8 @@ const PropertyCard = memo(function PropertyCard(props: any) {
         {props?.acceptedCheck && (
           <div
             className={`property__price absolute rounded bottom-0 left-0 px-2 py-1 text-md bg-green-500 ${
-              props?.property?.acceptance === 0 ? "bg-secondary" : "0"
+              // === 0
+              Boolean(props?.property?.acceptance) ? "bg-green-500" : "bg-secondary"
             } text-bg z-40`}
           >
             {t("PropertyCard.accepted", {

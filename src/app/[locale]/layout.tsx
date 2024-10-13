@@ -18,7 +18,9 @@ import ToasterProvider from "./ToasterProvider";
 import TooltipProviderComponents from "./TooltipProviderComponents";
 import AuthGuard from "./AuthGuard";
 import HeaderTopMenu from "@/components/topHeader/HeaderTopMenu";
-import { useRouter } from "next/router";
+import useUserProfile from "@/api/useUserProfile";
+// import { useRouter } from "next/router";
+// import LogOutPopUp from "@/MainComponents/LogOutPopUp";
 // import Navbar from "@/components/header/Navbar";
 
 const cairo = Cairo({ subsets: ["arabic"], weight: ["400", "700"] });
@@ -45,10 +47,21 @@ export default async function RootLayout({
     "LayoutComponents",
     "Pages_LandingPage",
     "MainComponents_SearchForm",
-    "SettingsLayout",
+    "Pages_Finish",
+    // "SettingsLayout",
+    // "FriendsProfileLayout",
+    // "Pages_About",
+    // "Pages_AllProperties",
+    // "Pages_BrokerDetails",
+    // "Pages_Brokers",
+    // "Pages_CategoryDetails",
+    // "Pages_Cities",
+    // "Pages_Coming",
+    // "",
   ];
 
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
+  const { userProfileDataOutlet, userData }: any = useUserProfile(locale);
   return (
     <html lang={locale} dir={dir(locale)}>
       <head></head>
@@ -69,7 +82,7 @@ export default async function RootLayout({
                   {children}
 
                   <LayoutProvider>
-                    <Footer locale={locale} t={t} />
+                    <Footer locale={locale} t={t}  />
                     <ScrollToTop />
                   </LayoutProvider>
                 </AuthGuard>

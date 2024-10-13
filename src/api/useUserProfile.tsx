@@ -12,29 +12,37 @@ export default async function useUserProfile({ locale }: any) {
   const userDataValue: any = userDatacookies ? userDatacookies.value : null;
   const tokenValue: any = token ? token.value : null;
 
-  const userData: any = JSON.parse(userDataValue);
+  const userData: any = userDataValue ? JSON.parse(userDataValue) : null;
   const tokenValueJs: any = tokenValue;
 
-  // const userProfileDataOutlet = useUserProfile();
   const userProfileDataOutletActor = userData?.data;
 
   const response = await fetch(
     `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutletActor?.actor_type}/${userProfileDataOutletActor?.id}`,
     {
       method: "GET",
-
       headers: {
-        lang: i18n.language, //
+        lang: i18n.language,
         Authorization: `Bearer ${tokenValueJs}`,
       },
     }
   );
 
-  // if (!response.ok) {
-  //   throw new Error("Network response was not ok");
-  // }
+  if (!response.ok) {
+    return { userData: null, userProfileDataOutlet: null }; // أعد كائنًا حتى في حالة حدوث خطأ
+  }
 
-  const dataProfile = await response.json();
+  // تحقق من محتوى الاستجابة
+  const responseText = await response.text();
+
+  let dataProfile;
+  try {
+    dataProfile = JSON.parse(responseText);
+  } catch (error) {
+    console.error("Failed to parse JSON:", error);
+    return { userData: null, userProfileDataOutlet: null }; // أعد كائنًا حتى في حالة حدوث خطأ
+  }
+
   const userProfileDataOutlet = dataProfile?.data;
 
   return { userProfileDataOutlet, userData }; // Return the fetched data

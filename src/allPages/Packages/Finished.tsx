@@ -1,19 +1,23 @@
+"use client";
 import { useWindowSize } from "@react-hook/window-size";
-import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
+// import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { userProfileData } from "../../Store/Features/AuthenticationSlice";
+import { userProfileData } from "@/Store/Features/AuthenticationSlice";
 import { TUser } from "@/Types/AppTypes";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // import { HelmetTags } from "@/Components/MainComponents";
 import { motion } from "framer-motion";
-import logo from "/assets/images/fav-icon.png";
+import logo from "@/assets/images/fav-icon.png";
 import Image from "next/image";
-function Finished() {
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+// import { Link } from "lucide-react";
+function Finished({ userProfileDataOutlet }: any) {
   const [width, height] = useWindowSize();
   const { paymentType } = useParams();
   const userProfile = useSelector(userProfileData) as TUser;
-  const navigate = useNavigate();
+  const navigate = useRouter();
   const { t, i18n } = useTranslation("Pages_Finish");
   const [hide, setHide] = useState(false);
   // useEffect(() => {
@@ -25,13 +29,13 @@ function Finished() {
   //     clearTimeout(redirect);
   //   };
   // }, []);
-  const [userProfileDataOutlet, refetch, isLoading, isError, isPaused] = useOutletContext() as [
-    TUser,
-    () => void,
-    boolean,
-    boolean,
-    boolean
-  ];
+  // const [userProfileDataOutlet, refetch, isLoading, isError, isPaused] = useOutletContext() as [
+  //   TUser,
+  //   () => void,
+  //   boolean,
+  //   boolean,
+  //   boolean
+  // ];
 
   const congratulation = {
     start: {
@@ -85,7 +89,7 @@ function Finished() {
           initial={{ scale: 1.3 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1, type: "spring", bounce: 0.5 }}
-          src="/assets/images/thankyoucheck.png"
+          src="/images/thankyoucheck.png"
           className="w-[80px] h-[80px]"
         />
         <motion.span
@@ -134,25 +138,18 @@ function Finished() {
         transition={{ duration: 0.5, delay: 3.5, type: "spring", bounce: 0.2 }}
         className="flex flex-col gap-5 border-2 border-accent  rounded-xl p-3 w-[350px] items-center relative pt-5  "
       >
-        <Image
-          alt="nuhbynuh"
-          src="/assets/images/fav-icon.png"
-          className="absolute -top-10"
-          width={200}
-          height={200}
-        />
+        <Image alt="nuhbynuh" src={logo} className="absolute -top-10" width={64} height={64} />
 
         <h2 className="text-lg font-semibold text-center">{t("start")}</h2>
         <span className="text-center">{t("navigate")}</span>
         <div className="w-full grid grid-cols-2 gap-3 relative">
-          <Link className="bg-secondary text-white p-2 rounded text-center" to="/" replace>
+          <Link className="bg-secondary text-white p-2 rounded text-center" href="/">
             {t("home")}
           </Link>
           {userProfileDataOutlet?.actor_type === "user" && (
             <Link
               className="bg-secondary text-white p-2 rounded text-center"
-              to={`${i18n.language?.startsWith("ar") ? "" : "/en"}/profile`}
-              replace
+              href={`${i18n.language?.startsWith("ar") ? "" : "/en"}/profile`}
             >
               {t("profile")}
             </Link>
@@ -167,8 +164,7 @@ function Finished() {
           {userProfileDataOutlet?.actor_type === "broker" && (
             <Link
               className="bg-secondary text-white p-2 rounded text-center"
-              to={userProfileDataOutlet?.dashboard_link}
-              replace
+              href={userProfileDataOutlet?.dashboard_link}
             >
               {t("dashboard")}
             </Link>

@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect } from "react";
 // import { Heading, HeadingTwo, HelmetTags } from "@/MainComponents/index";
 import { useFetchData, usePostData } from "@/Hooks/useAxios";
@@ -25,7 +26,7 @@ import { faCircleInfo, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons
 
 // import { DragDropArea, TextEditor } from "@/SubComponents/index";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+// import { useNavigate, useOutletContext } from "react-router-dom";
 import { TUser } from "@/Types/AppTypes.js";
 import React from "react";
 import { userData } from "@/Store/Features/AuthenticationSlice";
@@ -33,6 +34,8 @@ import Heading from "@/components/Heading";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
 import TextEditor from "@/SubComponents/TextEditor copy";
 import DragDropArea from "@/SubComponents/DragDropArea";
+import { useRouter } from "next/navigation";
+import ComboBoz from "@/FormComponents/ComboBoz";
 
 function DynamicField(props: any) {
   return (
@@ -124,9 +127,9 @@ function DynamicField(props: any) {
   );
 }
 
-export function Component() {
+export function SubmitProperty() {
   const { t } = useTranslation("Pages_SubmitProperty");
-  const navigate = useNavigate();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -270,6 +273,7 @@ export function Component() {
     30 * 60 * 1000,
     !!country
   );
+  // console.log(categoriesData);
 
   const { data: regionsData, refetch: refetchRegions } = useFetchData(
     "regions",
@@ -302,6 +306,7 @@ export function Component() {
     30 * 60 * 1000,
     30 * 60 * 1000
   );
+
   const { data: PropertyFinishingData } = useFetchData(
     "propertyFinishing",
     process.env.NEXT_PUBLIC_PROPERTY_FINISHING,
@@ -329,6 +334,8 @@ export function Component() {
     30 * 60 * 1000,
     30 * 60 * 1000
   );
+  // console.log(PropertyTypesData);
+
   const { data: PropertyAmenitiesData } = useFetchData(
     "propertyAmenities",
     process.env.NEXT_PUBLIC_PROPERTY_AMENITIES,
@@ -396,12 +403,12 @@ export function Component() {
       refetchRegions();
     }
   }, [city, refetchRegions]);
-  const [userProfileDataOutlet, refetch, isError, isPaused] = useOutletContext() as [
-    TUser,
-    () => void,
-    boolean,
-    boolean
-  ];
+  // const [userProfileDataOutlet, refetch, isError, isPaused] = useOutletContext() as [
+  //   TUser,
+  //   () => void,
+  //   boolean,
+  //   boolean
+  // ];
   const {
     mutate,
     isLoading,
@@ -412,9 +419,9 @@ export function Component() {
       recaptchaRef.current.reset();
       reset();
       setValue("not_ropot", "no");
-      navigate("/");
+      router.push("/");
       setSubmitted(false);
-      refetch();
+      // refetch();
     },
     true, // authorizedAPI: (يجب أن تحدد ما إذا كانت هذه القيمة true أو false بناءً على حاجتك)
     (error) => {
@@ -468,6 +475,8 @@ export function Component() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
+  console.log(register);
+
   return (
     <section className="w-full pb-44">
       {/* <HelmetTags title={` ${t("tab.title")}`} description={t("tab.description")} index={false} /> */}
@@ -910,7 +919,7 @@ export function Component() {
                   {t("form.purpose.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PurposeData}
+                    data={PurposeData?.data}
                     placeholder={t("form.purpose.placeholder")}
                     stateName="purpose"
                     light
@@ -931,7 +940,7 @@ export function Component() {
                   {t("form.category.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={categoriesData}
+                    data={categoriesData?.data}
                     placeholder={t("form.category.placeholder")}
                     stateName="category"
                     light
@@ -976,7 +985,7 @@ export function Component() {
                   {t("form.country.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={countriesData}
+                    data={countriesData?.data}
                     placeholder={t("form.country.placeholder")}
                     stateName={"country"}
                     light
@@ -999,7 +1008,7 @@ export function Component() {
                       {t("form.city.label")}
                       <ComboBox
                         setValue={setValue}
-                        data={citiesData}
+                        data={citiesData?.data}
                         placeholder={t("form.city.placeholder")}
                         stateName="city"
                         light
@@ -1024,7 +1033,7 @@ export function Component() {
                       {t("form.region.label")}
                       <ComboBox
                         setValue={setValue}
-                        data={regionsData}
+                        data={regionsData?.data}
                         placeholder={t("form.region.placeholder")}
                         stateName="region"
                         light
@@ -1049,7 +1058,7 @@ export function Component() {
                       {t("form.sub_region.label")}
                       <ComboBox
                         setValue={setValue}
-                        data={subregionsData}
+                        data={subregionsData?.data}
                         placeholder={t("form.sub_region.placeholder")}
                         stateName="sub_region"
                         light
@@ -1075,7 +1084,7 @@ export function Component() {
                   {t("form.property_type.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PropertyTypesData}
+                    data={PropertyTypesData?.data}
                     placeholder={t("form.property_type.placeholder")}
                     stateName="property_type"
                     light
@@ -1096,7 +1105,7 @@ export function Component() {
                   {t("form.finishing.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PropertyFinishingData}
+                    data={PropertyFinishingData?.data}
                     placeholder={t("form.finishing.placeholder")}
                     stateName="finishing"
                     light
@@ -1117,7 +1126,7 @@ export function Component() {
                   {t("form.reception_floor_type.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={ReceptionFloorTypeData}
+                    data={ReceptionFloorTypeData?.data}
                     placeholder={t("form.reception_floor_type.placeholder")}
                     stateName="reception_floor_type"
                     light
@@ -1217,7 +1226,7 @@ export function Component() {
                 <div className="flex flex-col items-start gap-6 w-[950px] clg:w-[720px] md:w-[90%]  mx-auto  px-5">
                   <HeadingTwo style={"mt-6 mb-1"}>{t("form.amenities.Heading")}</HeadingTwo>
                   <ul className="property__amenities w-full grid grid-cols-3  md:grid-cols-2 sm:grid-cols-1   gap-8 sm:h-[70vh] sm:overflow-y-auto ">
-                    {PropertyAmenitiesData?.map((amenity: any, index: number) => (
+                    {PropertyAmenitiesData?.data?.map((amenity: any, index: number) => (
                       <CheckBox
                         key={amenity.id}
                         register={register}

@@ -16,24 +16,24 @@ import LoginPopUp from "../login/LoginPopUp";
 import React from "react";
 import LogOutPopUp from "@/MainComponents/LogOutPopUp";
 
-import UserProfile from "./UserProfile"
-export default async function LandingPage({ locale }: any) {
-  const countries = await getData("web/countries", locale);
+import UserProfile from "./UserProfile";
+export default async function LandingPage({ locale, token }: any) {
+  const countries = await getData("web/countries", locale, token);
   const AllCountries = countries.data[0] || [];
 
   const i18nNamespaces = ["Pages_LandingPage"];
   const { t } = await initTranslations(locale, i18nNamespaces);
   try {
-    const data = await getData("web/home", locale);
+    const data = await getData("web/home", locale, token);
     const allData = data.data;
 
-    const dataImage = await getData("web/info-graph", locale);
+    const dataImage = await getData("web/info-graph", locale, token);
     const allDataImage = dataImage.data;
 
-    const ads = await getData("ads-getter/home-page", locale);
+    const ads = await getData("ads-getter/home-page", locale, token);
     const allAds = ads.data;
 
-    const broker = await getData("web/our-brokers", locale);
+    const broker = await getData("web/our-brokers", locale, token);
     const allBroker = broker.data;
 
     if (!allDataImage) return <Loader />;
@@ -41,9 +41,7 @@ export default async function LandingPage({ locale }: any) {
     return (
       <>
         <LoginPopUp />
-        <LogOutPopUp  />
-
-        {/* <UserProfile/> */}
+        <LogOutPopUp />
 
         <Hero data={allData?.sliders} locale={locale} />
 

@@ -1,9 +1,5 @@
 // "use client"; // Ensure this component is rendered client-side
 
-// import { setShowLoginPopUp } from "@/Store/Features/AuthenticationSlice";
-// import { useDispatch } from "react-redux";
-// import { useQueryClient } from "@tanstack/react-query";
-// import { useMemo } from "react";
 import DeletePopUp from "@/MainComponents/DeletePopUp";
 import PropertyCard from "@/CardsComponents/PropertyCard";
 // import useUserProfile from "@/api/useUserProfile";
@@ -28,42 +24,31 @@ export default async function MyProperties({ locale, t, i18n }: any) {
   // const userProfileDataOutlet = useUserProfile();
   const userProfileDataOutlet = userDataValueJs?.data;
 
-  const response = await fetch(
-    `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutlet?.actor_type}/${userProfileDataOutlet?.id}`,
-    {
-      method: "GET",
+  let response;
+  let dataProfile;
+  try {
+    response = await fetch(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutlet?.actor_type}/${userProfileDataOutlet?.id}`,
+      {
+        method: "GET",
+        headers: {
+          lang: locale,
+          Authorization: `Bearer ${tokenValueJs}`,
+        },
+      }
+    );
 
-      headers: {
-        lang: locale, //
-        Authorization: `Bearer ${tokenValueJs}`,
-      },
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.status}`);
     }
-  );
 
-  // if (!response.ok) {
-  //   throw new Error("Network response was not ok");
-  // }
+    dataProfile = await response.json(); // قراءة الاستجابة هنا فقط
+  } catch (error: any) {
+    console.error("Failed to fetch data:", error.message);
+    return <ErrorMessage message="Failed to fetch data. Please try again later." />;
+  }
 
-  const dataProfile = await response.json();
-  const data = dataProfile?.data;
-
-
-  // const dispatchRedux = useDispatch();
-  // const queryClient = useQueryClient();
-
-  // function handleUnlikeProperty(id: any) {
-  //   queryClient.resetQueries({ queryKey: ["userProfileData"] });
-  // }
-
-  // async function handleDeletePropertySuccess() {
-  //   await queryClient.resetQueries({ queryKey: ["userProfileData"] });
-  // }
-
-  // const getAllViews = useMemo(() => {
-  //   if (!userProfileDataOutlet?.my_props) return 0;
-  //   const ViewsArray = userProfileDataOutlet?.my_props?.map((offer: any) => offer.views);
-  //   return ViewsArray.reduce((a: any, b: any) => a + b, 0);
-  // }, [userProfileDataOutlet?.my_props]);
+  const data = dataProfile?.data; // استخدام البيانات المستخرجة بعد قراءتها مرة واحدة
 
   let getAllViews = 0;
   if (data?.my_props?.length > 0) {
@@ -73,11 +58,7 @@ export default async function MyProperties({ locale, t, i18n }: any) {
 
   return (
     <section className="pb-44 site_container">
-      <DeletePopUp
-        api={process.env.NEXT_PUBLIC_DELETE_PROPERTY}
-        Bgcolor="dark"
-        // onSuccess={handleDeletePropertySuccess}
-      />
+      <DeletePopUp api={process.env.NEXT_PUBLIC_DELETE_PROPERTY} Bgcolor="dark" />
       <Heading style="text-center">{t("heading")}</Heading>
       <div className="w-full grid grid-cols-3 pt-10 px-3 pb-3 ss:grid-cols-1 amd:grid-cols-2 relative border my-10 ss:gap-3">
         <span className="absolute -top-4 left-3 bg-white text-lg">{t("interactions")}</span>
@@ -89,21 +70,15 @@ export default async function MyProperties({ locale, t, i18n }: any) {
           <span className="text-lg">{data?.total_pages_views}</span>
           <span className="text-xl">{t("totalView")}</span>
         </div>
-        <div className="col-span-1 flex flex-col justify-center items-center gap-3 border bg-gray-100 h-[200px] ">
+        <div className="col-span-1 flex flex-col justify-center items-center gap-3 border bg-gray-100 h-[200px]">
           <span className="text-lg">{data?.total_leads}</span>
           <span className="text-xl">{t("totalLeads")}</span>
         </div>
       </div>
-      <div className="all__favorites--wrapper w-full grid grid-cols-3 gap-5 ss:gap-28 ss:grid-cols-1 amd:grid-cols-2 my-10">
+      <div className="all__favorites--wrapper w-full grid grid-cols-3 gap-5 gap-y-32 ss:gap-28 ss:grid-cols-1 amd:grid-cols-2 my-10">
         {data?.my_props?.length > 0 ? (
-          data?.my_props?.map((property: any, i: any) => (
-            <PropertyCard
-              key={i}
-              property={property}
-              showActions
-              // ShowLoginPopUp={() => dispatchRedux(setShowLoginPopUp(true))}
-              acceptedCheck={true}
-            />
+          data.my_props.map((property: any, i: any) => (
+            <PropertyCard key={i} property={property} showActions acceptedCheck={true} />
           ))
         ) : data?.my_props?.length === 0 ? (
           <NoItemsMessage message={t("NoItemsMessage")} />

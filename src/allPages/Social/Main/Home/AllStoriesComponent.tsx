@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import StoriesComponent from "./StoriesComponent";
 import { useSelector } from "react-redux";
 // import { userProfileData } from "@/Store/Features/AuthenticationSlice.tsx";
-import userImg from "/assets/images/userImgNotLogin.png";
+import userImg from "@/assets/images/userImgNotLogin.png";
 import { userProfileData } from "@/Store/Features/AuthenticationSlice";
 import Image from "next/image";
 

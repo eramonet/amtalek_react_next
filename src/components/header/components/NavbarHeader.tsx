@@ -134,7 +134,7 @@ const NavbarHeader = async function NavbarHeader({ locale }: any) {
             className: "!sticky bg-white bottom-[-4px] hover:!bg-white",
             label: (
               <Link
-                href="notifications"
+                href="/notifications"
                 className=" flex items-center justify-center !text-white border border-primary hover:bg-white mx-auto hover:!text-primary p-1 gap-5 rounded bg-primary w-[90%]"
               >
                 {i18n.language?.startsWith("ar")
@@ -154,7 +154,7 @@ const NavbarHeader = async function NavbarHeader({ locale }: any) {
                 </span>
                 <p>{i18n.language?.startsWith("ar") ? "لا توجد اشعارات" : "No Notifications"}</p>
                 <Link
-                  href="notifications"
+                  href="/notifications"
                   className=" flex items-center justify-center text-white border border-primary hover:bg-transparent hover:text-primary p-1 gap-5 rounded bg-primary w-[90%] "
                 >
                   {i18n.language?.startsWith("ar")

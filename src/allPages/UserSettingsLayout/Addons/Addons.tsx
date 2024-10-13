@@ -12,7 +12,7 @@ import Loader from "@/components/loader/Loader";
 import Link from "next/link";
 // import { HelmetTags } from "@/Components/MainComponents";
 
-export default function Addons({ user }:any) {
+export default function Addons({ user }: any) {
   const { i18n } = useTranslation("Pages_Packages");
   const [duration, setDuration] = useState("monthly");
   // const user = useSelector(userData);
@@ -189,7 +189,15 @@ export default function Addons({ user }:any) {
       </div>
       <Link
         // state={{ items, totalPrice, duration }}
-        href={`${i18n.language?.startsWith("ar") ? "" : "/en"}/addons-payment`}
+        href={{
+          // ${i18n.language?.startsWith("ar") ? "" : "/en"}
+          pathname: `/addons-payment`,
+          query: {
+            items: JSON.stringify(items),
+            totalPrice,
+            duration,
+          },
+        }}
         className={`bg-primary text-white w-fit p-3 rounded border border-primary hover:bg-transparent hover:text-primary transition duration-300 ${
           totalPrice === 0 && "border-none pointer-events-none !bg-gray-200"
         }`}

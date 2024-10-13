@@ -1,13 +1,11 @@
 "use client";
 
 import { setShowLoginPopUp, userData } from "@/Store/Features/AuthenticationSlice";
-import { TUser } from "@/Types/AppTypes";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CiLocationOn } from "react-icons/ci";
 import { usePostData } from "@/Hooks/usePostData";
 import React from "react";
-import PropertyFavoritButton from "./PropertyFavoritButton";
 import FavoriteButton from "@/components/FavoriteButton";
 
 export default function PropertyHeader({ data }: any) {
@@ -23,9 +21,20 @@ export default function PropertyHeader({ data }: any) {
     true,
     (error) => {
       console.error("Error adding to favorites:", error);
-      // يمكنك إضافة أي إجراءات تتعلق بالخطأ هنا
     }
   );
+
+  const handleFavoriteClick = () => {
+    if (!user?.token) {
+      dispatchRedux(setShowLoginPopUp(true));
+    } else {
+      mutate({
+        api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
+        data: { property_id: data?.id },
+        file: undefined,
+      });
+    }
+  };
 
   return (
     <div>
@@ -73,23 +82,11 @@ export default function PropertyHeader({ data }: any) {
             )
           )}
 
-          {/* <PropertyFavoritButton data={data} /> */}
-          {/* {user?.token && ( */}
           <div className="w-fit flex items-center">
             <div
               className="property__love cursor-pointer gap-2 border hover:bg-custome-blue hover:text-custome-white transition duration-300 rounded-xl px-2 p-2 flex"
-              onClick={() =>
-                !user?.token
-                  ? () => dispatchRedux(setShowLoginPopUp(true))
-                  : () =>
-                      mutate({
-                        api: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_PROPERTY_ADD_TO_FAVORITE}`,
-                        data: { property_id: data?.id },
-                        file: undefined,
-                      })
-              }
+              onClick={handleFavoriteClick}
             >
-              {/* <FavoriteButton is_fav={data?.is_fav} id={data?.id} /> */}
               <div className="heart-container" title="Like">
                 <input
                   checked={Boolean(Number(data?.is_fav))}
@@ -106,7 +103,6 @@ export default function PropertyHeader({ data }: any) {
               <span>{t("save", { lng: i18n.language.startsWith("ar") ? "" : "en" })}</span>
             </div>
           </div>
-          {/* )} */}
         </div>
       </div>
     </div>

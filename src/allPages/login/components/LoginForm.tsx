@@ -77,6 +77,8 @@ export default function LoginForm({ loginDispatch }: any) {
       setLoggedInSuccess(true);
       // data && data?.data?.data?.has_package === "no" && router.replace("/");
       data && data?.data?.data?.has_package === "no" && window.location.replace("/");
+      data && data?.data?.data?.has_package === "yes" && window.location.replace("/");
+      data  && window.location.replace("/");
     },
     false,
     (error) => {

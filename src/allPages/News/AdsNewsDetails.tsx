@@ -1,3 +1,4 @@
+// "use client";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
@@ -83,8 +84,8 @@ const AdsNewsDetails = () => {
                         src={ad["image"]}
                         alt={`Ad ${ad["id"]}`}
                         className="object-cover"
-                        width={100}
-                        height={100}
+                        width={1000}
+                        height={10.0}
                       />
                     ) : (
                       <div className="max-w-full max-h-[220px] bg-gray-200 flex items-center justify-center">

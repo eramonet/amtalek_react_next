@@ -1,6 +1,15 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default function QuikLinks({ t, locale }: any) {
+  const cookieStore = cookies();
+
+  const userDatacookies = cookieStore.get("userData");
+
+  const userDataValue: any = userDatacookies ? userDatacookies.value : null;
+
+  const user: any = userDataValue ? JSON.parse(userDataValue) : null;
+
   return (
     <div className="footer-col2 w-full h-full flex flex-col justify-start asm:items-center px-3  ">
       {/* <h2 className="text-xl  mb-9 ss:mb-3">{"Footer.second_column.title"}</h2> */}
@@ -63,18 +72,18 @@ export default function QuikLinks({ t, locale }: any) {
         {/* ************************************************************************************************************************************************ */}
 
         <ul className="  h-full flex flex-col items-start  justify-start gap-4 ">
-          {/* {!user?.token && ( */}
-          <li className="w-full flex  items-center">
-            <Link
-              className="relative group cursor-pointer truncate opacity-80 hover:opacity-100 trns   h-7 flex flex-col justify-start"
-              href={t("Footer.second_column.menu_items.Login.link")}
-            >
-              {t("Footer.second_column.menu_items.Login.title")}
-              {/* {"تسجيل الدخول"} */}
-              <hr className=" border-[0px] border-bg w-0  duration-300 ease-in-out transition-all group-hover:w-full group-hover:border-[1px]" />
-            </Link>
-          </li>
-          {/* )} */}
+          {!user?.token && (
+            <li className="w-full flex  items-center">
+              <Link
+                className="relative group cursor-pointer truncate opacity-80 hover:opacity-100 trns   h-7 flex flex-col justify-start"
+                href={t("Footer.second_column.menu_items.Login.link")}
+              >
+                {t("Footer.second_column.menu_items.Login.title")}
+                {/* {"تسجيل الدخول"} */}
+                <hr className=" border-[0px] border-bg w-0  duration-300 ease-in-out transition-all group-hover:w-full group-hover:border-[1px]" />
+              </Link>
+            </li>
+          )}
           <li className="w-full flex items-center">
             <Link
               className="relative group cursor-pointer truncate opacity-80 hover:opacity-100 trns   h-7 flex flex-col justify-start"

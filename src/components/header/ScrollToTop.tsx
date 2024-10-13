@@ -32,7 +32,7 @@ function ScrollToTop() {
   }, [showBtn]);
 
   const handleScrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0 });
   }, []);
 
   return (
@@ -43,7 +43,7 @@ function ScrollToTop() {
         showBtn ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       } group trns fixed right-10 bottom-10  p-1 shadow-lg shadow-secondary/30 w-12 min-w-[48px] h-12 min-h-[48px] flex-center  aspect-square rounded-full z-[1000]`}
     >
-      <span className="bg-grey w-full h-full rounded-full flex-center">
+      <span className="bg-grey w-full h-full rounded-full flex items-center justify-center">
         <FontAwesomeIcon className="text-xl group-hover:ScrollTo_top_btn" icon={faArrowUp} />
       </span>
     </button>

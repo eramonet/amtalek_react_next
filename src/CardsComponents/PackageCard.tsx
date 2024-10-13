@@ -78,7 +78,7 @@ function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPac
   }, [user, type]);
   return (
     <div
-      className={` w-[90%] flex flex-col rounded-xl overflow-hidden relative bg-white gap-  py-5 ${
+      className={` w-[90%] flex flex-col rounded-xl overflow-hidden relative bg-white gap-  pb-5 ${
         singlePackage?.package_type === "featured" && "scale-110"
       }`}
     >
@@ -93,7 +93,7 @@ function PackageCard({ singlePackage, t, type, SubscriptionInProfile, CurrentPac
               ? "linear-gradient(300deg, rgba(194,0,0,1) 30%, rgba(255,41,41,1) 68%, rgba(251,148,148,1) 100%)"
               : "",
         }}
-        className=" h-[170px] w-full flex flex-col justify-center items-center gap-1"
+        className=" h-[170px] w-full flex flex-col justify-center items-center gap-1 pt-3"
       >
         <span className="absolute w-[120%] top-[145px] left-1/2 -translate-x-1/2 z-10  h-[90px] rounded-t-full bg-white text-black flex items-center justify-center"></span>
         <span className="border  border-white text-white p-3 rounded w-fit text-xl">

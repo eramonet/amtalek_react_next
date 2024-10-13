@@ -1,3 +1,4 @@
+"use client";
 import { useTranslation } from "react-i18next";
 import AllStoriesComponent from "./AllStoriesComponent";
 import { motion } from "framer-motion";
@@ -6,7 +7,7 @@ import { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FaImage } from "react-icons/fa";
 
-export function Component() {
+export function AddProperty() {
   const { t } = useTranslation("Social_AddProperty");
   const [status, setStatus] = useState("forSale");
   return (
@@ -19,14 +20,9 @@ export function Component() {
       <AllStoriesComponent />
 
       <form className="w-full flex flex-col gap-6 bg-white p-6 rounded-xl">
-        <legend className="text-[#01425A] text-[16px] font-[400]">
-          {t("title")}
-        </legend>
+        <legend className="text-[#01425A] text-[16px] font-[400]">{t("title")}</legend>
         <div className="w-full flex border-[1px] gap-2 border-[#01425A] rounded-xl py-[14px] px-[12px]">
-          <label
-            className="text-[#01425A] w-fit text-[16px] font-[400]"
-            htmlFor="ads"
-          >
+          <label className="text-[#01425A] w-fit text-[16px] font-[400]" htmlFor="ads">
             {t("adstitle")}
           </label>
           <input
@@ -36,10 +32,7 @@ export function Component() {
           />
         </div>
         <div className="w-full flex border-[1px] gap-2 border-[#01425A] rounded-xl py-[14px] px-[12px]">
-          <label
-            className="text-[#01425A] w-fit text-[16px] font-[400]"
-            htmlFor="type"
-          >
+          <label className="text-[#01425A] w-fit text-[16px] font-[400]" htmlFor="type">
             {t("type")}
           </label>
           <input
@@ -50,10 +43,7 @@ export function Component() {
           <span className="text-[#01425A] text-[16px] font-[400]">URL</span>
         </div>
         <div className="w-full flex border-[1px] gap-2 border-[#01425A] rounded-xl py-[14px] px-[12px]">
-          <label
-            className="text-[#01425A] w-fit text-[16px] font-[400]"
-            htmlFor="link"
-          >
+          <label className="text-[#01425A] w-fit text-[16px] font-[400]" htmlFor="link">
             {t("videoLink")}
           </label>
           <input
@@ -64,10 +54,7 @@ export function Component() {
           <span className="text-[#01425A] text-[16px] font-[400]">URL</span>
         </div>
         <div className="w-full flex border-[1px] gap-2 border-[#01425A] rounded-xl py-[14px] px-[12px]">
-          <label
-            className="text-[#01425A] w-fit text-[16px] font-[400]"
-            htmlFor="price"
-          >
+          <label className="text-[#01425A] w-fit text-[16px] font-[400]" htmlFor="price">
             {t("price")}
           </label>
           <input
@@ -78,16 +65,9 @@ export function Component() {
           <span className="text-[#01425A] text-[16px] font-[400]">URL</span>
         </div>
 
-        <CollapseForm
-          status={status}
-          setStatus={setStatus}
-          label={t("adStatus")}
-        />
+        <CollapseForm status={status} setStatus={setStatus} label={t("adStatus")} />
         <div className="w-full flex border-[1px] gap-2 border-[#01425A] rounded-xl py-[14px] px-[12px] items-center">
-          <label
-            className="text-[#01425A] w-fit text-[16px] font-[400]"
-            htmlFor="location"
-          >
+          <label className="text-[#01425A] w-fit text-[16px] font-[400]" htmlFor="location">
             {t("location")}
           </label>
           <input
@@ -118,15 +98,11 @@ export function Component() {
           </label>
         </div>
         <div className="w-full h-[190px] border border-[#01425A] p-[12px] rounded-xl">
-          <label className="text-[16px] font-[400] text-[#01425A]">
-            {t("addescription")}
-          </label>
+          <label className="text-[16px] font-[400] text-[#01425A]">{t("addescription")}</label>
           <textarea className="w-full flex-auto resize-none bg-white border-none text-[#01425A] text-[16px] font-[400] focus:ring-0 h-[140px]" />
         </div>
         <div className="w-full flex justify-center items-center gap-6">
-          <button className="bg-[#01425A] text-white px-3 py-2 rounded-xl">
-            {t("add")}
-          </button>
+          <button className="bg-[#01425A] text-white px-3 py-2 rounded-xl">{t("add")}</button>
           <button className="border-[1px] w-[120px] text-[16px] font-[400] border-[#D9D9D9] px-3 py-2 rounded-xl">
             {t("cancel")}
           </button>

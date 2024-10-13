@@ -1,3 +1,4 @@
+import { createProxyMiddleware } from "http-proxy-middleware";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -10,7 +11,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_BASE_URL_FULL}:path*`, // البروكسي إلى الخادم
+        // ${process.env.NEXT_PUBLIC_BASE_URL_FULL}
+        destination: `https://amtalek.com/amtalekadmin/public/api/web/:path*`, // البروكسي إلى الخادم
       },
     ];
   },

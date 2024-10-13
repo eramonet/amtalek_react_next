@@ -5,10 +5,12 @@ import QuikLinks from "./components/QuikLinks";
 import ModernNews from "./components/ModernNews";
 import Subscribe from "./components/Subscripe";
 import Copyright from "./components/Copyright";
+// import useUserProfile from "@/api/useUserProfile";
 
 export default async function Footer({ locale, t }: any) {
   const footerData = await getData("web/footer", locale);
   const allFooterData = footerData.data;
+  
   return (
     <footer className="bg-custome-blue relative text-custome-white pt-32 pb-10 rounded-t-3xl mt-20">
       {/* ********************************************************************************** */}

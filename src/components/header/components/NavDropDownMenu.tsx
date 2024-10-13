@@ -27,7 +27,6 @@ import Link from "next/link";
 // };
 
 export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: any) {
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
@@ -164,6 +163,7 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
           </div>
         </div>
       ),
+      className: "!p-0",
     },
   ];
 
@@ -173,7 +173,10 @@ export default function NavDropDownMenu({ ForRealEstate, user, userProfile }: an
       <Dropdown
         rootClassName="navbarDropDown"
         trigger={["click"]}
-        menu={{ items }}
+        menu={{
+          items,
+          className: "!p-0", // كلاس مخصص للـ ul
+        }}
         placement="bottom"
       >
         <button className="  h-14  aspect-square rounded-full border-2 border-secondary p-1 overflow-hidden">

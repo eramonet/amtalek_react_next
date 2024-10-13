@@ -52,7 +52,9 @@ export default function ComboBoz({
 
       if (title) {
         setSelectedLocation(title.toLowerCase());
-      } else setSelectedLocation(null);
+      } else {
+        setSelectedLocation(null);
+      }
     }
   }, [data, getDefaultValueFromURL, searchParams]);
 
@@ -87,24 +89,24 @@ export default function ComboBoz({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command className={` ${light ? "bg-grey border-grey" : "bg-bg border-bg"}`}>
+        <Command className={`${light ? "bg-grey border-grey" : "bg-bg border-bg"}`}>
           <div
             className={`search-wrapper ${
-              selectBox ? "h-0 opacity-0 pointer-events-none " : "h-12 "
-            }  w-full  shadow-sm shadow-slate-200 flex px-4 gap-5 items-center ${
+              selectBox ? "h-0 opacity-0 pointer-events-none" : "h-12"
+            } w-full shadow-sm shadow-slate-200 flex px-4 gap-5 items-center ${
               light ? "bg-grey justify-start" : "bg-bg justify-between"
-            } `}
+            }`}
           >
             <FontAwesomeIcon
               className="text-xl text-secondary opacity-50"
               icon={faMagnifyingGlassLocation}
             />
             <CommandInput
-              className={`outline-none text-sm font-normal text-secondary  w-full 
-            placeholder:text-sm placeholder:font-normal placeholder:text-secondary placeholder:opacity-50 ${
-              light ? "bg-grey" : "bg-bg"
-            }`}
-              autoFocus={light ? false : true}
+              className={`outline-none text-sm font-normal text-secondary w-full 
+                placeholder:text-sm placeholder:font-normal placeholder:text-secondary placeholder:opacity-50 ${
+                  light ? "bg-grey" : "bg-bg"
+                }`}
+              autoFocus={!light}
               placeholder={`${i18n.language === "ar" ? "البحث في" : "Search"} ${placeholder}`}
             />
           </div>
@@ -112,26 +114,32 @@ export default function ComboBoz({
             <CommandEmpty>
               {i18n.language === "ar" ? "لا يوجد نتائج" : NotFoundMessage}
             </CommandEmpty>
-            {/* <CommandEmpty>{NotFoundMessage}</CommandEmpty> */}
             <CommandGroup>
               {data?.map((item: any) => (
                 <CommandItem
-                  className={` cursor-pointer text-lg hover:bg-secondary aria-selected:bg-secondary/60 
-                w-full truncate ${
-                  light
-                    ? "hover:text-grey aria-selected:text-grey"
-                    : "hover:text-bg aria-selected:text-bg"
-                } ${
+                  className={`cursor-pointer text-lg hover:bg-secondary aria-selected:bg-secondary/60 
+                    w-full truncate ${
+                      light
+                        ? "hover:text-grey aria-selected:text-grey"
+                        : "hover:text-bg aria-selected:text-bg"
+                    } ${
                     selectedLocation === item?.title?.toLowerCase()
                       ? "bg-secondary text-bg"
                       : "pl-8 rtl:pl-0 rtl:pr-8"
-                  } `}
+                  }`}
                   key={item.id}
                   value={item.title}
                   onSelect={(currentValue) => {
-                    setSelectedLocation(currentValue.toLowerCase());
-                    setValue(currentValue === selectedLocation ? "" : currentValue);
+                    const normalizedValue = currentValue.toLowerCase();
+                    setSelectedLocation(normalizedValue);
+                    setValue(
+                      stateName,
+                      normalizedValue === selectedLocation ? "" : normalizedValue
+                    );
                     setOpen(false);
+                    if (callBcFn) {
+                      callBcFn(normalizedValue);
+                    }
                   }}
                 >
                   <Check

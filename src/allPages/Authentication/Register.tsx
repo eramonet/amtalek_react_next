@@ -1,25 +1,11 @@
-"use client";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { useFetchData, usePostData } from "@/Components/Hooks/useAxios";
+// import { useFetchData, usePostData } from "@/Hooks/useAxios";
 import { faAngleRight, faCheck, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import VerificationCodeForm from "./VerificationCodeForm";
+// import VerificationCodeForm from "./VerificationCodeForm.tsx";
 import { DatePicker, Space } from "antd";
 
-import toast from "react-hot-toast";
-// import HelmetTags from "@/Components/MainComponents/HelmetTags";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { lang } from "@/Store/Features/MiscellaneousSlice";
-// import Link from "@/Components/MainComponents/Link";
-import { setRegistrationUserType } from "@/Store/Features/AuthenticationSlice";
-// import { useNavigate } from "react-router-dom";
-// import i18next from "i18next";
-import Link from "next/link";
-import React from "react";
-import { usePostData } from "@/Hooks/usePostData";
-import { useFetchData } from "@/Hooks/useFetchData";
 import {
   ComboBox,
   EmailComponent,
@@ -29,22 +15,34 @@ import {
   SubmitBtnComponent,
   TextComponent,
   UploadFileComponent,
-} from "@/FormComponents";
+} from "@/FormComponents/index";
+import toast from "react-hot-toast";
+// import HelmetTags from "@/MainComponents/HelmetTags";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+// import { lang } from "@/Store/Features/MiscellaneousSlice";
+// import LangLink from "@/MainComponents/LangLink";
+import { setRegistrationUserType } from "@/Store/Features/AuthenticationSlice";
+// import { useNavigate } from "react-router-dom";
+// import i18next from "i18next";
+import { useFetchData } from "@/Hooks/useFetchData";
+import { usePostData } from "@/Hooks/usePostData";
+import VerificationCodeForm from "./VerificationCodeForm";
+import LangLink from "@/components/LangLink";
 import { useRouter } from "next/navigation";
-import getData from "@/api/getData";
-import ComboBoz from "@/FormComponents/ComboBoz";
+
 function Register() {
   const { t, i18n } = useTranslation("Pages_Register");
-  const lng = useSelector(lang);
+  // const i18n.language = useSelector(lang);
   const dispatchRedux = useDispatch();
   const birthdayRef = useRef<any>(null);
 
   const router = useRouter();
   const recaptchaRef = useRef<any>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [savedEmailBeforeReset, setSavedEmailBeforeReset] = useState("");
+  const [submitted, setSubmitted] = useState<any>(false);
+  const [savedEmailBeforeReset, setSavedEmailBeforeReset] = useState<any>("");
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
-  const [showVerificationCodeForm, setShowVerificationCodeForm] = useState(false);
+  const [showVerificationCodeForm, setShowVerificationCodeForm] = useState<any>(false);
   function reducer(state: any, action: any) {
     switch (action.type) {
       case "setHide": {
@@ -104,7 +102,7 @@ function Register() {
     getValues,
     watch,
     setValue,
-  } = useForm({
+  }: any = useForm({
     mode: "onBlur",
     defaultValues: {
       iam: "",
@@ -131,7 +129,7 @@ function Register() {
   const company_name = watch("company_name");
   const company_logo = watch("company_logo");
   const country = watch("country");
-  const city = watch<any>("city");
+  const city = watch("city");
   const not_ropot = watch("not_ropot");
   const firstNameWatch = watch("first_name");
   const secondNameWatch = watch("last_name");
@@ -147,35 +145,18 @@ function Register() {
     { id: "individual", title: t("step_0.user_type.selections.individual") },
     { id: "company", title: t("step_0.user_type.selections.company") },
   ];
-  const [countriesData, setData] = useState([]);
-  useEffect(() => {
-    const fetchAds = async () => {
-      try {
-        const response = await getData(
-          `web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
-          i18n.language
-        );
-        const result = await response?.data;
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching ads:", error);
-      }
-    };
-
-    fetchAds();
-  }, [i18n.language]);
-  // const { data: countriesData } = useFetchData(
-  //   "countries",
-  //   `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
-  //   false,
-  //   false,
-  //   "",
-  //   30 * 60 * 1000,
-  //   30 * 60 * 1000
-  // );
+  const { data: countriesData } = useFetchData(
+    "countries",
+    process.env.NEXT_PUBLIC_COUNTRIES_REGISTER,
+    false,
+    false,
+    "",
+    30 * 60 * 1000,
+    30 * 60 * 1000
+  );
   // const { data: citiesData, refetch: refetchCities } = useFetchData(
   //   "cities",
-  //   `${process.env.VITE_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
+  //   `${process.env.NEXT_PUBLIC_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
   //   false,
   //   false,
   //   "",
@@ -185,7 +166,7 @@ function Register() {
   // );
   // const { data: regionsData, refetch: refetchRegions } = useFetchData(
   //   "regions",
-  //   `${process.env.VITE_REGIONS_BASED_ON_CITIES_REGISTER}${city}`,
+  //   `${process.env.NEXT_PUBLIC_REGIONS_BASED_ON_CITIES_REGISTER}${city}`,
   //   false,
   //   false,
   //   "",
@@ -213,22 +194,14 @@ function Register() {
         setShowVerificationCodeForm(true);
       }
     },
-    true, // authorizedAPI
-    (error) => {
-      // Handle error here
-      console.error("Error occurred:", error);
-    }
+    true,
+    () => {}
   );
-
-  const { mutate: sendVerificationCode } = usePostData(
-    true, // showToasts
-    (data) => {
-      // onSuccess callback
-    },
-    true, // authorizedAPI
-    (error) => {
-      // onError callback
-    }
+  const { mutate: sendVerificationCode }: any = usePostData(
+    true,
+    () => {},
+    true,
+    () => {}
   );
 
   //!-- request the code only after a successful register
@@ -236,7 +209,7 @@ function Register() {
   useEffect(() => {
     if (isSuccess && showVerificationCodeForm) {
       sendVerificationCode({
-        api: `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_SEND_CODE_TO_EMAIL}`,
+        api: process.env.NEXT_PUBLIC_SEND_CODE_TO_EMAIL,
         data: { operation_type: "verify_code", email: savedEmailBeforeReset },
         file: undefined,
       });
@@ -293,7 +266,7 @@ function Register() {
           company_name: iam === "company" ? company_name : null,
         };
         registerUser({
-          api: `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_REGISTER_USER}`,
+          api: process.env.NEXT_PUBLIC_REGISTER_USER,
           data: finalData,
           file: true,
         });
@@ -310,7 +283,7 @@ function Register() {
   if ((state.registerSuccess || state.haveCode) && showVerificationCodeForm) {
     return (
       <>
-        {/* <HelmetTags title={t("tab.title")} description={t("tab.description")} /> */}
+        {/*  <HelmetTags title={t("tab.title")} description={t("tab.description")} /> */}
 
         <VerificationCodeForm
           from="register"
@@ -323,7 +296,7 @@ function Register() {
   }
   return (
     <>
-      {/* <HelmetTags title={t("tab.title")} description={t("tab.description")} /> */}
+      {/*  <HelmetTags title={t("tab.title")} description={t("tab.description")} /> */}
       <form
         method="post"
         onSubmit={handleSubmit(onSubmit)}
@@ -340,7 +313,13 @@ function Register() {
                 state.formStep >= 2 ? "bg-secondary text-bg" : "bg-grey text-secondary"
               }  font-medium text-2xl w-12 aspect-square lg:text-xl rounded-full flex justify-center items-center min-w-fit xxl:w-9`}
             >
-              {state.formStep >= 2 ? <FontAwesomeIcon icon={faCheck} /> : lng === "ar" ? "١" : "1"}
+              {state.formStep >= 2 ? (
+                <FontAwesomeIcon icon={faCheck} />
+              ) : i18n.language === "ar" ? (
+                "١"
+              ) : (
+                "1"
+              )}
             </div>
             <div className="w-16 xxl:w-12 md:w-9 axss:w-5  h-[2px] bg-grey  ">
               <hr
@@ -354,7 +333,13 @@ function Register() {
                 state.formStep >= 3 ? "bg-secondary text-bg" : "bg-grey text-secondary"
               }  font-medium text-2xl w-12 aspect-square lg:text-xl rounded-full flex justify-center items-center min-w-fit xxl:w-9`}
             >
-              {state.formStep >= 3 ? <FontAwesomeIcon icon={faCheck} /> : lng === "ar" ? "٢" : "2"}
+              {state.formStep >= 3 ? (
+                <FontAwesomeIcon icon={faCheck} />
+              ) : i18n.language === "ar" ? (
+                "٢"
+              ) : (
+                "2"
+              )}
             </div>
             <div className="w-16 xxl:w-12 md:w-9 axss:w-5  h-[2px] bg-grey">
               <hr
@@ -370,7 +355,7 @@ function Register() {
             >
               {state.formStep >= 4 ? (
                 <FontAwesomeIcon icon={faThumbsUp} />
-              ) : lng === "ar" ? (
+              ) : i18n.language === "ar" ? (
                 <FontAwesomeIcon icon={faThumbsUp} />
               ) : (
                 <FontAwesomeIcon icon={faThumbsUp} />
@@ -399,7 +384,7 @@ function Register() {
 `}
           >
             <section
-              dir={lng === "ar" ? "rtl" : "ltr"}
+              dir={i18n.language === "ar" ? "rtl" : "ltr"}
               className="first_step px-8   w-1/5  flex flex-col items-start justify-start gap-6"
             >
               <>
@@ -413,28 +398,7 @@ function Register() {
                 >
                   {t("step_0.user_type.label")}
 
-                  {/* <ComboBox
-                    // setValue={setValue}
-                    // data={userTypeData}
-                    // placeholder={t("step_0.user_type.placeholder")}
-                    // stateName={"offer_type"}
-                    // isSuccess={isSuccess}
-                    company_name={"company_name"}
-                    company_logo={"company_logo"}
-                    setValue={setValue}
-                    data={userTypeData}
-                    placeholder={t("step_0.user_type.placeholder")}
-                    stateName={"iam"}
-                    light
-                    selectBox
-                    callBcFn={(type: any) => dispatchRedux(setRegistrationUserType(type))}
-                  /> */}
-                  <ComboBoz
-                    // setValue={setValue}
-                    // data={userTypeData}
-                    // placeholder={t("step_0.user_type.placeholder")}
-                    // stateName={"offer_type"}
-                    // isSuccess={isSuccess}
+                  <ComboBox
                     company_name={"company_name"}
                     company_logo={"company_logo"}
                     setValue={setValue}
@@ -493,7 +457,7 @@ function Register() {
               </>
             </section>
             <section
-              dir={lng === "ar" ? "rtl" : "ltr"}
+              dir={i18n.language === "ar" ? "rtl" : "ltr"}
               className="first_step px-8   w-1/5  flex flex-col items-start justify-start gap-6"
             >
               {state.formStep === 2 && (
@@ -576,7 +540,7 @@ function Register() {
               )}
             </section>
             <section
-              dir={lng === "ar" ? "rtl" : "ltr"}
+              dir={i18n.language === "ar" ? "rtl" : "ltr"}
               className="second_step px-8   w-1/5  flex flex-col items-start justify-start gap-6"
             >
               {" "}
@@ -588,17 +552,9 @@ function Register() {
                     htmlFor="country"
                   >
                     {t("step_2.Country.label")}
-                    {/* <ComboBox
+                    <ComboBox
                       setValue={setValue}
-                      data={countriesData}
-                      placeholder={t("step_2.Country.placeholder")}
-                      stateName={"country"}
-                      light
-                      NotFoundMessage={t("step_2.Country.NotFoundMessage")}
-                    /> */}
-                    <ComboBoz
-                      setValue={setValue}
-                      data={countriesData}
+                      data={countriesData?.data}
                       placeholder={t("step_2.Country.placeholder")}
                       stateName={"country"}
                       light
@@ -679,11 +635,11 @@ function Register() {
                               id="male"
                               className=" w-full cursor-pointer"
                               type="radio"
+                              name="male"
                               value="male"
                               {...register("gender", {
                                 required: true,
                               })}
-                              // name="male"
                             />
                             <label htmlFor="male"></label>
                             <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
@@ -722,11 +678,11 @@ function Register() {
                               id="female"
                               className=" w-full cursor-pointer"
                               type="radio"
+                              name="female"
                               value="female"
                               {...register("gender", {
                                 required: true,
                               })}
-                              // name="female"
                             />
                             <label htmlFor="female"></label>
                             <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
@@ -778,7 +734,7 @@ function Register() {
               )}
             </section>
             <section
-              dir={lng === "ar" ? "rtl" : "ltr"}
+              dir={i18n.language === "ar" ? "rtl" : "ltr"}
               className="third_step px-8   w-1/5  flex flex-col items-start justify-start gap-6 "
             >
               <>
@@ -858,10 +814,10 @@ function Register() {
                                 id="accept_condition"
                                 className=" w-full"
                                 type="checkbox"
+                                name="accept_condition"
                                 {...register("accept_condition", {
                                   required: true,
                                 })}
-                                name="accept_condition"
                               />
                               <label htmlFor="accept_condition"></label>
                               <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
@@ -891,14 +847,14 @@ function Register() {
 
                           <label className="w-fit  cursor-pointer" htmlFor="accept_condition">
                             {t("step_4.terms.txt")}{" "}
-                            <Link
-                              href="/terms-conditions"
+                            <LangLink
+                              to="/terms-conditions"
                               className="font-medium underline underline-offset-4"
                               rel="noreferrer"
                               target={"_blank"}
                             >
                               {t("step_4.terms.CTA")}
-                            </Link>{" "}
+                            </LangLink>{" "}
                           </label>
                         </div>
                         {errors.accept_condition && (
@@ -956,7 +912,7 @@ function Register() {
               </>
             </section>
             <section
-              dir={lng === "ar" ? "rtl" : "ltr"}
+              dir={i18n.language === "ar" ? "rtl" : "ltr"}
               className="fourth_step px-8   w-1/5  flex flex-col items-start justify-start gap-6"
             >
               {/**  Accept The Privacy  */}
@@ -1034,9 +990,9 @@ function Register() {
           <section className={` w-full ${state.formStep === 6 ? "hidden" : "block"}`}>
             <div className="w-full flex justify-center items-center gap-1 text-sm pt-3">
               {t("form__bottom.providers.have_an_account")}
-              <Link href="/login" className="font-medium text-base cursor-pointer">
+              <LangLink to="/login" className="font-medium text-base cursor-pointer">
                 {t("form__bottom.providers.Login")}
-              </Link>{" "}
+              </LangLink>{" "}
               {/* <button
                 className={`ml-5 ${state.formStep === 4 ? "block" : "hidden"}`}
                 onClick={() => dispatch({ type: "setHaveCode", payload: true })}

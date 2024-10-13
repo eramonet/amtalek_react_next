@@ -2,11 +2,16 @@ import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate"; // استيراد
 
 const config: Config = {
+  mode: "jit",
+
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/*.{js,ts,jsx,tsx,mdx}",
     "./src/allPages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "*.{html,ts,tsx,jsx,js}",
   ],
   theme: {
     extend: {

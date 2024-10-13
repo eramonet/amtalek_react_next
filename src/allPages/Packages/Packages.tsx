@@ -2,7 +2,7 @@
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 // import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 // import { lang } from "@/Store/Features/MiscellaneousSlice";
@@ -16,14 +16,14 @@ import Loader from "@/components/loader/Loader";
 import React from "react";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
 import PackageCard from "@/CardsComponents/PackageCard";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export function Packages() {
   const { t, i18n } = useTranslation("Pages_Packages");
   // const lng = useSelector(lang);
   const dispatchRedux = useDispatch();
   const user = useSelector(userData);
-  const { Usertype } = useParams();
+  const { actor_type } = useParams();
   // const { state } = useLocation();
   // const router = useRouter();
   // const { state } = router.query; // هنا الوصول إلى الحالة إذا تم تمريرها كـ query parameter
@@ -47,7 +47,7 @@ export function Packages() {
 
   // all packages
   const getPackages = () =>
-    axios.get(`https://amtalek.com/amtalekadmin/public/api/packages/${Usertype}`, {
+    axios.get(`https://amtalek.com/amtalekadmin/public/api/packages/${actor_type}`, {
       headers: headers,
     });
 
@@ -60,9 +60,10 @@ export function Packages() {
   } = useQuery({
     queryKey: ["PackagesPage"],
     queryFn: getPackages,
-    enabled: !!Usertype,
+    enabled: !!actor_type,
     select: (data) => data?.data?.data,
   });
+  console.log(actor_type);
 
   const getUserPackages = () =>
     axios.get(`https://amtalek.com/amtalekadmin/public/api/packages/user`, {
@@ -78,7 +79,7 @@ export function Packages() {
   } = useQuery({
     queryKey: ["UserPackagesProfile"],
     queryFn: getUserPackages,
-    enabled: !Usertype,
+    enabled: !actor_type,
     select: (data) => data?.data?.data,
   });
 
@@ -100,7 +101,7 @@ export function Packages() {
   } = useQuery({
     queryKey: ["BrokerPackages"],
     queryFn: getBrokerPackages,
-    enabled: !Usertype,
+    enabled: !actor_type,
     select: (data) => data?.data?.data,
   });
 
@@ -152,7 +153,7 @@ export function Packages() {
       <Heading style={"mx-auto"}>{t("heading")}</Heading>
 
       <div className="bg-grey my-10 py-10">
-        {dataUserFromLocalStorage?.data?.actor_type === Usertype && (
+        {dataUserFromLocalStorage?.data?.actor_type === actor_type && (
           <div className="site_container p-3">
             {dataUserFromLocalStorage?.data?.actor_type && (
               <>

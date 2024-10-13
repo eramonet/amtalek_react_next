@@ -73,7 +73,7 @@ function DeletePopUp({ api, params = {}, onSuccess }: any) {
           onSubmit={onSubmit}
           className={`add__comment--form  w-1/2 asm:w-11/12 bg-grey flex flex-col justify-start p-5  gap-6 ${
             toggleDeletePopUp ? "scale-100" : "scale-0"
-          } trns origin-bottom shadow-lg p-9 round`}
+          } trns origin-bottom shadow-lg !p-9 round`}
         >
           <h2 className="text-2xl font-medium w-full text-center">
             {t("DeletePopUp.DeletePopUpTitle")}

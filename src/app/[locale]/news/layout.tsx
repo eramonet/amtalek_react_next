@@ -8,7 +8,7 @@ export default async function NewsLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const i18nNamespaces = ["Pages_News"];
+  const i18nNamespaces = ["Pages_News", "Pages_NewsDetails"];
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
 
   return (

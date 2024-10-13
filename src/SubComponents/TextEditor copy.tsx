@@ -1,10 +1,10 @@
-import useDebounce from "@/Hooks/useDebounce";
+"use client";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editor from "ckeditor5-custom-build";
 import "ckeditor5-custom-build/build/translations/ar";
 import { useState, useEffect } from "react";
 import { memo } from "react";
-// import useDebounce from "@/Hooks/useDebounce";
+import useDebounce from "@/Hooks/useDebounce";
 
 const TextEditor = memo(function TextEditor({
   lng,
@@ -13,7 +13,7 @@ const TextEditor = memo(function TextEditor({
   watch,
   ServerErrors,
   required_err_msg,
-}:any) {
+}: any) {
   const defaultData = watch(stateName);
   const [data, setData] = useState(defaultData);
   const debouncedInputValue = useDebounce(data); // 500 milliseconds delay
@@ -37,7 +37,7 @@ const TextEditor = memo(function TextEditor({
         }}
         editor={Editor}
         data={data}
-        onChange={(event: any, editor: any) => {
+        onChange={(event, editor) => {
           const data = editor.getData();
           setData(data);
           setValue(stateName, data);

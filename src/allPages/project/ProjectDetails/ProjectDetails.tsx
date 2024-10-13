@@ -32,7 +32,7 @@ import getData from "@/api/getData";
 import PropertyOwner from "@/allPages/PropertyDetails/aside/components/PropertyOwner";
 import SendMessageForm from "@/allPages/PropertyDetails/components/SendMessageForm";
 
-export default function ProjectDetails({ listing_number, locale }: any) {
+export default function ProjectDetails({ listing_number, locale, data }: any) {
   const { t } = useTranslation("Pages_ProjectDetails");
 
   // const { projectNumber } = useParams();
@@ -49,16 +49,19 @@ export default function ProjectDetails({ listing_number, locale }: any) {
   //   true,
   //   listing_number
   // );
-  const [data, setData] = useState<any>([]);
-  async function fetchData() {
-    const data = await getData(`web/project-details/${listing_number}`, locale);
-    const allData = data?.data[0];
-    setData(allData);
-  }
+  // const [data, setData] = useState<any>([]);
+  // async function fetchData() {
+  //   const data = await getData(`web/project-details/${listing_number}`, locale);
+  //   const allData = data?.data[0];
+  //   setData(allData);
+  // }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     fetchData();
+  //   }
+  // }, []);
+
   // if (isError || isPaused) {
   //   return (
   //     <div className="h-[calc(100vh-136px)] flex-center w-full">
@@ -154,12 +157,17 @@ export default function ProjectDetails({ listing_number, locale }: any) {
           </div>
           <div className="broker__contact--form w-1/3 amd:w-full">
             <AsideForm
+              // t={t}
+              // type="message"
+              // Bgcolor="light"
+              // api={process.env.NEXT_PUBLIC_SEND_MESSAGE_TO_BROKER}
+              // params={{ vendor_id: data?.broker_details?.[0]?.id }}
+              // propID={data?.broker_details?.[0]?.id}
               t={t}
               type="message"
               Bgcolor="light"
               api={process.env.NEXT_PUBLIC_SEND_MESSAGE_TO_BROKER}
               params={{ vendor_id: data?.broker_details?.[0]?.id }}
-              propID={data?.broker_details?.[0]?.id}
             />
             {/* <SendMessageForm
               params={{
