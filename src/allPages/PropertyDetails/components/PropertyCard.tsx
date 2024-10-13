@@ -243,6 +243,7 @@ export default function PropertyCard({ card, locale }: any) {
               </div>
             </div> */}
             <FavoriteButton
+            slide={card}
               id={card?.id}
               is_fav={card?.is_fav}
               className={`cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3`}

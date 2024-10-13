@@ -53,6 +53,7 @@ export default function MyOffers({ userProfileDataOutlet }: any) {
           userProfileDataOutlet?.offers?.map((offer: any, i: number) => {
             return (
               <PropertyCard
+                data={ userProfileDataOutlet?.offers}
                 key={i}
                 property={offer?.property_data[0]}
                 t={t}

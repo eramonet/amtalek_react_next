@@ -51,7 +51,6 @@ const BrokerProperties = memo(function BrokerProperties({
     }
   };
 
-  
   useEffect(() => {
     fetchProperties();
     window.scrollTo({ top: 0, behavior: "smooth" });

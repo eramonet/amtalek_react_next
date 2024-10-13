@@ -12,7 +12,12 @@ export default async function MyReceivedOffersLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const i18nNamespaces = ["Pages_Packages", "SettingsLayout", "Pages_PropertyDetails"];
+  const i18nNamespaces = [
+    "Pages_Packages",
+    "SettingsLayout",
+    "Pages_PropertyDetails",
+    "Pages_MyOffers",
+  ];
   const { resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>

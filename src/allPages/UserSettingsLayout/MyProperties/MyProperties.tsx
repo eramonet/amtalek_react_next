@@ -78,7 +78,7 @@ export default async function MyProperties({ locale, t, i18n }: any) {
       <div className="all__favorites--wrapper w-full grid grid-cols-3 gap-5 gap-y-32 ss:gap-28 ss:grid-cols-1 amd:grid-cols-2 my-10">
         {data?.my_props?.length > 0 ? (
           data.my_props.map((property: any, i: any) => (
-            <PropertyCard key={i} property={property} showActions acceptedCheck={true} />
+            <PropertyCard data={data.my_props} key={i} property={property} showActions acceptedCheck={true} />
           ))
         ) : data?.my_props?.length === 0 ? (
           <NoItemsMessage message={t("NoItemsMessage")} />

@@ -11,8 +11,7 @@ export default function FavoriteButton({ className, is_fav, id }: any) {
 
   const { mutate }: any = usePostData(
     true,
-    () => {
-    },
+    () => {},
     true,
     (error: any) => {
       console.error("An error occurred:", error);

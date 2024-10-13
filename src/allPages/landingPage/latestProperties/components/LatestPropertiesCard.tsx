@@ -9,7 +9,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaBoltLightning, FaMaximize } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 
-export default function LatestPropertiesCard({ card, locale }: any) {
+export default function LatestPropertiesCard({ card, locale, data }: any) {
   const { t } = useTranslation("Pages_LandingPage");
 
   return (
@@ -159,6 +159,8 @@ export default function LatestPropertiesCard({ card, locale }: any) {
           {/* ********************************************************************************************* */}
           <div className="flex items-center gap-3">
             <FavoriteButton
+              data={data}
+              slide={card}
               id={card?.id}
               is_fav={card?.is_fav}
               className={`cursor-pointer borderx-[1px] borderx-secondary20 py-6 mr-4 rtl:mr-0 rtl:ml-4 px3`}

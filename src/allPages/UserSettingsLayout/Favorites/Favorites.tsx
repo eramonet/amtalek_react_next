@@ -79,6 +79,7 @@ export default function Favorites() {
         ) : (
           userProfileDataOutlet?.favorite_list?.map((property: any, i: number) => (
             <PropertyCard
+              data={userProfileDataOutlet?.favorite_list}
               onSuccess={handleAfterRemoveFromWishlist}
               key={i}
               property={property}
