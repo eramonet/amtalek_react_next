@@ -2,7 +2,7 @@
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 
-function NoItemsMessage({ h, message, result, setStep }: any) {
+function NoItemsMessage({ h, message, result, setStep, resetFormData }: any) {
   const router = useRouter();
   const { i18n } = useTranslation();
 
@@ -16,10 +16,9 @@ function NoItemsMessage({ h, message, result, setStep }: any) {
       {result && (
         <button
           className="bg-primary/80 text-white rounded-xl hover:text-primary hover:bg-white border transition duration-300 text-lg px-5"
-          onClick={() => {
-            setStep((prev: any) => prev - 1);
-            router.back(); // استخدم router.back() للعودة إلى الصفحة السابقة
-          }}
+          onClick={resetFormData}
+          // setStep((prev: any) => prev - 1);
+          // router.back(); // استخدم router.back() للعودة إلى الصفحة السابقة
         >
           {i18n.language === "ar" ? "العودة" : "Back"}
         </button>

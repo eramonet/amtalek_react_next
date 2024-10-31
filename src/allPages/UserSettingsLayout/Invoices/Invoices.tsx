@@ -5,13 +5,25 @@
 import { useTranslation } from "react-i18next";
 import { TUser } from "@/Types/AppTypes";
 import InvoicesDetails from "./component/InvoicesDetails";
+import { userData } from "@/Store/Features/AuthenticationSlice";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 // import useUserProfile from "@/api/useUserProfile";
 
-export function Invoices({ userProfileDataOutlet }: any) {
+export function Invoices({}: any) {
   const { t, i18n } = useTranslation("Pages_Invoices");
   // const userProfileDataOutlet = useOutletContext() as [TUser];
 
   // const userProfileDataOutlet: any = useUserProfile();
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+    }
+  }, [user?.token, i18n.language]);
 
   function CheckPackageValidation() {
     return (

@@ -12,7 +12,7 @@ export default async function InvoicesLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const i18nNamespaces = ["Pages_Packages", "SettingsLayout", "Pages_PropertyDetails"];
+  const i18nNamespaces = ["Pages_Invoices", "SettingsLayout", "Pages_PropertyDetails"];
   const { resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>

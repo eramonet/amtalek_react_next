@@ -7,30 +7,18 @@ import ReactPaginate from "react-paginate";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { userData } from "@/Store/Features/AuthenticationSlice";
+import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 // import { userData } from "@/Store/Features/AuthenticationSlice";
 
-interface Notification {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-  sender_data: {
-    image: string;
-  };
-}
-
-interface NotificationsProps {
-  notifications: Notification[];
-}
-
-export default function Notifications({ user }: any) {
+export default function Notifications({}: any) {
   const [notifications, setNotifications] = useState([]);
   const [unseenCounter, setUnseenCounter] = useState(0);
 
   const { i18n } = useTranslation();
 
-  // const user = useSelector(userData);
+  const user = useSelector(userData);
 
   async function getNotifications(token: string) {
     try {

@@ -1,3 +1,4 @@
+"use client";
 import { ComingSoon } from "@/allPages/ComingSoon/Coming_soon";
 import { useTranslation } from "react-i18next";
 

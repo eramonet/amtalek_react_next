@@ -17,16 +17,18 @@ export default async function useUserProfile({ locale }: any) {
 
   const userProfileDataOutletActor = userData?.data;
 
-  const response = await fetch(
-    `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutletActor?.actor_type}/${userProfileDataOutletActor?.id}`,
-    {
-      method: "GET",
-      headers: {
-        lang: i18n.language,
-        Authorization: `Bearer ${tokenValueJs}`,
-      },
-    }
-  );
+  const response =
+    (await fetch(
+      // `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutletActor?.actor_type}/${userProfileDataOutletActor?.id}`,
+      `https://amtalek.com/amtalekadmin/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${userProfileDataOutletActor?.actor_type}/${userProfileDataOutletActor?.id}`,
+      {
+        method: "GET",
+        headers: {
+          lang: i18n.language,
+          Authorization: `Bearer ${tokenValueJs}`,
+        },
+      }
+    )) || null;
 
   if (!response.ok) {
     return { userData: null, userProfileDataOutlet: null }; // أعد كائنًا حتى في حالة حدوث خطأ
@@ -39,7 +41,7 @@ export default async function useUserProfile({ locale }: any) {
   try {
     dataProfile = JSON.parse(responseText);
   } catch (error) {
-    console.error("Failed to parse JSON:", error);
+    // console.error("Failed to parse JSON:");
     return { userData: null, userProfileDataOutlet: null }; // أعد كائنًا حتى في حالة حدوث خطأ
   }
 

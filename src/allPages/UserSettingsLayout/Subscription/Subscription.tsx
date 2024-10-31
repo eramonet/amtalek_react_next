@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useTranslation } from "react-i18next";
 // import { lang } from "@/Store/Features/MiscellaneousSlice";
 // import { PackageCard } from "@/CardsComponents/index";
@@ -14,8 +14,9 @@ import { TUser } from "@/Types/AppTypes";
 import Heading from "@/components/Heading";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
 import PackageCard from "@/CardsComponents/PackageCard";
+import Link from "next/link";
 
-export default function Subscription({ userProfileDataOutlet, user }: any) {
+export default function Subscription({}: any) {
   // const [userProfileDataOutlet] = useOutletContext() as [TUser];
   // const user = useSelector(userData);
   // const lng = useSelector(lang);
@@ -23,12 +24,22 @@ export default function Subscription({ userProfileDataOutlet, user }: any) {
   const [left, setLeft] = useState("");
   const [type, setType] = useState("monthly");
 
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
+
   useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+    }
+
     if (type === "monthly") {
       setLeft(i18n.language === "en" ? "left-0" : "left-1/2");
     } else {
       setLeft(i18n.language === "en" ? "left-1/2" : "left-0");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language, type]);
 
   const headers = {
@@ -133,14 +144,14 @@ export default function Subscription({ userProfileDataOutlet, user }: any) {
       <div className="Packages__bottom border-y-2 border-y-secondary20 py-3 flex items-center justify-center">
         <p className="italic site_container  text-center">
           {PageContent?.main_text} {""}
-          <a className="font-medium" href={`tel:${PageContent?.sales_number}`}>
+          <Link className="font-medium" href={`tel:${PageContent?.sales_number}`}>
             {PageContent?.sales_number}
-          </a>{" "}
+          </Link>{" "}
           {""}
           {PageContent?.sub} {""}
-          <a className="font-medium" href={`mailto:${PageContent?.sales_email}`}>
+          <Link className="font-medium" href={`mailto:${PageContent?.sales_email}`}>
             {PageContent?.sales_email}
-          </a>
+          </Link>
           .
         </p>
       </div>

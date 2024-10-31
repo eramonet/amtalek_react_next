@@ -1,9 +1,12 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import arrow from "../../../app/images/arrow.svg";
 import { TbSocial } from "react-icons/tb";
+import { useTranslation } from "react-i18next";
 
-export default function MarketSection({ data, t }: any) {
+export default function MarketSection({ data }: any) {
+  const { t } = useTranslation("Pages_LandingPage");
   return (
     <section>
       <div className="site_container my-20 flex site_container h-[60vh] amd:flex-col amd:items-center amd:h-auto min-h-[550px] round overflow- shadow-2xl shadow-cusbg-custome-blue/40">
@@ -12,10 +15,10 @@ export default function MarketSection({ data, t }: any) {
           <div>
             {" "}
             <h3 className="font-bold uppercase border-l-[3px] border-l-bg rtl:border-l-[0px] rtl:border-r-[3px] rtl:border-r-bg  pl-3 rtl:pl-0 rtl:pr-3 text-lg  w-full ">
-              | {data.title}
+              | {data?.title}
             </h3>
             <p className="text-4xl xl:text-4xl font-medium mt-6 leading-[55px] text-custome-white bg-clip-text bg-gradient-to-r from-white to-delete clg:text-2xl">
-              {data.sub_title}
+              {data?.sub_title}
             </p>
             <Image
               src={arrow}

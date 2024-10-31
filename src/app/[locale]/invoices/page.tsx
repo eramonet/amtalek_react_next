@@ -4,12 +4,12 @@ import useUserProfile from "@/api/useUserProfile";
 import React from "react";
 
 export default async function InvoicesPage({ params: { locale } }: any) {
-  const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+  // const { userProfileDataOutlet, userData } = await useUserProfile(locale);
   return (
     <>
-      <SettingsLayout userProfileDataOutlet={userProfileDataOutlet} />
+      <SettingsLayout  />
       {/* userProfileDataOutlet={userProfileDataOutlet} user={userData} */}
-      <Invoices userProfileDataOutlet={userProfileDataOutlet} />;
+      <Invoices  />;
     </>
   );
 }

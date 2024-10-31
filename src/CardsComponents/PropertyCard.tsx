@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 
 const PropertyCard = memo(function PropertyCard(props: any) {
   // const [userProfileDataOutlet, refetch] = useOutletContext() as [TUser, () => void];
-  const { t, i18n } = useTranslation("Pages_MyProperties");
+  const { t, i18n } = useTranslation("Pages_PropertyDetails");
   const user = useSelector(userData);
   const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
   // const [notifications, setNotifications] = useState([]);

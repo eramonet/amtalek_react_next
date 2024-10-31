@@ -26,25 +26,31 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
   const [currenciesData, setCurrenciesData] = useState([]);
 
   async function fetchData() {
-    const location = await getData(`web/${process.env.NEXT_PUBLIC_ALL_LOCATIONS}`, locale);
+    const location = await getData(`web/${process.env.NEXT_PUBLIC_ALL_LOCATIONS}`, i18n.language);
     setLocationData(location?.data);
 
-    const Purpose = await getData(`web/${process.env.NEXT_PUBLIC_PROPERTY_PURPOSE}`, locale);
+    const Purpose = await getData(`web/${process.env.NEXT_PUBLIC_PROPERTY_PURPOSE}`, i18n.language);
     setPurposeData(Purpose?.data);
 
-    const PropertyTypes = await getData(`web/${process.env.NEXT_PUBLIC_PROPERTY_TYPES}`, locale);
+    const PropertyTypes = await getData(
+      `web/${process.env.NEXT_PUBLIC_PROPERTY_TYPES}`,
+      i18n.language
+    );
     setPropertyTypesData(PropertyTypes?.data);
 
     const PropertyFinishing = await getData(
       `web/${process.env.NEXT_PUBLIC_PROPERTY_FINISHING}`,
-      locale
+      i18n.language
     );
     setPropertyFinishingData(PropertyFinishing?.data);
 
-    const currencies = await getData(`web/currencies`, locale);
+    const currencies = await getData(`web/currencies`, i18n.language);
     setCurrenciesData(currencies?.data);
 
-    const amenities = await getData(`web/${process.env.NEXT_PUBLIC_PROPERTY_AMENITIES}`, locale);
+    const amenities = await getData(
+      `web/${process.env.NEXT_PUBLIC_PROPERTY_AMENITIES}`,
+      i18n.language
+    );
     setamenitiesData(amenities?.data);
   }
   useEffect(() => {
@@ -69,11 +75,19 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
 
   const router = useRouter();
   let searchParams = useSearchParams();
+
   const URLParams = Object.fromEntries(searchParams.entries());
+  // console.log(searchParams, storedQueryParams);
+
+  // const storedQueryParams = JSON.parse(localStorage.getItem("queryParams") || "");
+  // const URLParams: any = new URLSearchParams(storedQueryParams);
+  // console.log(storedQueryParams);
 
   const [state, dispatch] = useReducer(reducer, {
     toggleAmentiasOptions: false,
   });
+  // console.log(URLParams);
+
   const {
     register,
     handleSubmit,
@@ -106,20 +120,21 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
         const amenities = data?.amenities
           .filter((item: any) => typeof item !== "boolean")
           .map((item: any) => parseInt(item));
-        //srt is set to 0 initially because it is handled from the search page (sort by) not from the from, also the backend need to don't send the srt with the value unless the sort by selections is clicked
-        //cr=?country
-        // navigate(
-        //   `${lang}/search?k=${data?.keyword?.replace(/\s/g, "-")}&cr=${localStorage.getItem(
+        // srt is set to 0 initially because it is handled from the search page (sort by) not from the from, also the backend need to don't send the srt with the value unless the sort by selections is clicked
+        // cr=?country
+        // ${localStorage.getItem(
         //     "country"
-        //   )}&r=${data?.region}&c=-1&sr=-1&t=${data?.property_type}&f=${data?.finishing}&pr=${
-        //     data?.purpose
-        //   }&p=${data?.min_bathes}&b=${data?.min_beds}&af=${data?.min_area}&at=${
-        //     data?.max_area
-        //   }&pf=${data?.min_price}&pt=${data?.max_price}&srt=${searchParams.get("srt") || 0}&cur=${
-        //     data?.currency
-        //   }&page=1`,
-        //   { state: amenities }
-        // );
+        //   )}
+        router.push(
+          `/search?k=${data?.keyword?.replace(/\s/g, "-")}&cr=1&r=${data?.region}&c=-1&sr=-1&t=${
+            data?.property_type
+          }&f=${data?.finishing}&pr=${data?.purpose}&p=${data?.min_bathes}&b=${data?.min_beds}&af=${
+            data?.min_area
+          }&at=${data?.max_area}&pf=${data?.min_price}&pt=${data?.max_price}&srt=${
+            searchParams.get("srt") || 0
+          }&cur=${data?.currency}&page=1`
+          // { state: amenities }
+        );
       } else toast.error(t("toast_error"));
     },
     // navigate,
@@ -134,7 +149,7 @@ function SearchForm({ type, showOptions = false, home, locale }: any) {
         type === "bigForm" || home ? "h-fit" : type === "asideForm" ? "h-fit" : ""
       } w-full px-8  flex flex-col items-center justify-center gap-6 bg-custome-blue py-10 xl:h-[99.5%]`}
     >
-      <h3 className="font-Condensed text-bg text-3xl xl:text-xl truncate">
+      <h3 className="font-Condensed text-bg text-[32px] xl:text-xl truncate h-12">
         {type === "bigForm" || home
           ? t("title.bigForm", "ابحث عن العقارات")
           : type === "asideForm"

@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
 
-export default function SliderAgencies({data}:any) {
+export default function SliderAgencies({ data }: any) {
   return (
     <>
       <Swiper
@@ -35,7 +35,12 @@ export default function SliderAgencies({data}:any) {
         {data?.cards?.map((slide: any) => (
           //border border-black
           <SwiperSlide key={slide.id} className="rounded w-60 h-60">
-            <Link href={``} className="block rounded h-60">
+            <Link
+              href={`/Agencies/${slide?.name?.replace(/\s/g, "-")}/${slide?.id}/${
+                slide?.broker_type
+              }`}
+              className="block rounded h-60"
+            >
               <Image
                 src={slide.img}
                 alt={slide.name}

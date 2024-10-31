@@ -230,7 +230,7 @@ const LoginButton = memo(function LoginButton() {
           />
         </LangLink>
 
-        <Navbar t={t} />
+        <Navbar />
 
         <div className="nav__CTAs flex items-center gap-10 ss:ltr:gap-3 ss:rtl:gap-2">
           {user?.data?.actor_type === "user" && (

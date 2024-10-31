@@ -2,11 +2,11 @@
 
 import DeletePopUp from "@/MainComponents/DeletePopUp";
 import PropertyCard from "@/CardsComponents/PropertyCard";
-// import useUserProfile from "@/api/useUserProfile";
 import { NoItemsMessage, ErrorMessage } from "@/SubComponents";
 import Heading from "@/components/Heading";
-// import { useTranslation } from "react-i18next";
 import { cookies } from "next/headers";
+// import useUserProfile from "@/api/useUserProfile";
+// import { useTranslation } from "react-i18next";
 
 export default async function MyProperties({ locale, t, i18n }: any) {
   // const { t, i18n } = useTranslation("Pages_MyProperties");

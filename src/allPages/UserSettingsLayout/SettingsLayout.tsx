@@ -29,13 +29,16 @@ import LoginPopUp from "../login/LoginPopUp";
 import { userData } from "@/Store/Features/AuthenticationSlice";
 
 // import { useRouter } from "next/router"; // استخدم useRouter
-
-function SettingsLayout({ userProfileDataOutlet }: any) {
+// userProfileDataOutlet
+function SettingsLayout({}: any) {
   const { t, i18n } = useTranslation("SettingsLayout");
 
-  // const user = useSelector(userData);
-  // const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
-  // // const router = useRouter(); // استخدم useRouter
+  const user = useSelector(userData);
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  // const router = useRouter(); // استخدم useRouter
+
+  //  if (user) {
+  //   }
 
   // async function getUserProfile(token: string, language: string) {
   //   try {
@@ -61,12 +64,15 @@ function SettingsLayout({ userProfileDataOutlet }: any) {
   //   }
   // }
 
-  // useEffect(() => {
-  //   if (user?.token && i18n.language) {
-  //     getUserProfile(user?.token, i18n?.language);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user?.token, i18n.language]);
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+      // getUserProfile(user?.token, i18n?.language);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
 
   const dispatchRedux = useDispatch();
 

@@ -10,10 +10,10 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 
-type Props = {
-  project: TProjectDetails;
-  t: TFunction<any, any>;
-};
+// type Props = {
+//   project: TProjectDetails;
+//   t: TFunction<any, any>;
+// };
 export default function ProjectCard({ broker, t }: any) {
   return (
     <motion.div
@@ -36,6 +36,19 @@ export default function ProjectCard({ broker, t }: any) {
               alt="pp"
             />
             <span>{broker?.agent_data[0]?.name || ""}</span>
+          </>
+        )}
+
+        {broker?.agent_data?.logo && (
+          <>
+            <Image
+              width={1000}
+              height={1000}
+              className="w-8 h-8 rounded-full border"
+              src={broker?.agent_data?.logo || ""}
+              alt="pp"
+            />
+            <span>{broker?.agent_data?.name || ""}</span>
           </>
         )}
       </Link>

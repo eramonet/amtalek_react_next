@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import Heading from "@/components/Heading";
 
 export default function AgenciesAll({ locale }: any) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,9 +19,10 @@ export default function AgenciesAll({ locale }: any) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [countries, setCountries] = useState<any>(null);
   const itemsPerPage = 9;
 
-  const { t } = useTranslation("Pages_Brokers");
+  const { t, i18n } = useTranslation("Pages_Brokers");
 
   const fetchAllBrokers = async () => {
     setIsLoading(true);
@@ -33,10 +35,17 @@ export default function AgenciesAll({ locale }: any) {
 
   const fetchPageData = async () => {
     setIsLoading(true);
-    const brokers = await getData(`web/brokers?page=${currentPage}&limit=${itemsPerPage}`, locale);
+    const brokers = await getData(
+      `web/brokers?page=${currentPage}&limit=${itemsPerPage}`,
+      i18n.language
+    );
     const brokersData = brokers.data.original.data;
     setAllBrokers(brokersData);
     setFilteredBrokers(brokersData);
+
+    const AllCountries = await getData("web/countries", i18n.language);
+    setCountries(AllCountries?.data || null);
+
     setTotalPages(brokers.data.original.meta.last_page);
     setIsLoading(false);
   };
@@ -87,8 +96,12 @@ export default function AgenciesAll({ locale }: any) {
         <Loader />
       ) : (
         <>
+          <Heading style={"text-center"}>
+            {t("heading")} {i18n.language === "ar" ? "في" : "in"} {countries[0]?.title}
+          </Heading>
+
           {filteredBrokers?.length > 0 ? (
-            <div className="site_container grid grid-cols-3 gap-5 ss:grid-cols-1 clg:grid-cols-2">
+            <div className="site_container grid grid-cols-3 gap-5 ss:grid-cols-1 clg:grid-cols-2 mt-10">
               {filteredBrokers.map((broker: any, ind: any) => (
                 <AgenciesCard key={ind} broker={broker} t={t} />
               ))}

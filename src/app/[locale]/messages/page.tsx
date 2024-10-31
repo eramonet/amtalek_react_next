@@ -1,14 +1,16 @@
+"use client"
 import Messages from "@/allPages/UserSettingsLayout/Messages/Messages";
 import SettingsLayout from "@/allPages/UserSettingsLayout/SettingsLayout";
 import useUserProfile from "@/api/useUserProfile";
 import React from "react";
 
-export default async function MessagesPage({ params: { locale } }: any) {
-  const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+export default function MessagesPage({ params: { locale } }: any) {
+  // const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+  // userProfileDataOutlet={userProfileDataOutlet} user={userData}
   return (
     <>
-      <SettingsLayout userProfileDataOutlet={userProfileDataOutlet} />
-      <Messages locale={locale} userProfileDataOutlet={userProfileDataOutlet} user={userData} />;
+      <SettingsLayout />
+      <Messages locale={locale}  />;
     </>
   );
 }

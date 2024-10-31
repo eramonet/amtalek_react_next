@@ -14,10 +14,11 @@ export default async function FavoritesLayout({
 }) {
   const i18nNamespaces = [
     "SettingsLayout",
+    "Pages_PropertyDetails",
     "Pages_Favorites",
     "Pages_Messages",
     "Pages_MyProperties",
-    "Pages_PropertyDetails",
+    "Pages_LandingPage"
   ];
   const { resources } = await initTranslations(locale, i18nNamespaces);
   return (

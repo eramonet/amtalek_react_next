@@ -1,10 +1,13 @@
 "use client";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import Editor from "ckeditor5-custom-build";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import { ClassicEditor } from "ckeditor5";
+// import Editor from "ckeditor5-custom-build";
 import "ckeditor5-custom-build/build/translations/ar";
 import { useState, useEffect } from "react";
 import { memo } from "react";
 import useDebounce from "@/Hooks/useDebounce";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const TextEditor = memo(function TextEditor({
   lng,
@@ -20,6 +23,7 @@ const TextEditor = memo(function TextEditor({
 
   const [startTyping, setStartTyping] = useState(false);
   const [error, setError] = useState(false);
+  const lang = lng
   useEffect(() => {
     if (data === "" && startTyping) {
       setError(true);
@@ -27,15 +31,31 @@ const TextEditor = memo(function TextEditor({
   }, [data, startTyping]);
 
   return (
-    <div className="flex  flex-col items-start text-lg justify-center gap-2 ">
+    <div className="flex flex-col items-start text-lg justify-center gap-2 w-full">
+      {/* <CKEditor
+        editor={ClassicEditor}
+        data="<p>Type your content here!</p>"
+        onReady={(editor) => {
+          console.log("Editor is ready to use!", editor);
+        }}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          console.log({ event, editor, data });
+        }}
+        onError={({ willEditorRestart }: any) => {
+          if (willEditorRestart) {
+            console.warn("CKEditor will restart due to an error.");
+          }
+        }}
+      /> */}
       <CKEditor
         config={{
-          language: lng === "ar" ? "ar" : "en",
+          language: lang ,
           toolbar: {
             shouldNotGroupWhenFull: true,
           },
         }}
-        editor={Editor}
+        editor={ClassicEditor}
         data={data}
         onChange={(event, editor) => {
           const data = editor.getData();

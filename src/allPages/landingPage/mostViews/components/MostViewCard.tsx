@@ -89,7 +89,7 @@ export default function MostViewCard({ card, locale }: any) {
             <div className="p-3 h-fit">
               <Link
                 href={`properties/${card.listing_number}/${card.title.replace(/\s+/g, "-")}`}
-                className="truncate text-2xl leading-7 font-medium block cll:text-xl md:text-lg "
+                className="truncate text-2xl leading-7 font-medium block cll:text-xl md:text-lg h-8"
               >
                 {card.title}
               </Link>

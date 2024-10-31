@@ -5,7 +5,9 @@ import initTranslations from "@/app/i18n";
 
 export default async function MyPropertiesPage({ params: { locale } }: any) {
   const i18nNamespaces = [
+    "Pages_MyProperties",
     "Pages_LandingPage",
+    "LayoutComponents",
     "SettingsLayout",
     "Pages_MyProperties",
     "Pages_PropertyDetails",

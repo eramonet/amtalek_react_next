@@ -17,6 +17,7 @@ import React from "react";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
 import PackageCard from "@/CardsComponents/PackageCard";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function Packages() {
   const { t, i18n } = useTranslation("Pages_Packages");
@@ -63,7 +64,6 @@ export function Packages() {
     enabled: !!actor_type,
     select: (data) => data?.data?.data,
   });
-  console.log(actor_type);
 
   const getUserPackages = () =>
     axios.get(`https://amtalek.com/amtalekadmin/public/api/packages/user`, {
@@ -229,13 +229,13 @@ export function Packages() {
       <div className="Packages__bottom border-y-2 border-y-secondary20 py-3 flex items-center justify-center">
         <p className="italic site_container text-center">
           {PageContent?.main_text}
-          <a className="font-medium" href={`tel:${PageContent?.sales_number}`}>
+          <Link className="font-medium" href={`tel:${PageContent?.sales_number}`}>
             {PageContent?.sales_number}
-          </a>{" "}
+          </Link>{" "}
           {PageContent?.sub}{" "}
-          <a className="font-medium" href={`mailto:${PageContent?.sales_email}`}>
+          <Link className="font-medium" href={`mailto:${PageContent?.sales_email}`}>
             {PageContent?.sales_email}
-          </a>
+          </Link>
           .
         </p>
       </div>

@@ -23,11 +23,15 @@ export default function AgenciesCard({ broker }: any) {
         height={240}
       />
 
-      <Link href={`/`}>
+      <Link
+        href={`/Agencies/${broker?.name?.replace(/\s/g, "-")}/${broker?.id}/${broker?.broker_type}`}
+      >
         <div className="bg-custome-blue h-full absolute inset-0 translate-y-80 w-full text-custome-white p-5 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
           <Link
             title={broker?.name}
-            href={``}
+            href={`/Agencies/${broker?.name?.replace(/\s/g, "-")}/${broker?.id}/${
+              broker?.broker_type
+            }`}
             //   {`/Agencies/${broker?.name?.replace(/\s/g, "-")}/${broker?.id}/${broker?.broker_type}`}
             className="broker--title text-lg font-medium  w-fit"
           >
@@ -50,7 +54,9 @@ export default function AgenciesCard({ broker }: any) {
           </h5>
           <hr className="border-[1px] border-custome-white my-7" />
           <Link
-            href={``}
+            href={`/Agencies/${broker?.name?.replace(/\s/g, "-")}/${broker?.id}/${
+              broker?.broker_type
+            }`}
             //   to={`/Agencies/${broker?.name?.replace(/\s/g, "-")}/${broker?.id}/${broker?.broker_type}`}
             className="w-[98px] rtl:w-[160px] overflow-hidden bg- h-fit flex "
           >

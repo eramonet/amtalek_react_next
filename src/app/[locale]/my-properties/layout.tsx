@@ -5,6 +5,20 @@ import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
 import ToasterProvider from "../ToasterProvider";
 
+export async function generateMetadata({ params: { locale } }: any) {
+  const i18nNamespaces = ["Pages_MyProperties"];
+
+  const { t } = await initTranslations(locale, i18nNamespaces);
+
+  return {
+    title: t("tab.title"),
+    description: t("tab.description"),
+    icons: {
+      icon: "/fav-icon.png",
+    },
+  };
+}
+
 export default async function MypropertiesLayout({
   children,
   params: { locale },
@@ -13,6 +27,8 @@ export default async function MypropertiesLayout({
   params: { locale: string };
 }) {
   const i18nNamespaces = [
+    "Pages_MyProperties",
+    "LayoutComponents",
     "Pages_LandingPage",
     "SettingsLayout",
     "Pages_MyProperties",

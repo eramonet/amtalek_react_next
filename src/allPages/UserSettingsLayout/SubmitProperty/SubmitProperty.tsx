@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useCallback, useEffect } from "react";
 // import { Heading, HeadingTwo, HelmetTags } from "@/MainComponents/index";
@@ -32,10 +33,15 @@ import React from "react";
 import { userData } from "@/Store/Features/AuthenticationSlice";
 import Heading from "@/components/Heading";
 import HeadingTwo from "@/MainComponents/HeadingTwo";
-import TextEditor from "@/SubComponents/TextEditor copy";
+// import TextEditor from "@/SubComponents/TextEditorCopy;
 import DragDropArea from "@/SubComponents/DragDropArea";
 import { useRouter } from "next/navigation";
 import ComboBoz from "@/FormComponents/ComboBoz";
+// import TextEditor from "@/SubComponents/TextEditorCopy";
+import axios from "axios";
+import dynamic from "next/dynamic";
+
+const TextEditor = dynamic(() => import("@/SubComponents/TextEditorCopy"), { ssr: false });
 
 function DynamicField(props: any) {
   return (
@@ -244,112 +250,188 @@ export function SubmitProperty() {
       title: t("form.for_what.selections.for_both"),
     },
   ];
-  const { data: categoriesData } = useFetchData(
-    "categories",
-    process.env.NEXT_PUBLIC_PROPERTIES_CATEGORIES,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
+  // const { data: categoriesData } = useFetchData(
+  //   "categories",
+  //   process.env.NEXT_PUBLIC_PROPERTIES_CATEGORIES,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
 
-  const { data: countriesData } = useFetchData(
-    "countries",
-    process.env.NEXT_PUBLIC_COUNTRIES_REGISTER,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
-  const { data: citiesData, refetch: refetchCities } = useFetchData(
-    "cities",
-    `${process.env.NEXT_PUBLIC_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000,
-    !!country
-  );
-  // console.log(categoriesData);
+  // const { data: countriesData } = useFetchData(
+  //   "countries",
+  //   process.env.NEXT_PUBLIC_COUNTRIES_REGISTER,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
+  // const { data: citiesData, refetch: refetchCities } = useFetchData(
+  //   "cities",
+  //   `${process.env.NEXT_PUBLIC_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000,
+  //   !!country
+  // );
+  // // console.log(categoriesData);
 
-  const { data: regionsData, refetch: refetchRegions } = useFetchData(
-    "regions",
-    `${process.env.NEXT_PUBLIC_REGIONS_BASED_ON_CITIES_REGISTER}${city}`,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000,
-    !!city
-  );
+  // const { data: regionsData, refetch: refetchRegions } = useFetchData(
+  //   "regions",
+  //   `${process.env.NEXT_PUBLIC_REGIONS_BASED_ON_CITIES_REGISTER}${city}`,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000,
+  //   !!city
+  // );
 
-  const { data: subregionsData, refetch: refetchsubRegions } = useFetchData(
-    "subregions",
-    `sub-regions/${region}`,
-    false,
-    false,
-    region,
-    30 * 60 * 1000,
-    30 * 60 * 1000,
-    !!region
-  );
+  // const { data: subregionsData, refetch: refetchsubRegions } = useFetchData(
+  //   "subregions",
+  //   `sub-regions/${region}`,
+  //   false,
+  //   false,
+  //   region,
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000,
+  //   !!region
+  // );
 
-  const { data: PurposeData } = useFetchData(
-    "currencies",
-    process.env.NEXT_PUBLIC_PROPERTY_PURPOSE,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
+  // const { data: PurposeData } = useFetchData(
+  //   "currencies",
+  //   process.env.NEXT_PUBLIC_PROPERTY_PURPOSE,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
 
-  const { data: PropertyFinishingData } = useFetchData(
-    "propertyFinishing",
-    process.env.NEXT_PUBLIC_PROPERTY_FINISHING,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
-  const { data: ReceptionFloorTypeData } = useFetchData(
-    "receptionFloorType",
-    process.env.NEXT_PUBLIC_RECEPTION_FLOOR_TYPE,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
-  const { data: PropertyTypesData } = useFetchData(
-    "propertyTypes",
-    process.env.NEXT_PUBLIC_PROPERTY_TYPES,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
-  // console.log(PropertyTypesData);
+  // const { data: PropertyFinishingData } = useFetchData(
+  //   "propertyFinishing",
+  //   process.env.NEXT_PUBLIC_PROPERTY_FINISHING,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
+  // const { data: ReceptionFloorTypeData } = useFetchData(
+  //   "receptionFloorType",
+  //   process.env.NEXT_PUBLIC_RECEPTION_FLOOR_TYPE,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
+  // const { data: PropertyTypesData } = useFetchData(
+  //   "propertyTypes",
+  //   process.env.NEXT_PUBLIC_PROPERTY_TYPES,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
 
-  const { data: PropertyAmenitiesData } = useFetchData(
-    "propertyAmenities",
-    process.env.NEXT_PUBLIC_PROPERTY_AMENITIES,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
+  // const { data: PropertyAmenitiesData } = useFetchData(
+  //   "propertyAmenities",
+  //   process.env.NEXT_PUBLIC_PROPERTY_AMENITIES,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
+  const [categoriesData, setCategoriesData] = useState<any>([]);
+  const [countriesData, setCountriesData] = useState<any>([]);
+  const [citiesData, setCitiesData] = useState<any>([]);
+  const [regionsData, setRegionsData] = useState<any>([]);
+  const [subregionsData, setSubregionsData] = useState<any>([]);
+  const [propertyFinishingData, setPropertyFinishingData] = useState<any>([]);
+  const [receptionFloorTypeData, setReceptionFloorTypeData] = useState<any>([]);
+  const [propertyTypesData, setPropertyTypesData] = useState<any>([]);
+  const [propertyAmenitiesData, setPropertyAmenitiesData] = useState<any>([]);
+
+  const fetchData = async (url: any, setState: any) => {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          lang: i18n.language,
+        },
+      });
+      setState(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTIES_CATEGORIES}`,
+      setCategoriesData
+    );
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
+      setCountriesData
+    );
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_FINISHING}`,
+      setPropertyFinishingData
+    );
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_RECEPTION_FLOOR_TYPE}`,
+      setReceptionFloorTypeData
+    );
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_TYPES}`,
+      setPropertyTypesData
+    );
+    fetchData(
+      `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_PROPERTY_AMENITIES}`,
+      setPropertyAmenitiesData
+    );
+  }, []);
+
+  useEffect(() => {
+    if (country) {
+      fetchData(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
+        setCitiesData
+      );
+    }
+  }, [country]);
+
+  useEffect(() => {
+    if (city) {
+      fetchData(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_REGIONS_BASED_ON_CITIES_REGISTER}${city}`,
+        setRegionsData
+      );
+    }
+  }, [country, city]);
+
+  useEffect(() => {
+    if (region) {
+      fetchData(
+        `https://amtalek.com/amtalekadmin/public/api/web/sub-regions/${region}`,
+        setSubregionsData
+      );
+    }
+  }, [city, region]);
 
   const recaptchaRef = useRef<any>(null);
   const [submitted, setSubmitted] = useState<any>(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState<any>(false);
   const user = useSelector(userData);
+  console.log();
 
   useEffect(() => {
     if (
@@ -393,16 +475,16 @@ export function SubmitProperty() {
 
   //!-- to handle if the user selects a country then choose another country, so refetch the cities of that country
 
-  useEffect(() => {
-    if (country !== "") {
-      refetchCities();
-    }
-  }, [country, refetchCities]);
-  useEffect(() => {
-    if (city !== "") {
-      refetchRegions();
-    }
-  }, [city, refetchRegions]);
+  // useEffect(() => {
+  //   if (country !== "") {
+  //     refetchCities();
+  //   }
+  // }, [country, refetchCities]);
+  // useEffect(() => {
+  //   if (city !== "") {
+  //     refetchRegions();
+  //   }
+  // }, [city, refetchRegions]);
   // const [userProfileDataOutlet, refetch, isError, isPaused] = useOutletContext() as [
   //   TUser,
   //   () => void,
@@ -475,7 +557,6 @@ export function SubmitProperty() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
-  console.log(register);
 
   return (
     <section className="w-full pb-44">
@@ -919,7 +1000,7 @@ export function SubmitProperty() {
                   {t("form.purpose.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PurposeData?.data}
+                    data={propertyFinishingData?.data}
                     placeholder={t("form.purpose.placeholder")}
                     stateName="purpose"
                     light
@@ -1084,7 +1165,7 @@ export function SubmitProperty() {
                   {t("form.property_type.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PropertyTypesData?.data}
+                    data={propertyTypesData?.data}
                     placeholder={t("form.property_type.placeholder")}
                     stateName="property_type"
                     light
@@ -1105,7 +1186,7 @@ export function SubmitProperty() {
                   {t("form.finishing.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={PropertyFinishingData?.data}
+                    data={receptionFloorTypeData?.data}
                     placeholder={t("form.finishing.placeholder")}
                     stateName="finishing"
                     light
@@ -1126,7 +1207,7 @@ export function SubmitProperty() {
                   {t("form.reception_floor_type.label")}
                   <ComboBox
                     setValue={setValue}
-                    data={ReceptionFloorTypeData?.data}
+                    data={propertyAmenitiesData?.data}
                     placeholder={t("form.reception_floor_type.placeholder")}
                     stateName="reception_floor_type"
                     light
@@ -1197,19 +1278,27 @@ export function SubmitProperty() {
                 {t("form.property_description_en.Heading")}
               </HeadingTwo>
               <div className="Property__TextEditor w-full mx-auto ">
-                <TextEditor
+                 <TextEditor
+                lng="en"
                   setValue={setValue}
                   stateName="property_description_en"
                   watch={watch}
                   required_err_msg={t("TextEditor.property_description_en.required_err_msg")}
-                />
+                /> 
               </div>
               <HeadingTwo style={"mt-6 mb-1"}>
                 {t("form.property_description_ar.Heading")}
               </HeadingTwo>
               <div className="Property__TextEditor w-full mx-auto ">
+                 {/* <TextEditor
+                // lng="en"
+                  setValue={setValue}
+                  stateName="property_description_en"
+                  watch={watch}
+                  required_err_msg={t("TextEditor.property_description_en.required_err_msg")}
+                />  */}
                 <TextEditor
-                  lng="ar"
+                  // lng="ar"
                   setValue={setValue}
                   stateName="property_description_ar"
                   watch={watch}
@@ -1226,7 +1315,7 @@ export function SubmitProperty() {
                 <div className="flex flex-col items-start gap-6 w-[950px] clg:w-[720px] md:w-[90%]  mx-auto  px-5">
                   <HeadingTwo style={"mt-6 mb-1"}>{t("form.amenities.Heading")}</HeadingTwo>
                   <ul className="property__amenities w-full grid grid-cols-3  md:grid-cols-2 sm:grid-cols-1   gap-8 sm:h-[70vh] sm:overflow-y-auto ">
-                    {PropertyAmenitiesData?.data?.map((amenity: any, index: number) => (
+                    {propertyAmenitiesData?.data?.map((amenity: any, index: number) => (
                       <CheckBox
                         key={amenity.id}
                         register={register}

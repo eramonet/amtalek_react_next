@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 import getData from "@/api/getData";
 import AsideForm from "./components/AsideForm";
 import PropertyOwner from "./components/PropertyOwner";
@@ -8,6 +9,7 @@ import FeaturedPropertiesAside from "./components/FeaturedPropertiesAside";
 import Loader from "@/components/loader/Loader";
 import LoginPopUp from "@/allPages/login/LoginPopUp";
 import React from "react";
+import SearchFormTwo from "@/allPages/search/SearchFormTwo";
 
 export default async function PropertyAside({ listing_number, locale }: any) {
   const data = await getData(`web/property/${listing_number}`, locale);
@@ -34,10 +36,12 @@ export default async function PropertyAside({ listing_number, locale }: any) {
             propID={allData[0]?.id}
           />
           <div className="w-full clg:hidden">
-            <SearchForm type={"asideForm"} locale={locale} showOptions />
+            {/* <SearchForm type={"asideForm"} showOptions locale={locale} /> */}
+            <SearchFormTwo type={"asideForm"} showOptions locale={locale} />
           </div>
           <div className="w-full hidden clg:block">
-            <SearchForm type={"bigForm"} locale={locale} showOptions home={true} />
+            {/* <SearchForm type={"bigForm"} showOptions home={true} locale={locale} /> */}
+            <SearchFormTwo type={"bigForm"} showOptions home={true} locale={locale} />
           </div>
           <LatestProperties />
           <FeaturedPropertiesAside />

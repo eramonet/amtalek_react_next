@@ -1,13 +1,17 @@
+"use client";
 import Profile from "@/allPages/Profile/Profile";
 import SettingsLayout from "@/allPages/UserSettingsLayout/SettingsLayout";
 import useUserProfile from "@/api/useUserProfile";
+// import { UserProfileClient } from "@/api/UserProfileClient";
 
-export default async function ProfilePage({ params: { locale } }: any) {
-  const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+export default function ProfilePage({ params: { locale } }: any) {
+  // const { userProfileDataOutlet, userData } = await useUserProfile(locale);
+  // const { userProfileDataOutlet, user } = UserProfileClient();
   return (
     <>
-      <SettingsLayout userProfileDataOutlet={userProfileDataOutlet} />
-      <Profile userProfileDataOutlet={userProfileDataOutlet} user={userData} />
+      {/* userProfileDataOutlet={userProfileDataOutlet}  user={userData} */}
+      <SettingsLayout />
+      <Profile />
     </>
   );
 }

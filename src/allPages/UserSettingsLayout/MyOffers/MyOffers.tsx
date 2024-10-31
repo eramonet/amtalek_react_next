@@ -11,7 +11,8 @@ import Heading from "@/components/Heading";
 import PropertyCard from "@/CardsComponents/PropertyCard";
 // import PropertyCard from "@/allPages/PropertyDetails/components/PropertyCard";
 
-export default function MyOffers({ userProfileDataOutlet }: any) {
+export default function MyOffers({  }: any) {
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
   const user = useSelector(userData);
   const { t, i18n } = useTranslation("Pages_MyProperties");
 
@@ -19,12 +20,22 @@ export default function MyOffers({ userProfileDataOutlet }: any) {
   const [isError, setIsError] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const dispatchRedux = useDispatch();
-  useEffect(() => {
-    // يمكنك تخصيص حالات الخطأ أو التوقف بناءً على البيانات التي تستدعيها هنا
-    if (!userProfileDataOutlet) {
-      setIsError(true);
+  // useEffect(() => {
+  //   // يمكنك تخصيص حالات الخطأ أو التوقف بناءً على البيانات التي تستدعيها هنا
+  //   if (!userProfileDataOutlet) {
+  //     setIsError(true);
+  //   }
+  // }, [userProfileDataOutlet]);
+
+   useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+      // getUserProfile(user?.token, i18n?.language);
     }
-  }, [userProfileDataOutlet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
 
   return (
     <section className="pb-44 site_container">

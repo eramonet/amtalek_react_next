@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   userData as userDataStore,
   setUserProfileData,
+  userData,
+  Authorized,
+  fetchUserProfile,
+  userProfileDataOut,
 } from "@/Store/Features/AuthenticationSlice";
 import { useTranslation } from "react-i18next";
 import useHandleLogOut from "@/Utilities/useHandleLogOut";
@@ -25,7 +29,9 @@ import {
 import useUserProfile from "@/api/useUserProfile";
 // import { useOutletContext } from "react-router-dom";
 import { TUser } from "@/Types/AppTypes";
-export default function Profile({ userProfileDataOutlet,user }:any) {
+// import { UserProfileClient } from "@/api/UserProfileClient";
+// userProfileDataOutlet, user
+export default function Profile({}: any) {
   const { t, i18n } = useTranslation("Pages_Profile");
   const queryClient: any = useQueryClient();
   const dispatch = useDispatch();
@@ -39,7 +45,6 @@ export default function Profile({ userProfileDataOutlet,user }:any) {
 
   // const userProfileDatat = useUserProfile();
 
-
   // const [userProfileDataOutlet, refetch, isLoading, isError, isPaused] = useOutletContext() as [
   //   TUser,
   //   () => void,
@@ -48,9 +53,8 @@ export default function Profile({ userProfileDataOutlet,user }:any) {
   //   boolean
   // ];
 
-  // const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
-  // const [notifications, setNotifications] = useState([]);
-  // const [unseenCounter, setUnseenCounter] = useState(0);
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
 
   // async function getUserProfile(token: string, language: string) {
   //   try {
@@ -85,6 +89,29 @@ export default function Profile({ userProfileDataOutlet,user }:any) {
   //   }
   // }, [user?.token, i18n.language]);
 
+  // const { userProfileDataOutlet, user } = UserProfileClient();
+  // const dispatch = useDispatch();
+  // const user = useSelector(userData);
+  // const token = useSelector(Authorized);
+  // const userProfileDataOutlet: any = useSelector(userProfileDataOut) || null;
+  // useEffect(() => {
+  //   // if (user && token) {
+  //   // const language = "en"; // يمكنك الحصول على اللغة من السياق أو الحالة الخاصة بك
+  //   dispatch(fetchUserProfile({ token, language: i18n.language, userData: user.data }));
+  //   // }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user, token, dispatch]);
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+      // getUserProfile(user?.token, i18n?.language);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
+
+  // console.log(userProfileDataOutlet);
   const [logOut] = useHandleLogOut();
 
   const {

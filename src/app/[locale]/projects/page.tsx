@@ -4,7 +4,6 @@ import Projects from "@/allPages/project/Projects";
 import getData from "@/api/getData";
 import initTranslations from "@/app/i18n";
 import React from "react";
-// import Projects from "@/allPages/Projects/Projects";
 
 export default async function ProjectsPage({ params: { locale } }: any) {
   const broker = await getData("web/our-brokers", locale);
@@ -12,14 +11,14 @@ export default async function ProjectsPage({ params: { locale } }: any) {
   const countries = await getData("web/countries", locale);
   const AllCountries = countries.data[0] || [];
 
-  const i18nNamespaces = ["Pages_LandingPage"];
-  const { t } = await initTranslations(locale, i18nNamespaces);
+  // const i18nNamespaces = ["Pages_LandingPage"];
+  // const { t } = await initTranslations(locale, i18nNamespaces);
   return (
     <main className="min-h-[calc(100vh-136px)]">
       <section className="site_container pt-10  pb-12">
         <Projects />
 
-        <Agencies data={allBroker} locale={locale} countrie={AllCountries} t={t} />
+        <Agencies data={allBroker} locale={locale} countrie={AllCountries} />
       </section>
     </main>
   );

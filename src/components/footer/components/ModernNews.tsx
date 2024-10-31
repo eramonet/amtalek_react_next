@@ -12,7 +12,7 @@ export default function ModernNews({ data, t }: any) {
               //   state={{ id: news?.id }}
               //   className="opacity-80 hover:opacity-100 transition-all duration-300 ease-in-out border-b-secondary border-b-2  active:scale-90 "
               className="opacity-80 hover:opacity-100 transition-all duration-300 ease-in-out border-b-custome-blue border-b-2  active:scale-90 "
-              href={`/news/${news?.id}/${news?.title.replace(/\//g, "-")}`}
+              href={`/news/${news?.id}/${news?.title?.replace(/\s+/g, "-")}`}
               title={news?.title}
             >
               {news?.title.substring(0, 50)}

@@ -1,9 +1,9 @@
 "use client";
 
-export default function Heading({ style, children, className }: any) {
+export default function Heading({ style, children, className,onClick }: any) {
   return (
     <h1
-      //   onClick={onclick}
+        onClick={onClick}
       className={`text-3xl textHead !mb-4 group relative flex !w-fit flex-col uppercase font-semibold ss:text-lg md:text-md clg:text-lg ${style} ${className}`}
     >
       {children}{" "}

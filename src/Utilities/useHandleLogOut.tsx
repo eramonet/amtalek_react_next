@@ -22,6 +22,7 @@ export default function useHandleLogOut() {
     false,
     () => {
       localStorage.removeItem("userData");
+      localStorage.removeItem("userProfileDataOutlet");
       dispatchRedux(setUserData(null));
       dispatchRedux(setToggleLogOutPopUp(false));
       window.location.replace(`/${i18n.language?.startsWith("ar") ? "" : "en"}`);

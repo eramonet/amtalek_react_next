@@ -1,8 +1,11 @@
+"use client";
 import HeaderSection from "@/components/headerSection/HeaderSection";
 import CityCard from "./components/CityCard";
 import ButtonSections from "@/components/buttonSections/ButtonSections";
+import { useTranslation } from "react-i18next";
 
-export default function PopularPlaces({ data, t, locale, countrie }: any) {
+export default function PopularPlaces({ data, locale, countrie }: any) {
+  const { t } = useTranslation("Pages_LandingPage");
   return (
     <section className="bg-custome-venice py-20">
       <div className="site_container flex flex-col gap-8">

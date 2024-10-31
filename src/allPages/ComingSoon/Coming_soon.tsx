@@ -1,3 +1,4 @@
+"use client";
 import { useTranslation } from "react-i18next";
 // import { HelmetTags } from "../../../src/Components/MainComponents";
 import Main from "./Main";

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import useSessionStorageState from "use-session-storage-state";
 
 export default function CityCard({ city, t }: any) {
   return (
     <Link
-      href={``}
+      href={`/search/عقارات`}
       className="relative h-full hover:-translate-y-2 duration-300 ease-in-out text-custome-white transition-all hover:bg-transparent-blue active:scale-110"
     >
       <Image

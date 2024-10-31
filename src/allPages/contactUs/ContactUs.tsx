@@ -7,6 +7,7 @@ import FormDataContactUs from "./components/FormDataContactUs";
 import Details from "./components/Details";
 import initTranslations from "@/app/i18n";
 import Agencies from "../landingPage/agencies/Agencies";
+import { useTranslation } from "react-i18next";
 export default async function ContactUs({ locale }: any) {
   const contactData = await getData(`web/${process.env.NEXT_PUBLIC_CONTACT_US_GET}`, locale);
   const AllContactData = contactData?.data[0];
@@ -18,7 +19,8 @@ export default async function ContactUs({ locale }: any) {
   const countries = await getData("web/countries", locale);
   const AllCountries = countries.data[0] || [];
 
-  const { t } = await initTranslations(locale, i18nNamespaces);
+  // const { t } = await initTranslations(locale, i18nNamespaces);
+  // const { t } =  useTranslation("Pages_ContactUs");
 
   return (
     <section className="site_container pt-4 pb-12 flex flex-col gap-12 md:gap-20">
@@ -38,7 +40,7 @@ export default async function ContactUs({ locale }: any) {
 
       <Details data={AllContactData} />
       {/* <div className="w-full h-auto opacity-0 ContactUs__scale-no-over"> */}
-      <Agencies data={allBroker} locale={locale} countrie={AllCountries} t={t} />
+      <Agencies data={allBroker} locale={locale} countrie={AllCountries} />
       {/* </div> */}
     </section>
   );

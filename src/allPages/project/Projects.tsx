@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect } from "react";
-// import AgenciesCard from "./AgenciesCard";
+import { useState, useEffect, useMemo } from "react";
 import getData from "@/api/getData";
 import { useTranslation } from "react-i18next";
 import Loader from "@/components/loader/Loader";
@@ -11,61 +11,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import ProjectCard from "./components/ProjectCard";
-import { OwnCountry } from "@/Store/Features/MiscellaneousSlice";
-import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import Heading from "@/components/Heading";
 
 export default function Projects({ locale }: any) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredBrokers, setFilteredBrokers] = useState<any[]>([]);
   const [allBrokers, setAllBrokers] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 9;
 
-  const { t } = useTranslation("Pages_Projects");
-  // const theCountry = useSelector(OwnCountry);
+  const { t, i18n } = useTranslation("Pages_Projects");
 
-  // const fetchAllBrokers = async () => {
-  // setIsLoading(true);
-  // const brokers = await getData(`web/brokers?limit=1000`, locale);
-  // const brokersData = brokers?.data?.original?.data;
-  // setAllBrokers(brokersData);
-  // setFilteredBrokers(brokersData);
-  // setIsLoading(false);
-  // };
+  const [countries, setCountries] = useState<any>(null);
 
   const fetchPageData = async () => {
     setIsLoading(true);
     const brokers = await getData(`web/projects?page=${currentPage}&limit=${itemsPerPage}`, locale);
+    const AllCountries = await getData("web/countries", locale);
+    setCountries(AllCountries?.data[0] || null);
     const brokersData = brokers?.data?.original?.data;
     setAllBrokers(brokersData);
-    setFilteredBrokers(brokersData);
     setTotalPages(brokers.data.original.meta.last_page);
     setIsLoading(false);
   };
 
   useEffect(() => {
     fetchPageData();
-  }, []);
+  }, [currentPage, locale]);
 
-  useEffect(() => {
+  const filteredBrokers = useMemo(() => {
     if (searchTerm === "") {
-      setFilteredBrokers(allBrokers);
-    } else {
-      const results = allBrokers.filter((broker: any) =>
-        broker?.title?.toLowerCase().includes(searchTerm?.toLowerCase())
-      );
-      setFilteredBrokers(results);
+      return allBrokers;
     }
+    return allBrokers.filter((broker: any) =>
+      broker?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }, [searchTerm, allBrokers]);
 
   const handlePageChange = (selectedItem: any) => {
     const newPage = selectedItem.selected + 1;
     setCurrentPage(newPage);
   };
-  // <div><ProjectCard/></div>;
+
   return (
     <div className="pt-10 pb-0">
       <div className="">
@@ -77,13 +66,14 @@ export default function Projects({ locale }: any) {
           className="bg-slate-100 outline-none border p-3 rounded-xl mx-auto flex mb-5 w-full ss:w-full"
         />
       </div>
-
+      <Heading style={"text-center"}>
+        {t("heading")} {i18n.language === "ar" ? "في" : "in"} {countries?.title}
+      </Heading>
       {isLoading ? (
         <Loader />
       ) : (
         <>
           {filteredBrokers?.length > 0 ? (
-            // <div className="site_container grid grid-cols-3 gap-5 ss:grid-cols-1 clg:grid-cols-2">
             <div className="all__news--wrapper w-full grid grid-cols-3 gap-x-5 gap-y-16 my-10 md:grid-cols-1 xl:grid-cols-2 border-b-2 pb-24 border-secondary">
               {filteredBrokers.map((broker: any, ind: any) => (
                 <motion.div
@@ -99,7 +89,6 @@ export default function Projects({ locale }: any) {
           ) : (
             <p>{t("noResults")}</p>
           )}
-          {/* **************************************************************************************************** */}
           {filteredBrokers?.length > 9 && (
             <div className="flex items-center justify-between mt-10">
               <div
@@ -118,8 +107,6 @@ export default function Projects({ locale }: any) {
               </div>
 
               <ReactPaginate
-                // previousLabel={"«"}
-                // nextLabel={"»"}
                 breakLabel={"..."}
                 pageCount={totalPages}
                 onPageChange={handlePageChange}

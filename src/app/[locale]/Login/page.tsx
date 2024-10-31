@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 import Login from "@/allPages/login/Login";
 
 export default function LoginPage({ params: { locale } }: any) {

@@ -104,7 +104,9 @@ export default function LatestPropertiesCard({ card, locale, data }: any) {
 
         <div className="">
           <Link
-            href={`properties/${card.title.replace(/\s+/g, "-")}`}
+            href={`/Agencies/${card?.broker_details?.[0]?.name.replace(/\s+/g, "-")}/${
+              card?.broker_details[0]?.id
+            }/${card?.broker_details[0]?.broker_type}`}
             className="broker__details px-3 pb-3 pt-1 flex justify-start items-center  h-fit gap-3 w-fit"
           >
             <Image

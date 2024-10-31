@@ -1,151 +1,176 @@
-import { useParams } from "react-router-dom";
-import { useFetchData } from "@/Hooks/useAxios";
+"use client";
 
-// import {
-//   Heading,
-//   HelmetTags,
-//   ItemFeaturesList,
-//   ItemSlider,
-//   LightBox,
-// } from "@/Components/MainComponents/index";
-
-import {
-  // BrokerInfo,
-  ErrorMessage,
-  Loader,
-  // Share,
-} from "@/SubComponents/index";
-// import AsideForm from "@/Components/AsideComponents/AsideForm";
-import { useTranslation } from "react-i18next";
-import ProjectQuickSummary from "./ProjectQuickSummary";
-import React from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
+import Loader from "@/components/loader/Loader";
+import ErrorMessage from "@/SubComponents/ErrorMessage";
+// import FeaturedPropertiesAside from "../PropertyDetails/aside/components/FeaturedPropertiesAside";
+import Share from "@/SubComponents/Share";
+import NewsCard from "@/CardsComponents/NewsCard";
 import Heading from "@/components/Heading";
-import AsideForm from "@/allPages/PropertyDetails/aside/components/AsideForm";
-import ShareOptions from "@/allPages/landingPage/latestProperties/components/ShareOptions";
-import ItemSlider from "@/MainComponents/ItemSlider";
-import ItemFeaturesList from "@/MainComponents/ItemFeaturesList";
-import LightBox from "@/MainComponents/LightBox";
-import BrokerInfo from "@/MainComponents/BrokerInfo";
+// import AdsNewsDetails from "./AdsNewsDetails";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
+import getData from "@/api/getData";
+import AdsNewsDetails from "@/allPages/News/AdsNewsDetails";
+import FeaturedPropertiesAside from "@/allPages/PropertyDetails/aside/components/FeaturedPropertiesAside";
 
-export function ProjectDetails() {
-  const { t } = useTranslation("Pages_ProjectDetails");
+export default function NewsDetails() {
+  const { t, i18n } = useTranslation("Pages_NewsDetails");
+  const { id } = useParams();
 
-  const { projectNumber } = useParams();
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
+  const [isResize1016, setIsResize1016] = useState(false);
 
-  const {
-    isLoading: loading,
-    isError,
-    isPaused,
-    data,
-  } = useFetchData(
-    "ProjectDetails",
-    `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_SINGLE_PROJECT_DETAILS}${projectNumber}`,
-    false,
-    true,
-    projectNumber
-  );
+  useEffect(() => {
+    const handleResize = () => {
+      setIsResize1016(window.innerWidth > 1016);
+    };
 
-  if (isError || isPaused) {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await getData(
+          `${process.env.NEXT_PUBLIC_BASE_URL_FULL}${process.env.NEXT_PUBLIC_SINGLE_PROJECT_DETAILS}${id}`,
+          i18n.language
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = response;
+        setData(result?.data);
+      } catch (error: any) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id, i18n.language]); // إعادة الجلب عند تغيير اللغة أو id
+
+  if (error) {
     return (
-      <div className="h-[calc(100vh-136px)] flex-center w-full">
+      <motion.div
+        className="h-[calc(100vh-136px)] flex-center w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <ErrorMessage message={t("ErrorMessage")} />
-      </div>
+      </motion.div>
     );
   }
+
   if (loading) {
     return <Loader />;
   }
 
   return (
-    <section className="project__Details  site_container  flex flex-col gap-16 ss:gap-8 pt-20 pb-44   ">
-      {/* <HelmetTags
-        title={t("tab.title", { details: data?.name })}
-        description={t("tab.description")}
-      /> */}
-      <div className="project__general--info w-full">
-        <h1 className="project__name text-3xl ss:text-md amd:text-lg font-semibold asm:text-center">
-          {data?.name}
-        </h1>
-        <h2 className="project__name text-base  mt-1 asm:text-center">
-          {data?.city}
-          {" | "} {data?.region}
-          {data?.sub_region && (
-            <>
-              {" | "} {data?.sub_region}
-            </>
-          )}
-          {/* {","} {data?.country} */}
-        </h2>
+    data && (
+      <motion.section
+        className="site_container flex justify-between items-start pt-20 gap-0 clg:gap-20 pb-32 clg:pb-44 clg:flex-col clg:items-center clg:justify-start ss:pt-2"
+        initial={{ x: -200 }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.section
+          className="news__Details--content w-[66%] flex flex-col gap-6 clg:w-full"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="mt-2 font-extrabold text-3xl clg:text-xl md:text-lg ss:text-md">
+            {data.title}
+          </h1>
 
-        <ItemSlider data={data} style={"mt-10 min-h-[60vh]"} fullWidth />
-        <ShareOptions data={data} t={t} type="project" style={"mt-12"} />
-      </div>
-      <div className="project__description">
-        <Heading>{t("headings.description")}</Heading>
-        <div dangerouslySetInnerHTML={{ __html: data?.description }}></div>
-      </div>
-      {Object.keys(data?.quick_summary)?.length > 0 && (
-        <div className="project__Quick--summary w-full">
-          <Heading> {t("headings.QuickSummary")}</Heading>
-          <ProjectQuickSummary t={t} data={data?.quick_summary} />
-        </div>
-      )}
-      {data?.aminities?.length > 0 && (
-        <div className="project__BENEFITS--AMENITIES w-full">
-          <Heading> {t("headings.aminities")} </Heading>
-          <ItemFeaturesList data={data?.aminities} />
-        </div>
-      )}
-      {data?.autocad?.length > 0 && (
-        <div className="project__BENEFITS--AMENITIES w-full">
-          <Heading>{t("headings.AUTOCAD")} </Heading>
-          <p className="Property__name text-base  mt-1 asm:text-center mb-7">
-            {t("headings.AUTOCAD_DESCRIPTION")}
-          </p>
-          <LightBox data={data?.autocad} />
-        </div>
-      )}
-      <div className="project__location ">
-        <Heading>{t("headings.LOCATION")} </Heading>
-
-        <div
-          className="w-full h-full amd:w-full border-2 border-secondary round mt-7"
-          dangerouslySetInnerHTML={{
-            __html: data?.location,
-          }}
-        ></div>
-      </div>
-      {data?.video !== "" && (
-        <div className="project__VIDEO">
-          <Heading>{t("headings.VIDEO")} </Heading>
-
-          <iframe
-            loading="lazy"
-            className="  w-full !aspect-video overflow-hidden border-2 border-secondary round mt-7"
-            src={`https://www.youtube.com/embed/${data?.video?.substring(32)}`}
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
-      <div className="project__info--contacts">
-        <Heading>{t("headings.CONTACT_BROKER")} </Heading>
-        <div className="flex pt-14 amd:flex-col ss:gap-8 gap-16">
-          <div className="broker__img--contacts w-2/3 amd:w-full ">
-            <BrokerInfo t={t} data={data?.broker_details?.[0]} />
-          </div>
-          <div className="broker__contact--form w-1/3 amd:w-full">
-            <AsideForm
-              t={t}
-              type="message"
-              Bgcolor="light"
-              api={process.env.NEXT_PUBLIC_SEND_MESSAGE_TO_BROKER}
-              params={{ vendor_id: data?.broker_details?.[0]?.id }}
+          <motion.div
+            className="min-h-[360px] ss:min-h-fit w-full h-fit"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Image
+              width={1000}
+              height={1000}
+              src={data.image}
+              alt={data.title}
+              className="h-full w-full"
             />
-          </div>
-        </div>
-      </div>
-    </section>
+          </motion.div>
+
+          <motion.div
+            className="news__author--date flex justify-start gap-2 flex-col"
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Link
+              href={`${
+                i18n.language.startsWith("ar") ? "" : "/en"
+              }/news/categories/${data.category_details.name.replace(/ /g, "-")}`}
+              className=" bg-secondary20 text-secondary font-medium px-3 py-1 round w-fit cursor-pointer"
+            >
+              {data.category_details.name}
+            </Link>
+            <h2 className="flex items-center gap-2">
+              <FontAwesomeIcon icon={faCalendarDays} />
+              {data.created_at}
+            </h2>
+          </motion.div>
+
+          <Share data={data} t={t} type="article" />
+
+          <motion.div
+            className="mb-5"
+            dangerouslySetInnerHTML={{ __html: data.description }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          ></motion.div>
+
+          {!isResize1016 && <AdsNewsDetails />}
+
+          <Heading style="my-5">{t("LATEST_NEWS")}</Heading>
+
+          <motion.div
+            className="all__properties--wrapper w-full grid grid-cols-2 mb-10 gap-5 ss:grid-cols-1"
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {data.latest_news.map((news: any) => (
+              <NewsCard key={news.id} news={news} t={t} />
+            ))}
+          </motion.div>
+        </motion.section>
+
+        <motion.section
+          className="news__Details--aside w-[31%] clg:w-3/4 md:w-full h-fit flex flex-col clg:items-center gap-8"
+          initial={{ x: 100 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {isResize1016 && <AdsNewsDetails />}
+          {/* أي مكونات أخرى تحتاجها في الجزء الجانبي */}
+          <FeaturedPropertiesAside />
+        </motion.section>
+      </motion.section>
+    )
   );
 }

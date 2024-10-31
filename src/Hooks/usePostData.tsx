@@ -31,9 +31,9 @@ const axiosInstance = axios.create({
     "X-Requested-With": "XMLHttpRequest",
     "Access-Control-Allow-Origin": "https://amtalek-react-next-f3rz-final.vercel.app",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type,Authorization, Accept",
+    // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type,Authorization, Accept",
     "Access-Control-Allow-Credentials": true,
-    origin: "https://amtalek-react-next-f3rz-final.vercel.app",
+    // origin: "https://amtalek-react-next-f3rz-final.vercel.app",
 
     // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
   },

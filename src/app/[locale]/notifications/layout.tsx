@@ -4,12 +4,26 @@ import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
 import initTranslations from "@/app/i18n";
 
+export async function generateMetadata({ params: { locale } }: any) {
+  const i18nNamespaces = ["SettingsLayout"];
+
+  const { t } = await initTranslations(locale, i18nNamespaces);
+
+  return {
+    title: t("tab.title"),
+    description: t("tab.description"),
+    icons: {
+      icon: "/fav-icon.png",
+    },
+  };
+}
+
 export default async function NotificationsLayout({
   children,
-  params: { locale ,notifications},
+  params: { locale, notifications },
 }: {
   children: React.ReactNode;
-  params: { locale: string,notifications:string };
+  params: { locale: string; notifications: string };
 }) {
   const i18nNamespaces = ["SettingsLayout"];
   const { resources } = await initTranslations(locale, i18nNamespaces);

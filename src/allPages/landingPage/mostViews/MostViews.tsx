@@ -1,9 +1,14 @@
+"use client";
 import Link from "next/link";
 import MostViewCard from "./components/MostViewCard";
 import ButtonSections from "@/components/buttonSections/ButtonSections";
 import HeaderSection from "@/components/headerSection/HeaderSection";
+import { useTranslation } from "react-i18next";
+import Heading from "@/components/Heading";
+import SubHeading from "@/MainComponents/SubHeading";
 
-export default function MostViews({ data, t, locale, countrie }: any) {
+export default function MostViews({ data, locale, countrie }: any) {
+  const { t } = useTranslation("Pages_LandingPage");
   return (
     <section className="h-auto bg-custome-venice text-secondary ">
       <section className="relative z-10  py-20 flex flex-col items-center site_container  min-h-[550px] ">

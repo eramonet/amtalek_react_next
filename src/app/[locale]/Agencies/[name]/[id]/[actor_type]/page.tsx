@@ -1,8 +1,6 @@
 import { BrokerDetails } from "@/allPages/Brokers/BrokerDetails/BrokerDetails";
 import React from "react";
 
-
-
 export default function BrokerDetailsPage({ params: { locale, actor_type, id } }: any) {
   // title={t("tab.title", { details: data[0]?.name })}
   //       description={t("tab.description")}

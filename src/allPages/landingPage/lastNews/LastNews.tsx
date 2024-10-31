@@ -1,12 +1,14 @@
+"use client";
 import ButtonSections from "@/components/buttonSections/ButtonSections";
 import HeaderSection from "@/components/headerSection/HeaderSection";
 import Image from "next/image";
 import Link from "next/link";
 import { FaAnglesRight } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
-export default function LastNews({ data, t, locale, countrie }: any) {
+export default function LastNews({ data, locale, countrie }: any) {
   // const { t } = await initTranslations(locale, ["Pages_LandingPage"]);
-
+  const { t } = useTranslation("Pages_LandingPage");
   return (
     <section className="bg-custome-gray py-20">
       <HeaderSection
@@ -22,7 +24,7 @@ export default function LastNews({ data, t, locale, countrie }: any) {
 
         {data?.cards.map((card: any) => (
           <div className="relative h-[300px] overflow-hidden group" key={card.id}>
-            <Link href={``} className="">
+            <Link href={`/news/${card?.id}/${card?.title.replace(/\//g, "-")}`} className="">
               <Image src={card.image} alt="" width={1000} height={1000} className="w-full h-full" />
             </Link>
 
@@ -41,7 +43,7 @@ export default function LastNews({ data, t, locale, countrie }: any) {
 
               <div className="flex items-center justify-between">
                 <Link
-                  href={``}
+                  href={`/news/${card?.id}/${card?.title.replace(/\//g, "-")}`}
                   className="text-custome-yellow overflow-hidden flex w-full justify-start items-center gap-1 font-medium -translate-x-[15px] rtl:translate-x-[15px] hover:translate-x-0 rtl:hover:translate-x-0 transition-all duration-300 ease-in-out"
                 >
                   <div

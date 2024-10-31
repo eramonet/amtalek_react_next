@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 function Share({ type, style, data, file }: any) {
-  const { t } = useTranslation(file);
+  const { t, i18n } = useTranslation(file);
   const [currentUrl, setCurrentUrl] = useState<string>("");
 
   // استخدام useEffect للحصول على URL الصفحة من window على جهة العميل
@@ -53,7 +53,7 @@ function Share({ type, style, data, file }: any) {
           separator="  "
         >
           <FaWhatsapp className="pr-3 rtl:pr-0 rtl:pl-3 " size={30} />
-          {t("Whatsapp")}
+          {t("ShareComponent.whatsapp")}
         </WhatsappShareButton>
       </div>
     </div>

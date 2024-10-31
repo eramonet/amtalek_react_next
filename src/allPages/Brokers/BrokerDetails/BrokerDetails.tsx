@@ -13,8 +13,9 @@ import SearchForm from "@/MainComponents/SearchForm";
 import BrokerInfo from "@/MainComponents/BrokerInfo";
 import ProjectCard from "@/allPages/project/components/ProjectCard";
 import { userData } from "@/Store/Features/AuthenticationSlice";
-import Head from "next/head";
+// import Head from "next/head";
 import ReactPaginate from "react-paginate";
+import SearchFormTwo from "@/allPages/search/SearchFormTwo";
 
 export function BrokerDetails({ locale, actor_type, id }: any) {
   const { t, i18n } = useTranslation("Pages_BrokerDetails");
@@ -32,7 +33,14 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_SINGLE_BROKER_DETAILS}${id}/${actor_type}`
+          `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_SINGLE_BROKER_DETAILS}${id}/${actor_type}`,
+          {
+            method: "GET",
+            headers: {
+              lang: i18n.language,
+              ...(user?.token && { Authorization: `Bearer ${user?.token}` }), // أضف التوكن إذا كان موجودًا
+            },
+          }
         );
         const result = await response.json();
         setData(result?.data[0]);
@@ -44,7 +52,8 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
     };
 
     fetchBrokerDetails();
-  }, [id, actor_type]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, actor_type, i18n.language, locale]);
 
   if (error) {
     return (
@@ -67,22 +76,9 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
+  // console.log(data?.projects); // Add this line to console.log
   return (
     <>
-      <Head>
-        <title>{data.name} - Broker Details</title>
-        <meta
-          name="description"
-          content={`View details about ${data.name}, a broker in our system.`}
-        />
-        <meta property="og:title" content={data.name} />
-        <meta
-          property="og:description"
-          content={`Check out properties and projects by ${data.name}.`}
-        />
-        <meta property="og:image" content={data.image_url} />
-      </Head>
-
       <section className="site_container flex justify-between items-start pt-20 gap-0 clg:gap-20 pb-32 clg:pb-44 clg:flex-col clg:items-center clg:justify-start">
         <section className="broker__Details--content w-[66%] flex flex-col gap-16 clg:w-full">
           <BrokerInfo i18n={i18n} data={data} t={t} />
@@ -144,7 +140,7 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
 
             {data?.properties_count > 0 && (
               <p className="my-2 ps-2">
-                {data && data?.name} {t("properties_count")}
+                {data?.name} {t("properties_count")}
               </p>
             )}
 
@@ -155,30 +151,17 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
                 userpropSuccess={true}
                 brokerDetails
                 tab={tab}
-                userProperties_for_sale={data?.submitted_props_for_sale}
-                userProperties_for_rent={data?.submitted_props_for_rent}
+                userProperties_for_sale={data?.property_for_sale}
+                userProperties_for_rent={data?.property_for_rent}
                 t={t}
               />
-            ) : data && data?.projects?.length === 0 ? (
-              <div className="mt-10 ">
-                <NoItemsMessage message={t("BrokerProjects.NoItemsMessage")} />
-              </div>
-            ) : (
+            ) : tab === "projects" && data?.projects?.length > 0 ? (
               <motion.div className="w-full flex flex-col gap-24 ss:gap-16">
-                {data?.projects.map((project: any) => (
-                  <ProjectCard type="BrokerDetails" project={project} t={t} key={project.id} />
+                {/* {paginatedData.map((project: any) => ( */}
+                {data?.projects?.map((project: any) => (
+                  <ProjectCard type="BrokerDetails" broker={project} t={t} key={project.id} />
                 ))}
-              </motion.div>
-            )}
-
-            {tab === "projects" && data?.projects?.length > 0 ? (
-              <motion.div className="w-full flex flex-col gap-24 ss:gap-16">
-                {paginatedData.map((project: any) => (
-                  <ProjectCard type="BrokerDetails" project={project} t={t} key={project.id} />
-                ))}
-
-                {/* إضافة التصفح بين الصفحات */}
-                <ReactPaginate
+                {/* <ReactPaginate
                   previousLabel={"← Previous"}
                   nextLabel={"Next →"}
                   pageCount={Math.ceil(data?.projects.length / itemsPerPage)}
@@ -188,19 +171,22 @@ export function BrokerDetails({ locale, actor_type, id }: any) {
                   nextLinkClassName={"pagination__link"}
                   disabledClassName={"pagination__link--disabled"}
                   activeClassName={"pagination__link--active"}
-                />
+                /> */}
               </motion.div>
             ) : (
               <NoItemsMessage message={t("BrokerProjects.NoItemsMessage")} />
             )}
           </div>
         </section>
+
         <section className="broker__Details--aside w-[31%] clg:w-3/4 md:w-full h-fit flex flex-col clg:items-center gap-16">
           <div className="w-full clg:hidden">
-            <SearchForm type={"asideForm"} showOptions />
+            {/* <SearchForm type={"asideForm"} showOptions locale={locale} /> */}
+            <SearchFormTwo type={"asideForm"} showOptions locale={locale} />
           </div>
           <div className="w-full hidden clg:block">
-            <SearchForm type={"bigForm"} showOptions />
+            {/* <SearchForm type={"bigForm"} showOptions locale={locale} /> */}
+            <SearchFormTwo type={"bigForm"} showOptions locale={locale} />
           </div>
           <AdsBroker />
         </section>

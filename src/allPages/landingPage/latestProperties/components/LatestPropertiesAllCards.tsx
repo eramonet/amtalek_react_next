@@ -1,3 +1,4 @@
+"use client";
 import LatestPropertiesCard from "./LatestPropertiesCard";
 
 export default function LatestPropertiesAllCards({ data, t }: any) {

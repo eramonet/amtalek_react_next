@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 import Agencies from "@/allPages/Agencies/Agencies";
 import ContactUs from "@/allPages/contactUs/ContactUs";
 import SliderAgencies from "@/allPages/landingPage/agencies/components/SliderAgencies";

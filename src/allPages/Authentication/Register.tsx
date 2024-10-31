@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,10 +31,13 @@ import { usePostData } from "@/Hooks/usePostData";
 import VerificationCodeForm from "./VerificationCodeForm";
 import LangLink from "@/components/LangLink";
 import { useRouter } from "next/navigation";
+import getData from "@/api/getData";
+import ComboBoz from "@/FormComponents/ComboBoz";
 
 function Register() {
   const { t, i18n } = useTranslation("Pages_Register");
   // const i18n.language = useSelector(lang);
+  // const {i18n}= useTranslation();
   const dispatchRedux = useDispatch();
   const birthdayRef = useRef<any>(null);
 
@@ -145,15 +149,47 @@ function Register() {
     { id: "individual", title: t("step_0.user_type.selections.individual") },
     { id: "company", title: t("step_0.user_type.selections.company") },
   ];
-  const { data: countriesData } = useFetchData(
-    "countries",
-    process.env.NEXT_PUBLIC_COUNTRIES_REGISTER,
-    false,
-    false,
-    "",
-    30 * 60 * 1000,
-    30 * 60 * 1000
-  );
+
+  // const useFetch = (url, options) => {
+  const [countriesData, setDataCountriesData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getData(
+          `web/${process.env.NEXT_PUBLIC_COUNTRIES_REGISTER}`,
+          i18n.language
+        );
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
+        const result = response;
+        setDataCountriesData(result);
+      } catch (err: any) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // return { data, loading, error };
+  // };
+
+  // const { data: countriesData } = useFetchData(
+  //   "countries",
+  //   process.env.NEXT_PUBLIC_COUNTRIES_REGISTER,
+  //   false,
+  //   false,
+  //   "",
+  //   30 * 60 * 1000,
+  //   30 * 60 * 1000
+  // );
   // const { data: citiesData, refetch: refetchCities } = useFetchData(
   //   "cities",
   //   `${process.env.NEXT_PUBLIC_CITIES_BASED_ON_COUNTRIES_REGISTER}${country}`,
@@ -398,7 +434,18 @@ function Register() {
                 >
                   {t("step_0.user_type.label")}
 
-                  <ComboBox
+                  {/* <ComboBox
+                    company_name={"company_name"}
+                    company_logo={"company_logo"}
+                    setValue={setValue}
+                    data={userTypeData}
+                    placeholder={t("step_0.user_type.placeholder")}
+                    stateName={"iam"}
+                    light
+                    selectBox
+                    callBcFn={(type: any) => dispatchRedux(setRegistrationUserType(type))}
+                  /> */}
+                  <ComboBoz
                     company_name={"company_name"}
                     company_logo={"company_logo"}
                     setValue={setValue}
@@ -552,7 +599,15 @@ function Register() {
                     htmlFor="country"
                   >
                     {t("step_2.Country.label")}
-                    <ComboBox
+                    {/* <ComboBox
+                      setValue={setValue}
+                      data={countriesData?.data}
+                      placeholder={t("step_2.Country.placeholder")}
+                      stateName={"country"}
+                      light
+                      NotFoundMessage={t("step_2.Country.NotFoundMessage")}
+                    /> */}
+                    <ComboBoz
                       setValue={setValue}
                       data={countriesData?.data}
                       placeholder={t("step_2.Country.placeholder")}

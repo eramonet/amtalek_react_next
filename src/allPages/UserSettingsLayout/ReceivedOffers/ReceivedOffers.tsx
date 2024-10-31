@@ -10,43 +10,43 @@ import { userData } from "@/Store/Features/AuthenticationSlice";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function ReceivedOffers({ userProfileDataOutlet }: any) {
+export default function ReceivedOffers({}: any) {
   const { i18n } = useTranslation("Pages_MyProperties");
   // const [userProfileDataOutlet] = useOutletContext() as [TUser];
   // const { t, i18n } = useTranslation("SettingsLayout");
-  // const user = useSelector(userData);
-  // const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
 
-  // async function getUserProfile(token: string, language: string) {
-  //   try {
-  //     const response = await fetch(
-  //       `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Accept-Language": language,
-  //         },
-  //       }
-  //     );
+  async function getUserProfile(token: string, language: string) {
+    try {
+      const response = await fetch(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": language,
+          },
+        }
+      );
 
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-  //     const dataProfile = await response.json();
+      const dataProfile = await response.json();
 
-  //     setUserProfileDataOutlet(dataProfile?.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch user profile:", error);
-  //   }
-  // }
+      setUserProfileDataOutlet(dataProfile?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
 
-  // useEffect(() => {
-  //   if (user?.token && i18n.language) {
-  //     getUserProfile(user?.token, i18n?.language);
-  //   }
-  // }, [user?.token, i18n.language]);
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      getUserProfile(user?.token, i18n?.language);
+    }
+  }, [user?.token, i18n.language]);
 
   return (
     <section className="site_container flex flex-col border rounded-xl relative p-5 bmd:p-7 gap-4 md:flex-row md:overflow-x-auto ">

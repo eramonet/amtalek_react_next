@@ -65,8 +65,8 @@ export default function LoginForm({ loginDispatch }: any) {
     true,
     (data) => {
       localStorage.setItem("userData", JSON.stringify(data?.data));
-      Cookies.set("userData", JSON.stringify(data?.data), { expires: 7 });
-      Cookies.set("token", data?.data?.token, { expires: 7 });
+      Cookies.set("userData", JSON.stringify(data?.data), { expires: 1 });
+      Cookies.set("token", data?.data?.token, { expires: 1 });
       dispatchRedux(setUserData(data?.data));
       recaptchaRef.current.reset();
       setValue("not_ropot", "no");
@@ -76,9 +76,10 @@ export default function LoginForm({ loginDispatch }: any) {
       setSubmitted(false);
       setLoggedInSuccess(true);
       // data && data?.data?.data?.has_package === "no" && router.replace("/");
-      data && data?.data?.data?.has_package === "no" && window.location.replace("/");
-      data && data?.data?.data?.has_package === "yes" && window.location.replace("/");
-      data  && window.location.replace("/");
+      // data && data?.data?.data?.has_package === "no" && window.location.replace("/");
+      // data && data?.data?.data?.has_package === "yes" && window.location.replace("/");
+      // data  && window.location.replace("/");
+      data && router.push("/"), router.refresh();
     },
     false,
     (error) => {

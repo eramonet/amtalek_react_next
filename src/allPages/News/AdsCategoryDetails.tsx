@@ -80,8 +80,8 @@ export default function AdsCategoryDetails() {
                       src={ad["image"]}
                       alt={`Ad ${ad["id"]}`}
                       className="w-full h-full object-cover"
-                      width={100}
-                      height={100}
+                      width={1000}
+                      height={1000}
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">

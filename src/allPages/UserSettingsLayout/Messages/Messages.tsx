@@ -17,8 +17,8 @@ import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { userData } from "@/Store/Features/AuthenticationSlice";
 import { useSelector } from "react-redux";
 import getData from "@/api/getData";
-
-export default function Messages({ locale, user, userProfileDataOutlet }: any) {
+// user, userProfileDataOutlet
+export default function Messages({ locale }: any) {
   const [filteredAgents, setFilteredAgents] = useState([]);
   const [filteredAgentsWords, setFilteredAgentsWords] = useState("");
   const MsgsBox = useRef<HTMLDivElement>(null);
@@ -26,6 +26,42 @@ export default function Messages({ locale, user, userProfileDataOutlet }: any) {
   const [actorType, setActor_Type] = useState<string>("");
   const [ContactedAgents, setContactedAgents] = useState<any>([]);
   const router = useRouter(); // لاستخدام تحديث query parameters
+
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
+
+  async function getUserProfile(token: string, language: string) {
+    try {
+      const response = await fetch(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": language,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const dataProfile = await response.json();
+
+      setUserProfileDataOutlet(dataProfile?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      getUserProfile(user?.token, i18n?.language);
+      // getNotifications(user?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
 
   async function getMessages() {
     try {

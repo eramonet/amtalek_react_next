@@ -5,6 +5,20 @@ import ClientWrapper from "../ClientWrapper";
 import QueryProvider from "../QueryProvider";
 import ToasterProvider from "../ToasterProvider";
 
+export async function generateMetadata({ params: { locale } }: any) {
+  const i18nNamespaces = ["Pages_Messages"];
+
+  const { t } = await initTranslations(locale, i18nNamespaces);
+
+  return {
+    title: t("tab.title"),
+    description: t("tab.description"),
+    icons: {
+      icon: "/fav-icon.png",
+    },
+  };
+}
+
 export default async function MessagesLayout({
   children,
   params: { locale },
@@ -12,7 +26,6 @@ export default async function MessagesLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-
   const i18nNamespaces = ["SettingsLayout", "Pages_Messages"];
   const { resources } = await initTranslations(locale, i18nNamespaces);
   return (

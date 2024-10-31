@@ -10,22 +10,33 @@ import { useSelector } from "react-redux";
 // import { Link } from "react-router-dom";
 import Loader from "@/components/loader/Loader";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 // import { HelmetTags } from "@/Components/MainComponents";
 
-export default function Addons({ user }: any) {
+// user
+export default function Addons({}: any) {
   const { i18n } = useTranslation("Pages_Packages");
   const [duration, setDuration] = useState("monthly");
-  // const user = useSelector(userData);
+  const user = useSelector(userData);
   const headers = {
     Authorization: `Bearer ${user?.token}`,
     "Content-Type": "application/json",
     lang: i18n.language?.startsWith("ar") ? "ar" : "en",
   };
 
+  const router = useRouter();
   async function getAddons() {
     return await axios.get(`https://amtalek.com/amtalekadmin/public/api/addons`, {
       headers: headers,
     });
+  }
+
+  function submitMonyToSeesionStorage(data: any, totalPrice: any, duration: any) {
+    sessionStorage.setItem("items", JSON.stringify(data));
+    sessionStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+    sessionStorage.setItem("duration", JSON.stringify(duration));
+
+    router.push("/addons-payment");
   }
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ["addons"],
@@ -97,7 +108,10 @@ export default function Addons({ user }: any) {
         {items?.map((item) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <div className="w-full flex justify-between items-center p-2 ss:flex-col ss:gap-5 border-b">
+            <div
+              key={item?.id}
+              className="w-full flex justify-between items-center p-2 ss:flex-col ss:gap-5 border-b"
+            >
               <div className="flex flex-col gap-3 ss:flex-row ss:items-center">
                 <h2 className="ss:text-xl">
                   {i18n.language?.startsWith("en")
@@ -187,23 +201,24 @@ export default function Addons({ user }: any) {
           {i18n.language?.startsWith("ar") ? "جنيه مصري " : "EGP"}
         </span>
       </div>
-      <Link
+      <div
+        onClick={() => submitMonyToSeesionStorage(items, totalPrice, duration)}
         // state={{ items, totalPrice, duration }}
-        href={{
-          // ${i18n.language?.startsWith("ar") ? "" : "/en"}
-          pathname: `/addons-payment`,
-          query: {
-            items: JSON.stringify(items),
-            totalPrice,
-            duration,
-          },
-        }}
+        // href={{
+        //   // ${i18n.language?.startsWith("ar") ? "" : "/en"}
+        //   pathname: `/addons-payment`,
+        //   query: {
+        //     items: JSON.stringify(items),
+        //     totalPrice,
+        //     duration,
+        //   },
+        // }}
         className={`bg-primary text-white w-fit p-3 rounded border border-primary hover:bg-transparent hover:text-primary transition duration-300 ${
           totalPrice === 0 && "border-none pointer-events-none !bg-gray-200"
         }`}
       >
         {i18n.language?.startsWith("ar") ? "الدفع" : "Proceed to Checkout"}
-      </Link>
+      </div>
     </section>
   );
 }

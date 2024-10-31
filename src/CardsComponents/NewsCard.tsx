@@ -1,10 +1,11 @@
-// "use client";
+"use client";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import LangLink from "@/components/LangLink";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 // import { Link } from "react-router-dom";
 // import { useTranslation } from "react-i18next";
 
@@ -12,6 +13,13 @@ import Link from "next/link";
 
 function NewsCard({ news, t, homePage }: any) {
   // const { i18n } = useTranslation();
+  const router = useRouter();
+
+  const handleCategoryClick = (e: any) => {
+    e.preventDefault();
+    sessionStorage.setItem("newsCategory", JSON.stringify(news?.news_category?.id));
+    router.push(`/news/categories/${news?.news_category?.main_title?.replace(/ /g, "-")}`);
+  };
 
   return (
     <div
@@ -100,9 +108,8 @@ function NewsCard({ news, t, homePage }: any) {
             </div>
           </LangLink>
           <Link
-            href={`/news/${news?.id}/${news?.title.replace(/\s+/g, "-").replace(/\//g, "-")}`}
-            // {`/news/categories/${news?.news_category?.main_title?.replace(/ /g, "-")}`}
-            // state={{ id: news?.news_category?.id }}
+            onClick={handleCategoryClick}
+            href={`/news/categories/${news?.news_category?.main_title?.replace(/ /g, "-")}`}
             className=" bg-secondary20 text-secondary font-medium px-3 py-1 round w-fit cursor-pointer"
           >
             {news?.news_category?.main_title}

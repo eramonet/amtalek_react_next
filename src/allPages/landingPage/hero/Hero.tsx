@@ -1,5 +1,5 @@
 "use client";
-import { memo, Suspense, useEffect, useRef } from "react";
+import { memo, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
@@ -9,16 +9,93 @@ import "swiper/css/effect-fade";
 import Image from "next/image.js";
 import LangLink from "@/components/LangLink";
 import SearchForm from "@/MainComponents/SearchForm";
+import { useSelector } from "react-redux";
+import { userData } from "@/Store/Features/AuthenticationSlice";
+import getData from "@/api/getData";
+import Loader from "@/components/loader/Loader";
+import SearchFormTwo from "../../search/SearchFormTwo";
+import useSessionStorageState from "use-session-storage-state";
+import { usePathname } from "next/navigation";
+// import SearchFormTwo from "@/allPages/search/SearchFormTwo";
 
 const MemoizedHero = memo(function Hero({ data, locale }: any) {
-  const { t } = useTranslation("Pages_LandingPage");
+  const { t, i18n } = useTranslation("Pages_LandingPage");
+  const [reloadData, setReloadData] = useState(0);
+
+  const [userProfileDataOutletData, setUserProfileDataOutletData] = useState<any>([]);
+  const user = useSelector(userData);
+
+  async function getUserProfile() {
+    try {
+      const response = await getData(
+        `web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        i18n.language,
+        user?.token
+      );
+      localStorage.setItem("userProfileDataOutlet", JSON.stringify(response.data));
+      setUserProfileDataOutletData(response?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
+
+  useEffect(() => {
+    getUserProfile();
+    // if (user?.data && userProfileDataOutletData) {
+    //   localStorage.setItem("userProfileDataOutlet", JSON.stringify(userProfileDataOutletData));
+    // }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
+
+  // const user = useSelector(userData);
+  // if (user) {
+  //   localStorage.setItem("userProfileDataOutlet", JSON.stringify(AlluserProfileDataOutlet));
+  // }
+
   // Swiper.changeLanguageDirection(locale);
+
+  const defaultFormData = {
+    keyword: "",
+    country: "1",
+    city: "",
+    region: "",
+    sub_region: "",
+    property_type: "",
+    min_beds: "",
+    min_bathes: "",
+    purpose: "",
+    min_area: "",
+    max_area: "",
+    min_price: "",
+    max_price: "",
+    finishing: "",
+    currency: "",
+    amenities: [] as any,
+    price_arrange_keys: "" as any,
+    priority_keys: "" as any,
+    page: 1,
+    fc: "",
+    // srt: "",
+  };
+  const pathname = usePathname();
+  const [formData, setFormData] = useSessionStorageState("formData", {
+    defaultValue: defaultFormData,
+  });
+
+  const resetFormData = () => {
+    setFormData(defaultFormData);
+  };
 
   const header = useRef<any>(null);
   const makeNavFixed = useRef(null);
   const makeNavNotFixed = useRef(null);
 
   useEffect(() => {
+    if (pathname === "/") {
+      resetFormData();
+    }
+
     const handleScroll = () => {
       let headerHeight = header?.current?.getBoundingClientRect().top;
       if (parseInt(headerHeight) < 5) {
@@ -67,7 +144,7 @@ const MemoizedHero = memo(function Hero({ data, locale }: any) {
               modules={[Autoplay, EffectFade]}
               autoplay={{ delay: 3000 }}
               // locale === "ar" ? "slide" :
-              effect={"fade"}
+              effect={"slider"}
               // ltr={locale === "ar"}
               // rtl={true}
               speed={500}
@@ -105,7 +182,10 @@ const MemoizedHero = memo(function Hero({ data, locale }: any) {
                       <LangLink
                         onClick={() => window.sessionStorage.setItem("step", "1")}
                         className="mb-[65px] w-[190px] h-[50px] min-h-[50px] text-sm font-medium flex justify-center alg:mx-auto bg-custome-yellow text-secondary hover:bg-transparent border-custome-yellow transition-all duration-300 items-center border-[1px] rounded-[4px] hover:text-custome-yellow hover:border-custome-yellow rtl:ml-auto"
-                        to={``}
+                        // to={`/search?k=&cr=${"-1"}&c=-1&r=-1&sr=-1&t=&f=&pr=&p=&b=&af=&at=&pf=&pt=&srt=0&cur=&page=1`}
+                        to={`/search/عقارات`}
+                        //
+                        // localStorage.getItem("country") ||
                       >
                         {t("Hero.CTA_Text")}
                       </LangLink>
@@ -116,6 +196,7 @@ const MemoizedHero = memo(function Hero({ data, locale }: any) {
             </Swiper>
           ) : (
             <Image
+              priority
               width={200}
               height={300}
               style={{
@@ -130,8 +211,16 @@ const MemoizedHero = memo(function Hero({ data, locale }: any) {
         </div>
 
         <div className="hero__right--header-form h-full w-[40vw] min-w-[610px] xxxl:min-w-[410px] md:min-w-[300px] alg:w-full alg:h-fit relative z-30">
-          <Suspense fallback={<div>Loading...</div>}>
-            <SearchForm home type={"bigForm"} />
+          <Suspense fallback={<Loader />}>
+            {/* <SearchForm home type={"bigForm"} locale={locale} /> */}
+            <SearchFormTwo
+              formData={formData}
+              setFormData={setFormData}
+              setReloadData={setReloadData}
+              home
+              type={"bigForm"}
+              locale={locale}
+            />
           </Suspense>
         </div>
       </section>

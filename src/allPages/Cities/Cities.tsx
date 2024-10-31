@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Heading from "@/components/Heading";
 import Loader from "@/components/loader/Loader";
 import { ErrorMessage, NoItemsMessage } from "@/SubComponents";
-import CityCard from "../landingPage/popularPlaces/components/CityCard";
-// import { useSearchParams } from "next/navigation";
 import getData from "@/api/getData";
+import CityCard from "@/CardsComponents/CityCard";
+// import CityCard from "../landingPage/popularPlaces/components/CityCard";
+// import { useSearchParams } from "next/navigation";
 // import CityCard from "@/CardsComponents/CityCard";
 
 export function Cities({ locale }: any) {
@@ -74,7 +75,7 @@ export function Cities({ locale }: any) {
       />
       <Heading style={"text-center"}>{t("heading")} </Heading>
       <motion.div
-        className="all__news--wrapper w-full grid grid-cols-3 gap-3 ss:grid-cols-1 my-10"
+        className="all__news--wrapper w-full grid grid-cols-3 gap-3 gap-y-5 ss:grid-cols-1 my-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -97,7 +98,7 @@ export function Cities({ locale }: any) {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="h-[279px]">
+                <div className="h-[250px] overflow-hidden hover:translate-y-1 translate-y-5 transition-all rounded duration-300 ease-in-out">
                   <CityCard city={city} t={t} />
                 </div>
               </motion.div>

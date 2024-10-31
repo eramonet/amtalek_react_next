@@ -76,7 +76,8 @@ function VerificationCodeForm({ loginDispatch, from, email, t, heading }: any) {
     (data: any) => {
       setSubmitted(true);
       postCheckCode({
-        api: `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_CHECK_CODE}`,
+        // api: `https://amtalek.amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_CHECK_CODE}`,
+        api: `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_CHECK_CODE}`,
         data: data,
       });
     },

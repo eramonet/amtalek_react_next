@@ -19,7 +19,7 @@ import { TbSocial } from "react-icons/tb";
 import { Dropdown, Badge, Menu } from "antd";
 import { setShowLoginPopUp } from "@/Store/Features/AuthenticationSlice";
 // import { useDispatch } from "react-redux";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 const NavbarHeader = async function NavbarHeader({ locale }: any) {
   const i18nNamespaces = ["LayoutComponents"];
   const { t, i18n } = await initTranslations(locale, i18nNamespaces);
@@ -48,7 +48,7 @@ const NavbarHeader = async function NavbarHeader({ locale }: any) {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Accept-Language": language,
+            lang: language,
           },
         }
       );
@@ -83,6 +83,9 @@ const NavbarHeader = async function NavbarHeader({ locale }: any) {
   };
 
   const userProfileDataOutlet = await fetchUserProfile(token, i18n.language);
+
+  // cookieStore.set("userData", JSON.stringify(userProfileDataOutlet));
+  // cookieStore.set("userProfileDataOutlet", JSON.stringify(userProfileDataOutlet), { expires: 1 });
   const { notifications, unseen_counter } = await fetchNotifications(token);
 
   // const dispatch = useDispatch();
@@ -183,7 +186,7 @@ const NavbarHeader = async function NavbarHeader({ locale }: any) {
           />
         </LangLink>
 
-        <Navbar t={t} />
+        <Navbar />
         {/* <ServerImg
           userProfileDataOutlet={userProfileDataOutlet}
           menu={menu}

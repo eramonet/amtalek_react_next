@@ -4,6 +4,20 @@ import QueryProvider from "../QueryProvider";
 import initTranslations from "@/app/i18n";
 import ToasterProvider from "../ToasterProvider";
 
+export async function generateMetadata({ params: { locale, name } }: any) {
+  const i18nNamespaces = ["Pages_Register"];
+
+  const { t } = await initTranslations(locale, i18nNamespaces);
+
+  return {
+    title: t("tab.title"),
+    description: t("tab.description"),
+    icons: {
+      icon: "/fav-icon.png",
+    },
+  };
+}
+
 export default async function RegisterLayout({
   children,
   params: { locale },

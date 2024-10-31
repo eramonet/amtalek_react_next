@@ -1,13 +1,25 @@
 "use client";
+import { userData } from "@/Store/Features/AuthenticationSlice";
+import { useEffect, useState } from "react";
 // import { HelmetTags } from "../../../../src/Components/MainComponents";
 // import { TUser } from "@/Types/AppTypes";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 // import { useOutletContext } from "react-router-dom";
 
-export default function CurrentPackage({ userProfileDataOutlet }: any) {
+export default function CurrentPackage({}: any) {
   const { t, i18n } = useTranslation("Pages_CurrentPackage");
   // const [userProfileDataOutlet] = useOutletContext() as [TUser];
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
 
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      setUserProfileDataOutlet(() =>
+        JSON.parse(localStorage.getItem("userProfileDataOutlet") || "{}")
+      );
+    }
+  }, [user?.token, i18n.language]);
   return (
     <section className="site_container pb-44 ">
       {/* <HelmetTags title={t("tab.title")} description={t("tab.description")} /> */}

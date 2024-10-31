@@ -4,7 +4,7 @@ import { useFetchData } from "@/Hooks/useAxios";
 import { ErrorMessage, Loader } from "@/SubComponents/index";
 // import HelmetTags from "@/MainComponents/HelmetTags.tsx";
 // import { useParams } from "react-router-dom";
-export function Privacy({ data }: any) {
+export async function Privacy({ data }: any) {
   const { t, i18n } = useTranslation("Pages_TermsConditions");
 
   const {
@@ -12,7 +12,7 @@ export function Privacy({ data }: any) {
     isLoading,
     isError,
     isPaused,
-  } = useFetchData("TermsConditions", process.env.NEXT_PUBLIC_TERMS);
+  } = (await useFetchData("TermsConditions", process.env.NEXT_PUBLIC_TERMS))?.data;
   //   const { page } = useParams();
 
   return (

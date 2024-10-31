@@ -11,32 +11,48 @@ import Cookies from "js-cookie"; // مكتبة للتعامل مع الكوكي�
 import { useTranslation } from "react-i18next";
 
 export default function HeaderTopMenu({ heroMenu }: any) {
-  const { t } = useTranslation("LayoutComponents");
+  const { t, i18n } = useTranslation("LayoutComponents");
   // حالة لتخزين بيانات المستخدم
+  // const [userData, setUserData] = useState<any>({});
+
+  // // مراقبة الـ cookie وتحديث حالة userData عند تغير الـ cookie
+  // useEffect(() => {
+  //   const cookieData = Cookies.get("userData");
+  //   if (cookieData) {
+  //     try {
+  //       const parsedData = JSON.parse(cookieData);
+  //       setUserData(parsedData);
+  //     } catch (error) {
+  //       console.error("Error parsing user cookie data: ", error);
+  //     }
+  //   }
+  // }, []); // يتم استدعاء هذا الـ useEffect مرة واحدة عند تحميل الصفحة
   const [userData, setUserData] = useState<any>({});
 
-  // مراقبة الـ cookie وتحديث حالة userData عند تغير الـ cookie
   useEffect(() => {
-    const cookieData = Cookies.get("userData");
-    if (cookieData) {
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
       try {
-        const parsedData = JSON.parse(cookieData);
+        const parsedData = JSON.parse(storedData);
         setUserData(parsedData);
       } catch (error) {
-        console.error("Error parsing user cookie data: ", error);
+        console.error("Error parsing user data from localStorage: ", error);
       }
     }
-  }, []); // يتم استدعاء هذا الـ useEffect مرة واحدة عند تحميل الصفحة
+  }, []);
 
   const userProfile: any = userData?.data;
   const token: any = userData?.token || null;
+
+  // const userProfile: any = userData?.data;
+  // const token: any = userData?.token || null;
 
   return (
     <div
       className={`hero__header--menu--items bg- flex items-center ${
         heroMenu
-          ? " px-3 ss:px-1 w-full justify-between ss:justify-center "
-          : "  w-[55%] clg:w-full justify-end  clg:justify-center"
+          ? "px-3 ss:px-1 w-full justify-between ss:justify-center "
+          : "w-[55%] clg:w-full justify-end  clg:justify-center"
       }`}
     >
       {!token ? (
@@ -59,7 +75,7 @@ export default function HeaderTopMenu({ heroMenu }: any) {
           <LangLink
             className="submit__prop--btn flex justify-center items-center text-secondary px-3 axss:px-2 text-[10px] axss:text-[8px] font-bold"
             to={
-              !userData
+              !userProfile
                 ? "/login"
                 : userProfile?.actor_type === "user" && userProfile?.has_package === "yes"
                 ? "/submit-property"
@@ -151,7 +167,15 @@ export default function HeaderTopMenu({ heroMenu }: any) {
       >
         <MdAttachMoney size={15} /> {t("HeaderTopMenu.packages")}
       </LangLink>
-      <span className="flex justify-center items-center ss:hidden">
+      {/* <span className="flex justify-center items-center ss:hidden"> */}
+      <span
+        className={`${
+          i18n.language.startsWith("ar")
+            ? // border-r-2 rtl:border-r-2
+              "text-[10px] axss:text-[8px] font-bold flex items-center justify-center rtl:border-l-0  border-l-secondary rtl:border-r-secondary px-2 ss:hidden"
+            : "text-[10px] axss:text-[8px] font-bold flex items-center justify-center  px-2 ss:hidden"
+        }`}
+      >
         <LanguageChanger />
       </span>
     </div>

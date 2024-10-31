@@ -89,34 +89,11 @@ export default function News() {
           </AnimatePresence>
         </motion.div>
       )}
-      {/* <motion.div
-        className="all__news--wrapper w-full grid grid-cols-3 gap-5 clg:grid-cols-2 ss:grid-cols-1 my-10"
-        layout
-      >
-        <AnimatePresence>
-          {isError ? (
-            <ErrorMessage message={t("ErrorMessage")} />
-          ) : isLoading ? (
-            <Loader />
-          ) : filteredItems.length === 0 ? (
-            <NoItemsMessage message={t("NoItemsMessage")} />
-          ) : (
-            filteredItems.map((newsItem: any) => (
-              <motion.div
-                key={newsItem?.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <NewsCard news={newsItem} t={t} />
-              </motion.div>
-            ))
-          )}
-        </AnimatePresence>
-      </motion.div> */}
+
       {totalPages > 1 && (
         <ReactPaginate
+          previousLabel={t("Pagination.Next")}
+          nextLabel={t("Pagination.Previous")} // هنا يمكنك وضع النص المطلوب للزر السابق
           breakLabel={"..."}
           pageCount={totalPages}
           onPageChange={({ selected }) => setPage(selected + 1)}
@@ -124,6 +101,8 @@ export default function News() {
           pageRangeDisplayed={5}
           containerClassName="pagination__wrapper"
           activeClassName="active__page--pagination"
+          previousClassName="custom-previous-class" // كلاس مخصص للزر السابق
+          nextClassName="custom-next-class" // كلاس مخصص للزر التالي
         />
       )}
     </section>

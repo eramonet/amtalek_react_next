@@ -1,3 +1,4 @@
+import initTranslations from "@/app/i18n";
 import { setUserProfileData, userData } from "@/Store/Features/AuthenticationSlice";
 import useHandleLogOut from "@/Utilities/useHandleLogOut";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
@@ -11,7 +12,7 @@ const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL_FULL,
 });
 
-export const useFetchData = (
+export const useFetchData = async (
   identifier: any,
   api: any,
   showToasts = false,
@@ -28,6 +29,8 @@ export const useFetchData = (
   const dispatchRedux = useDispatch();
   const user = useSelector(userData);
   const { i18n } = useTranslation();
+  // const { i18n } = await initTranslations();
+  // const isArabic = i18n.language?.startsWith("ar") ? "ar" : "en";
   const isArabic = i18n.language?.startsWith("ar") ? "ar" : "en";
   const [logOut] = useHandleLogOut();
 

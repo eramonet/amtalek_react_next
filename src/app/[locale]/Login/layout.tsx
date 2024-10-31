@@ -5,6 +5,20 @@ import QueryProvider from "../QueryProvider";
 import { headers } from "next/headers";
 import ToasterProvider from "../ToasterProvider";
 
+export async function generateMetadata({ params: { locale, name } }: any) {
+  const i18nNamespaces = ["Pages_Login"];
+
+  const { t } = await initTranslations(locale, i18nNamespaces);
+
+  return {
+    title: t("tab.title"),
+    description: t("tab.description"),
+    icons: {
+      icon: "/fav-icon.png",
+    },
+  };
+}
+
 export default async function LoginLayout({
   children,
   params: { locale },

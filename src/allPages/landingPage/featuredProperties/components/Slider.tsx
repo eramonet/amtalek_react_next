@@ -16,12 +16,15 @@ import { usePostData } from "@/Hooks/usePostData";
 import FavoriteButton from "@/components/FavoriteButton";
 import React, { useEffect, useState } from "react";
 import LangLink from "@/components/LangLink";
-
-export default function Slider({ data, locale, countrie, userProfileDataOutlet, user }: any) {
-  const { t } = useTranslation("Pages_LandingPage");
+import { faBath, faBed, faMaximize } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// userProfileDataOutlet, user
+export default function Slider({ data, locale, countrie }: any) {
+  const { t, i18n } = useTranslation("Pages_LandingPage");
   // console.log(data?.cards[0]);
+  const user = useSelector(userData);
 
-  const [check, setCheck] = useState<any>([]);
+  // const [check, setCheck] = useState<any>([]);
   // const commonIds = data?.cards[0]
   //   .filter((item1: any) =>
   //     userProfileDataOutlet?.favorite_list?.some((item2: any) => item2.id === item1.id)
@@ -29,13 +32,48 @@ export default function Slider({ data, locale, countrie, userProfileDataOutlet, 
   //   .map((item: any) => item.id);
   // setCheck(commonIds);
 
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+
+  async function getUserProfile(token: string, language: string) {
+    try {
+      const response = await fetch(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": language,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const dataProfile = await response.json();
+
+      setUserProfileDataOutlet(dataProfile?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      getUserProfile(user?.token, i18n?.language);
+      // getNotifications(user?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
+
   useEffect(() => {
     const commonIds = data?.cards[0]
       .filter((item1: any) =>
         userProfileDataOutlet?.favorite_list?.some((item2: any) => item2.id === item1.id)
       )
       .map((item: any) => item.id);
-    setCheck(commonIds);
+    // setCheck(commonIds);
   }, [data, userProfileDataOutlet]);
   // console.log(check); // الناتج: [2, 3]
   // console.log(check.includes(46768454));
@@ -117,7 +155,15 @@ export default function Slider({ data, locale, countrie, userProfileDataOutlet, 
                   height={1000}
                   className="w-8 h-8 rounded-full"
                 />
-                <h3>{slide.broker_details[0].name}</h3>
+                <h3>
+                  <Link
+                    href={`Agencies/${slide.broker_details[0]?.name?.replace(/\s/g, "-")}/${
+                      slide.broker_details[0].id
+                    }/${slide.broker_details[0].broker_type}`}
+                  >
+                    {slide.broker_details[0].name}
+                  </Link>
+                </h3>
               </div>
             </div>
             <div className="absolute top-4 z-20 left-4">
@@ -185,15 +231,15 @@ export default function Slider({ data, locale, countrie, userProfileDataOutlet, 
                       <div className="heart-container" title="Like">
                         {user?.token && (
                           <input
-                            // defaultChecked={Boolean(Number(slide?.is_fav))}
+                            defaultChecked={Boolean(Number(slide?.is_fav))}
                             // checked={Boolean(Number(slide?.is_fav))}
-                            defaultChecked={data?.cards[0]
-                              .filter((item1: any) =>
-                                userProfileDataOutlet?.favorite_list?.some(
-                                  (item2: any) => item2.id === item1.id
-                                )
-                              )
-                              .find((item: any) => item.id === slide.id)} // استخدم includes بدلاً من include
+                            // defaultChecked={data?.cards[0]
+                            //   .filter((item1: any) =>
+                            //     userProfileDataOutlet?.favorite_list?.some(
+                            //       (item2: any) => item2.id === item1.id
+                            //     )
+                            //   )
+                            //   .find((item: any) => item.id === slide.id)} // استخدم includes بدلاً من include
                             type="checkbox"
                             className="heart-checkbox"
                             id={slide?.id}
@@ -239,11 +285,37 @@ export default function Slider({ data, locale, countrie, userProfileDataOutlet, 
                   )}
                 </div>
 
+                {/*  */}
+                {/* border-t-2 border-t-secondary */}
+                <div className="property__details--bottom border-t border-t-secondary  flex  rtl:rtl justify-between items-center h-full bg- gap-2 px-3 clg:py-3  py-2">
+                  <h5 className="property__size  text-center text-xs font-medium clg:text-[10px] bmd:text-xs smtext-[9px] flex items-center ">
+                    <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faMaximize} />
+                    {t("FeaturedPropertyCard.area_formatted", {
+                      area: slide?.land_area,
+                    })}
+                  </h5>
+
+                  <h5 className="bedrooms__number  text-center text-xs font-medium  clg:text-[10px] bmd:text-xs smtext-[9px] ">
+                    <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faBed} />{" "}
+                    {t("FeaturedPropertyCard.Bedrooms", {
+                      count: slide?.bed_rooms_no,
+                    })}
+                  </h5>
+                  <h5 className="rooms__number  text-center text-xs font-medium clg:text-[10px] bmd:text-xs smtext-[9px] ">
+                    <FontAwesomeIcon className="mr-1 rtl:mr-0 rtl:ml-1" icon={faBath} />{" "}
+                    {t("FeaturedPropertyCard.Bathrooms", {
+                      count: slide?.bath_room_no,
+                    })}
+                  </h5>
+                </div>
+                {/*  */}
+
                 <p className="py-2 px-3 border-y border-custome-blue truncate">
                   {slide.city} | {slide.region} | {slide.sub_region}
                 </p>
+
                 {slide.sale_price && (
-                  <p className="py-2 px-3 border-y border-custome-blue truncate">
+                  <p className="py-2 px-3 border-y border-custome-blue truncate text-center">
                     {/* {slide.sale_price} {slide.currency} */}
                     {t("PropertyCard.price_formatted", {
                       context: slide?.for_what,
@@ -254,8 +326,9 @@ export default function Slider({ data, locale, countrie, userProfileDataOutlet, 
                     })}
                   </p>
                 )}
+
                 {slide.rent_price && (
-                  <p className="py-2 px-3 border-y border-custome-blue truncate">
+                  <p className="py-2 px-3 border-y border-custome-blue truncate text-center">
                     {/* {slide.rent_price} {slide.currency} / `{slide.rent_duration}` */}
                     {t("PropertyCard.price_formatted", {
                       context: slide?.for_what,

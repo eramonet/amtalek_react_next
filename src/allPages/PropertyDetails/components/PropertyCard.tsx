@@ -28,7 +28,6 @@ export default function PropertyCard({ card, locale }: any) {
     true,
     (error: any) => {
       // console.error("An error occurred:", error);
-
       //like from all properties doesn't have onSuccuss and favorites page can only unlike the property, so it has onSuccess
       // props?.onSuccess ? props?.onSuccess(props.slide?.id) : "";
     }
@@ -96,12 +95,12 @@ export default function PropertyCard({ card, locale }: any) {
         </Link>
         {/* *********************************************************************************************************************** */}
         <div className="absolute bg-custome-blue text-custome-white bottom-0 right-0 rounded px-2 py-1">
-          {t("PropertyCard?.price_formatted", {
+          {t("PropertyCard.price_formatted", {
             context: card?.for_what,
             sale_price: card?.sale_price,
             rent_price: card?.rent_price,
             curr: card?.currency,
-            duration: t(`PropertyCard?.${card?.rent_duration}`),
+            duration: t(`PropertyCard.${card?.rent_duration}`),
           })}
         </div>
       </div>
@@ -150,19 +149,19 @@ export default function PropertyCard({ card, locale }: any) {
         <div className=" p-3 flex justify-between items-start h-fit w-full gap-1">
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaMaximize />
-            {t("PropertyCard?.area_formatted", {
+            {t("PropertyCard.area_formatted", {
               area: card?.land_area,
             })}
           </h5>
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaBed />{" "}
-            {t("PropertyCard?.Bedrooms", {
+            {t("PropertyCard.Bedrooms", {
               count: card?.bed_rooms_no,
             })}
           </h5>
           <h5 className="flex items-center gap-2 xxl:text-center text-xs font-medium axs:text-[10px]">
             <FaBath />{" "}
-            {t("PropertyCard?.Bathrooms", {
+            {t("PropertyCard.Bathrooms", {
               count: card?.bath_room_no,
             })}
           </h5>
@@ -243,7 +242,7 @@ export default function PropertyCard({ card, locale }: any) {
               </div>
             </div> */}
             <FavoriteButton
-            slide={card}
+              slide={card}
               id={card?.id}
               is_fav={card?.is_fav}
               className={`cursor-pointer border-x-[1px] border-x-secondary20 py-3 mr-4 rtl:mr-0 rtl:ml-4 px-3`}

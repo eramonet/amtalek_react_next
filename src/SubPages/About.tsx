@@ -1,3 +1,4 @@
+"use client";
 import { useTranslation } from "react-i18next";
 import { useFetchData } from "@/Hooks/useAxios";
 // import { ErrorMessage, Loader } from "@/SubComponents/index";
@@ -7,13 +8,12 @@ import Image from "next/image";
 import ErrorMessage from "@/SubComponents/ErrorMessage";
 // import HelmetTags from "@/MainComponents/HelmetTags";
 // import Heading from "@/MainComponents/Heading";
-export function Component() {
+export async function About({ data }: any) {
   const { t } = useTranslation("Pages_About");
 
-  const { data, isLoading, isError, isPaused } = useFetchData(
-    "About",
-    process.env.NEXT_PUBLIC_ABOUT
-  );
+  const { isLoading, isError, isPaused } = (
+    await useFetchData("About", process.env.NEXT_PUBLIC_ABOUT)
+  )?.data;
 
   return (
     <section className="pt-20 pb-32 md:pb-36 site_container flex flex-col items-center ">

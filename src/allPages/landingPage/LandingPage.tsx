@@ -1,87 +1,302 @@
+// // "use client";
+// "use client";
+// import React, { Suspense, useEffect, useState } from "react";
+// import Hero from "./hero/Hero";
+// import ImagesSection from "./imagesSection/ImagesSection";
+// import FeaturedProperties from "./featuredProperties/FeaturedProperties";
+// import ADSHome from "@/components/ADS/ADSHome";
+// import Agencies from "./agencies/Agencies";
+// import VideoSection from "./videoSection/VideoSection";
+// import MostViews from "./mostViews/MostViews";
+// import LatestNews from "./lastNews/components/LatestNews";
+// import LatestProperties from "./latestProperties/components/LatestProperties";
+// import MarketSection from "./marketSection/components/MarketSection";
+// import PopularPlaces from "./popularPlaces/components/PopularPlaces";
+// import Loading from "./../../app/[locale]/loading";
+// import getData from "@/api/getData";
+// import {
+//   Authorized,
+//   fetchUserProfile,
+//   userData,
+//   userProfileData,
+//   userProfileDataOut,
+// } from "@/Store/Features/AuthenticationSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { TUser } from "@/Types/AppTypes";
+// // import { UserProfileClient } from "@/api/UserProfileClient";
+// // import { cookies } from "next/headers";
+// import Cookies from "js-cookie";
+// export default function LandingPage({ locale }: { locale: string }) {
+//   const [data, setData] = useState<any>(null);
+//   const [loading, setLoading] = useState(true);
+//   // const cookieStore = cookies();
+//   // const userDatacookies = cookieStore.get("userData");
+//   // const userDataValue: any = userDatacookies ? userDatacookies.value : null;
+//   // const user: any = useSelector(userData) || null;
+//   const userProfile: any = useSelector(userProfileDataOut) || null;
+
+//   const dispatch = useDispatch();
+//   const user = useSelector(userData);
+//   const token = useSelector(Authorized);
+//   // const userProfiletwo = useSelector(userProfileData) as TUser;
+//   // console.log(userProfiletwo);
+//   // const [userProfileDataOutletData, setUserProfileDataOutletData] = useState<any>([]);
+//   //   const user = useSelector(userData);
+
+//   //   async function getUserProfile(token: string, language: string) {
+//   //     try {
+//   //       const response = await fetch(
+//   //         `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+//   //         {
+//   //           method: "GET",
+//   //           headers: {
+//   //             Authorization: `Bearer ${token}`,
+//   //             "Accept-Language": language,
+//   //           },
+//   //         }
+//   //       );
+
+//   //       if (!response.ok) {
+//   //         throw new Error("Network response was not ok");
+//   //       }
+
+//   //       const dataProfile = await response.json();
+
+//   //       setUserProfileDataOutlet(dataProfile?.data);
+//   //     } catch (error) {
+//   //       console.error("Failed to fetch user profile:", error);
+//   //     }
+//   //   }
+
+//   //   useEffect(() => {
+//   //     if (user?.token && i18n.language) {
+//   //       getUserProfile(user?.token, i18n?.language);
+//   //       // getNotifications(user?.token);
+//   //     }
+//   //     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   //   }, [user?.token, i18n.language]);
+
+//   // const d = Cookies.get("userData");
+//   // console.log(d);
+
+//   useEffect(() => {
+//     // if (user && token) {
+//     const language = "en"; // يمكنك الحصول على اللغة من السياق أو الحالة الخاصة بك
+//     dispatch(fetchUserProfile({ token, language: locale, userData: user }));
+//     // }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [user, token, dispatch]);
+
+//   console.log(user, userProfile);
+
+//   useEffect(() => {
+//     // UserProfileClient();
+//     const fetchData = async () => {
+//       try {
+//         const homeData = await getData("web/home", locale, user?.token);
+//         const infoGraphData = await getData("web/info-graph", locale, user?.token);
+//         const adsData = await getData("ads-getter/home-page", locale, user?.token);
+//         const brokersData = await getData("web/our-brokers", locale, user?.token);
+//         const countriesData = await getData("web/countries", locale, user?.token);
+//         const userProfileDataOutlet = await getData(
+//           `web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+//           locale,
+//           user?.token
+//         );
+//         // console.log(userProfileDataOutlet?.data);
+
+//         // if (user && userProfileDataOutlet?.data) {
+//         //   Cookies.set("userProfileDataOutlet", JSON.stringify(userProfileDataOutlet?.data));
+//         // }
+
+//         setData({
+//           allData: homeData?.data,
+//           allDataImage: infoGraphData?.data,
+//           allAds: adsData?.data,
+//           allBroker: brokersData?.data,
+//           AllCountries: countriesData?.data[0] || [],
+//           AlluserProfileDataOutlet: userProfileDataOutlet?.data,
+//         });
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [locale, user?.token]);
+
+//   if (loading) {
+//     return <Loading />;
+//   }
+
+//   const { allData, allDataImage, allAds, allBroker, AllCountries, AlluserProfileDataOutlet } = data;
+
+//   if (user && AlluserProfileDataOutlet) {
+//     localStorage.setItem("userProfileDataOutlet", JSON.stringify(AlluserProfileDataOutlet));
+//   }
+
+//   return (
+//     <Suspense fallback={<Loading />}>
+//       <Hero data={allData?.sliders || []} />
+//       <ImagesSection data={allDataImage || []} />
+//       <ADSHome data={allAds || []} />
+//       <FeaturedProperties data={allData?.featured_properties || []} countrie={AllCountries} />
+//       <LatestProperties data={allData?.latest_properties || []} countrie={AllCountries} />
+//       <MarketSection data={allData?.market_section[0] || null} />
+//       <PopularPlaces data={allData?.cities_most_pops || []} countrie={AllCountries} />
+//       <VideoSection data={allData?.descripe_us[0] || null} countrie={AllCountries} />
+//       <MostViews data={allData?.most_view_deals || []} countrie={AllCountries} />
+//       <LatestNews data={allData?.news || []} />
+//       <Agencies data={allBroker || []} countrie={AllCountries} />
+//     </Suspense>
+//   );
+// }
+
+import React, { Suspense, useEffect, useState } from "react";
 import Hero from "./hero/Hero";
 import ImagesSection from "./imagesSection/ImagesSection";
 import FeaturedProperties from "./featuredProperties/FeaturedProperties";
-import getData from "@/api/getData";
 import ADSHome from "@/components/ADS/ADSHome";
-import MarketSection from "./marketSection/MarketSection";
-import LastNews from "./lastNews/LastNews";
+// import MarketSection from "./marketSection/MarketSection";
+// import LastNews from "./lastNews/LastNews";
 import Agencies from "./agencies/Agencies";
-import PopularPlaces from "./popularPlaces/PopularPlaces";
-import Loader from "@/components/loader/Loader";
+// import PopularPlaces from "./popularPlaces/PopularPlaces";
+// import Loader from "@/components/loader/Loader";
 import VideoSection from "./videoSection/VideoSection";
 import MostViews from "./mostViews/MostViews";
-import LatestProperties from "./latestProperties/LatestProperties";
+// import LatestProperties from "./latestProperties/LatestProperties";
 import initTranslations from "@/app/i18n";
-import LoginPopUp from "../login/LoginPopUp";
-import React from "react";
-import LogOutPopUp from "@/MainComponents/LogOutPopUp";
+import { useSelector } from "react-redux";
+import { OwnCountry } from "@/Store/Features/MiscellaneousSlice";
+import { useFetchData } from "@/Hooks/useFetchData";
+import MarketSection from "./marketSection/components/MarketSection";
+import PopularPlaces from "./popularPlaces/components/PopularPlaces";
+import LatestNews from "./lastNews/components/LatestNews";
+import LatestProperties from "./latestProperties/components/LatestProperties";
+import getData from "@/api/getData";
+// import MemoizedFeaturedProperties from "./featuredProperties/components/FeaturedProperties";
+import Loading from "./../../app/[locale]/loading";
+import { cookies } from "next/headers";
 
-import UserProfile from "./UserProfile";
 export default async function LandingPage({ locale, token }: any) {
-  const countries = await getData("web/countries", locale, token);
-  const AllCountries = countries.data[0] || [];
+  // const [initialData, setInitialData] = useState<any>(null);
+  // const [initialDataImage, setInitialDataImage] = useState<any>(null);
+  // const [initialAds, setInitialAds] = useState<any>(null);
+  // const [initialBroker, setInitialBroker] = useState<any>(null);
+  // const [countries, setCountries] = useState<any>(null);
+  // const [loading, setLoading] = useState(true);
+  // const [t, setT] = useState((key: any) => key); // استخدام ترجمة افتراضية
 
-  const i18nNamespaces = ["Pages_LandingPage"];
-  const { t } = await initTranslations(locale, i18nNamespaces);
-  try {
-    const data = await getData("web/home", locale, token);
-    const allData = data.data;
+  // دالة لجلب البيانات
+  // const fetchData = async (endpoint: any) => {
+  //   try {
+  //     // تأكد من وجود التوكن
+  //     // const token = localStorage.getItem("token"); // أو أي طريقة أخرى تستخدمها للحصول على التوكن
 
-    const dataImage = await getData("web/info-graph", locale, token);
-    const allDataImage = dataImage.data;
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_GET_DATA}${endpoint}`, {
+  //       method: "GET",
+  //       headers: {
+  //         lang: locale,
+  //         ...(token && { Authorization: `Bearer ${token}` }), // أضف التوكن إذا كان موجودًا
+  //       },
+  //     });
 
-    const ads = await getData("ads-getter/home-page", locale, token);
-    const allAds = ads.data;
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
 
-    const broker = await getData("web/our-brokers", locale, token);
-    const allBroker = broker.data;
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error(`Error fetching data from ${endpoint}:`, error);
+  //     return null;
+  //   }
+  // };
 
-    if (!allDataImage) return <Loader />;
+  // // const theCountry = useSelector(OwnCountry);
 
-    return (
-      <>
-        <LoginPopUp />
-        <LogOutPopUp />
+  // useEffect(() => {
+  //   const fetchAllData = async () => {
+  //     try {
+  //       const data = await fetchData(
+  //         // ?country_id=${theCountry?.id}
+  //         // ${process.env.NEXT_PUBLIC_LANDING_PAGE}
+  //         `web/home`
+  //       );
+  //       const dataImage = await fetchData("web/info-graph");
+  //       const ads = await fetchData("ads-getter/home-page");
+  //       const broker = await fetchData("web/our-brokers");
+  //       const AllCountries = await fetchData("web/countries");
 
-        <Hero data={allData?.sliders} locale={locale} />
+  //       const i18nNamespaces = ["Pages_LandingPage"];
+  //       const { t: translation } = await initTranslations(locale, i18nNamespaces);
 
-        <ImagesSection data={allDataImage} />
+  //       setInitialData(data?.data || null);
+  //       setInitialDataImage(dataImage?.data || null);
+  //       setInitialAds(ads?.data || null);
+  //       setInitialBroker(broker?.data || null);
+  //       setCountries(AllCountries?.data || null);
+  //       setT(translation);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-        <ADSHome data={allAds} />
+  //   fetchAllData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [locale, token]);
+  // const { t } = await initTranslations(locale, i18nNamespaces);
+  // try {
+  const cookieStore = cookies();
 
-        <FeaturedProperties
-          data={allData?.featured_properties}
-          locale={locale}
-          countrie={AllCountries}
-        />
+  const userDatacookies = cookieStore.get("userData");
 
-        <LatestProperties
-          data={allData?.latest_properties}
-          locale={locale}
-          countrie={AllCountries}
-          t={t}
-        />
+  const userDataValue: any = userDatacookies ? userDatacookies.value : null;
 
-        <MarketSection data={allData?.market_section[0]} t={t} />
+  const userData: any = userDataValue ? JSON.parse(userDataValue) : null;
 
-        <PopularPlaces
-          data={allData?.cities_most_pops}
-          t={t}
-          locale={locale}
-          countrie={AllCountries}
-        />
+  const data = await getData("web/home", locale, userData?.token);
+  const allData = data?.data;
 
-        <VideoSection data={allData?.descripe_us[0]} locale={locale} countrie={AllCountries} />
+  const dataImage = await getData("web/info-graph", locale, userData?.token);
+  const allDataImage = dataImage?.data;
 
-        <MostViews data={allData?.most_view_deals} t={t} locale={locale} countrie={AllCountries} />
+  const ads = await getData("ads-getter/home-page", locale, userData?.token);
+  const allAds = ads?.data;
 
-        <LastNews data={allData.news} t={t} locale={locale} countrie={AllCountries} />
+  const broker = await getData("web/our-brokers", locale, userData?.token);
+  const allBroker = broker?.data;
+  const countries = await getData("web/countries", locale, userData?.token);
+  const AllCountries = countries?.data[0] || [];
 
-        <Agencies data={allBroker} locale={locale} countrie={AllCountries} t={t} />
-      </>
-    );
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return <Loader />;
-  }
+  // if (!allDataImage) return <Loader />;
+  // عرض Loader إذا كانت البيانات لا تزال تُحمّل
+  // if (loading || !initialDataImage) {
+  //   return <Loader />;
+  // }
+  // console.log(countries);
+
+  return (
+    // allData?
+    <>
+      <Suspense fallback={<Loading />}>
+        <Hero data={allData?.sliders || []} />
+        <ImagesSection data={allDataImage || []} />
+        <ADSHome data={allAds || []} />
+        <FeaturedProperties data={allData?.featured_properties || []} countrie={AllCountries} />
+
+        <LatestProperties data={allData?.latest_properties || []} countrie={AllCountries} />
+        <MarketSection data={allData?.market_section[0] || null} />
+        <PopularPlaces data={allData?.cities_most_pops || []} countrie={AllCountries} />
+        <VideoSection data={allData?.descripe_us[0] || null} countrie={AllCountries} />
+        <MostViews data={allData?.most_view_deals || []} countrie={AllCountries} />
+        <LatestNews data={allData?.news || []} />
+        <Agencies data={allBroker || []} countrie={AllCountries} />
+      </Suspense>
+    </>
+  );
 }

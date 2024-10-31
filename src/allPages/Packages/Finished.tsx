@@ -2,7 +2,7 @@
 import { useWindowSize } from "@react-hook/window-size";
 // import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { userProfileData } from "@/Store/Features/AuthenticationSlice";
+import { userData, userProfileData } from "@/Store/Features/AuthenticationSlice";
 import { TUser } from "@/Types/AppTypes";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 // import { Link } from "lucide-react";
-function Finished({ userProfileDataOutlet }: any) {
+function Finished({}: any) {
   const [width, height] = useWindowSize();
   const { paymentType } = useParams();
   const userProfile = useSelector(userProfileData) as TUser;
@@ -52,6 +52,42 @@ function Finished({ userProfileDataOutlet }: any) {
       },
     },
   };
+
+  const [userProfileDataOutlet, setUserProfileDataOutlet] = useState<any>([]);
+  const user = useSelector(userData);
+
+  async function getUserProfile(token: string, language: string) {
+    try {
+      const response = await fetch(
+        `https://amtalek.com/amtalekadmin/public/api/web/${process.env.NEXT_PUBLIC_USER_PROFILE_DATA}/${user?.data?.actor_type}/${user?.data?.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Accept-Language": language,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const dataProfile = await response.json();
+
+      setUserProfileDataOutlet(dataProfile?.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (user?.token && i18n.language) {
+      getUserProfile(user?.token, i18n?.language);
+      // getNotifications(user?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token, i18n.language]);
 
   return (
     // <div className="w-full flex flex-col gap-3 items-center">

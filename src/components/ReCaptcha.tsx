@@ -6,6 +6,7 @@ function ReCaptcha({ refs, onChange, error, ServerError, t }: any) {
       <ReCAPTCHA
         size="normal"
         ref={refs}
+        // 6Lf1K2AqAAAAAD8xUitxNu-n7_6b4okGwnD6XSmh
         sitekey="6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr" //6LcDPOkpAAAAAGfjARzfAb3iXloayly0-KIhLLXr
         onChange={onChange}
       />{" "}
